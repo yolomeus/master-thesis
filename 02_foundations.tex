@@ -1,0 +1,117 @@
+\chapter{Foundations}
+\label{foundations}
+\section{Information Retrieval - Ranking Text}
+Ranking is an integral part of the information retrieval (IR) process. Typically the general IR problem can be formulated as follows: A user with a need for information expresses this information need through formulation of a query. Now given the query and a collection of documents, the IR system's task is to provide a list of documents that satisfy the user's information need. Further, the retrieved documents should be sorted by relevance w.r.t. the user's information need in descending order, i.e. the documents considered most relevant should be at the top of the list.
+
+While from this formulation only, the task might appear simple, there are several caveats to look out for when it comes to ranking. For instance, there is no restriction on the structure of the query. While we might expect a natural language question like "What color are giraffes?" a user might decide to enter a keyword query like "giraffes color". The same applies to documents: Depending on the corpus we are dealing with, the documents might be raw text, structured text like html or even another type of media e.g. image, audio or a combination thereof.
+
+Another possible issue is a mismatch in information need of the user and the corresponding query. Even if we find a perfect ordering of documents with respect to the query, we can not know for certain that the query actually reflects the user's information need. The user might not even know exactly what they're looking for until discovery through an iterative process, i.e. the information need is fuzzy and can not be specified through an exact query from the beginning on.
+
+Further, a query might require additional context information in order for an IR system to find relevant documents. For example, depending on the time at which a query is prompted, the correct answer might change: "Who is president?" should return a different set of documents, as soon as a new president has been elected. Also, since not specified further, it is up to interpretation which country's president the user is interested in and might depend on their location.
+In addition, even the corpus might not be static either and change or grow over time, e.g. web search has to deal with an ever-growing corpus: the internet.
+
+While this list of issues is not comprehensive, at this point the complexity of the ranking problem should have become apparent.
+
+Because this work focuses on the ranking of text in the context of web search, we will now give a formal definition with that scenario in mind:
+
+Given a set of $|Q|$ natural language queries $Q = \{q_i\}_{i=1}^{|Q|}$ and a collection of $|D|$ documents $D = \{d_i\}_{i=1}^{|D|}$, we want to find a scoring function $s: Q \times D \rightarrow \mathbb{R}$, such that for any query $q \in Q$ and documents $d, d' \in D$, it holds true that $s(q, d) > s(q, d')$ if $d$ is more relevant w.r.t $q$ than $d'$.
+
+To give the reader a more concrete idea and as we are going to build upon it throughout this work, we will now discuss two traditional approaches to text retrieval which, unlike neural retrieval, are based on exact matching, meaning query and document terms are compared directly.
+
+\subsection{TF-IDF}
+Term Frequency - Inverted Document Frequency weighting (TF-IDF), is a classical ranking approach that, given a query, assigns a relevance score to each document based on two assumptions:
+\begin{enumerate}
+    \item A document is relevant if terms from the query appear in it often.
+    \item A document is relevant if the terms shared with the query are also rare in the collection.
+\end{enumerate}
+
+From these assumptions, two metrics are derived:
+\begin{enumerate}
+    \item Term-Frequency
+          \begin{equation}
+              w_{t,d} = \begin{cases}
+                  1 + \log \text{tf}_{t, d} & \text{if } \text{tf}_{t, d} > 0 \\
+                  0                         & otherwise                       \\
+              \end{cases}
+          \end{equation}
+
+          where $\text{tf}_{t, d}$ is the count of term $t$ in document $d$. The logarithmic scaling is motivated by the idea that a document does not linearly become more relevant by the number of terms in it: A document containing a term 10 times more often doesn't necessarily mean it is $10$ times more important, e.g. the document might just be very long document and contain more words in general. Note that this is just one possible normalization scheme out of many.
+
+    \item Inverted Document Frequency
+          \begin{equation}
+              \text{idf}(t, d) = \log \frac{|D|}{\text{df}_t}
+          \end{equation}
+          where $\text{df}_t$ counts the number of documents that a term occurs in over the full corpus. This way, terms that occur less frequent relative to the corpus size will receive a high IDF score and those that are more frequent a lower score.
+
+\end{enumerate}
+
+\begin{table}
+
+\end{table}
+To compute TF-IDF we can simply sum over the product of TF and IDF for each term in the query to produce a relevance score:
+\begin{equation}
+    \text{score}(q, d) = \sum_{t \in q} w_{t,d} \times \text{idf}_t
+\end{equation}
+
+Alternatively, vector space idf vector
+\subsection{BM25}
+
+\section{Machine Learning}
+Machine learning can be described as a set of statistical methods, for automatically recognizing and extracting patterns from data. Typically we can distinguish between two main types of machine learning: Supervised learning and unsupervised learning.
+
+In the case of supervised learning, we have a set of training instances $X = \{x_i\}_{i=0}^N$ and corresponding labels $Y = \{y_i\}_{i=0}^N$, assigning a certain characteristic to each data point. For example, this characteristic might be a probability distribution over a set of classes or a regression score. Now given the training data and labels, the goal is to find a hypothesis that explains the data, such that for unseen data points $x' \notin X$, the labels $y' \notin Y$ can be inferred automatically. If each $y_i$ represents one or more categories from a fixed set of classes $C = \{c_i\}_{i=1}^{|C|}$, this is called a classification problem.
+
+In contrast, in unsupervised learning there is no access to any labels whatsoever. Characteristics of the data need to be learned solely from the data $X$ itself. Examples for this include clustering where $X$ is clustered into groups, representation learning which usually tries to find vector representations for $X$, as well as dimensionality reduction that, if each $X$ is already a vector, tries to compress them into more compact but still informative representations.
+
+That being said, the separating lines between supervised and unsupervised learning are blurry. Especially with the emergence of semi-supervised approaches and "end2end" representation learning, modern ML methods often integrate parts of both.
+
+\section{Deep Learning}
+Deep learning is a subfield of ML that makes use of a class of models called Deep Neural Networks (DNN). Typically DNNs find application in the supervised learning scenario and are often used for classification tasks. In the following we explain the basic mechanisms of DNNs and common approaches to train them.
+
+\subsection{Deep Neural Networks}
+In essence, a Deep Neural Network (DNN) is a function approximator that applies a series of non-linear transformations to its inputs, in order to produce an output. In the simplest form, an input vector $x$ is multiplied by a single weight matrix, a bias vector is added and the resulting vector is passed through a non-linear activation function $\sigma$.
+
+\begin{equation}
+    \text{FFN}(x) = \sigma(W x + b)
+\end{equation}
+
+where $W$ and $b$ are both learnable parameters.
+This model is commonly referred to as single layer feed-forward neural network (FFN) or single layer perceptron.
+
+Because a single layer FFN is limited to problems that require linear separation when it comes to classification, in order to learn more complex decision boundaries, multiple layers can be applied in sequence.
+
+\begin{equation}
+    \begin{split}
+        h^{(0)} &= \sigma^{(0)}(W^{(0)} x + b^{(0)}) \\
+        h^{(1)} &= \sigma^{(1)}(W^{(1)} h^{(0)} + b^{(1)}) \\
+        & \vdots \\
+        y^{\text{out}} &= \sigma^{(N)}(W^{(N)} h^{(N-1)} + b^{(N)})
+    \end{split}
+\end{equation}
+
+
+\subsection{Optimization}
+The arguably most common way for optimizing a neural network is the gradient descent algorithm and its variants.
+
+\subsubsection{Gradient Descent}
+batch and stochastic
+
+\subsubsection{Mini-Batch Gradient Descent}
+
+\subsubsection{Backpropagation}
+
+\subsubsection{Momentum}
+\subsubsection{Adam}
+
+\subsection{Regularization}
+\subsubsection{Weight Decay}
+\subsubsection{Dropout}
+
+\subsection{Learning to Rank}
+
+
+\section{Transformer Models}
+\subsection{Architecture}
+\subsection{Pre-Training - BERT}
+
+\section{Probing}

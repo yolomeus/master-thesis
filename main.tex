@@ -1,0 +1,67 @@
+\documentclass[headsepline]{scrreprt}
+
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage[english]{babel}
+
+
+\usepackage{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\automark[section]{section}
+\clearpairofpagestyles
+\ohead{\headmark}
+\ofoot[\pagemark]{\pagemark}
+
+\usepackage[]{graphicx}
+\graphicspath{{gfx/}}
+\DeclareGraphicsExtensions{.png,.jpg,.pdf}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\usepackage{algorithm,algorithmicx,algpseudocode}
+
+\newcommand{\handindate}{xx.xx.2022}
+
+\usepackage[backend=biber, style=alphabetic, maxcitenames=2]{biblatex}
+\addbibresource{bibliography.bib}
+
+\begin{document}
+\input{00_cover.tex}
+
+\chapter*{Abstract}
+...
+
+\tableofcontents
+
+\input{01_Introduction.tex}
+\input{02_foundations.tex}
+\input{03_prev_work.tex}
+\input{04_data.tex}
+\input{05_approach.tex}
+\input{06_results.tex}
+\input{07_conclusion.tex}
+
+\chapter*{Plagiarism Statement}
+\addcontentsline{toc}{chapter}{Plagiarism Statement}
+\vfill
+\mbox{} \\
+{\large I hereby confirm that this thesis is my own work and that I have documented all sources used.}
+\newline
+\mbox{} \\
+Hannover, \handindate \\
+\vspace{4cm}
+\hrule
+\vspace{0.5cm}
+$\qquad$(Fabian Beringer)
+
+\listoffigures
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoftables
+\addcontentsline{toc}{chapter}{\listtablename}
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliography} 
+\printbibliography
+\end{document}
