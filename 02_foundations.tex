@@ -69,23 +69,25 @@ That being said, the separating lines between supervised and unsupervised learni
 Deep learning is a subfield of ML that makes use of a class of models called Deep Neural Networks (DNN). Typically DNNs find application in the supervised learning scenario and are often used for classification tasks. In the following we explain the basic mechanisms of DNNs and common approaches to train them.
 
 \subsection{Deep Neural Networks}
-In essence, a Deep Neural Network (DNN) is a function approximator that applies a series of non-linear transformations to its inputs, in order to produce an output. In the simplest form, an input vector $x$ is multiplied by a single weight matrix, a bias vector is added and the resulting vector is passed through a non-linear activation function $\sigma$.
+In essence, a Deep Neural Network (DNN) is a function approximator $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ that applies a series of non-linear transformations to its inputs, in order to produce an output. In its simplest form, an input vector $x \in \mathbb{R}^n$ is multiplied by a single weight matrix, a bias vector is added and the resulting vector is passed through a non-linear activation function $\sigma$.
 
 \begin{equation}
-    \text{FFN}(x) = \sigma(W x + b)
+    f(x) = \sigma(W x + b)
 \end{equation}
 
-where $W$ and $b$ are both learnable parameters.
+where $W \in \mathbb{R}^{m \times n}$ and $b \in \mathbb{R}^{m}$ are learnable parameters.
 This model is commonly referred to as single layer feed-forward neural network (FFN) or single layer perceptron.
 
-Because a single layer FFN is limited to problems that require linear separation when it comes to classification, in order to learn more complex decision boundaries, multiple layers can be applied in sequence.
+When used for classification, a single layer FFN is limited to problems that require linear separation. In order to learn more complex, non-linear decision boundaries, multiple layers can be applied in sequence. 
+
+An $L$-layer DNN can be described as follows:
 
 \begin{equation}
     \begin{split}
-        h^{(0)} &= \sigma^{(0)}(W^{(0)} x + b^{(0)}) \\
-        h^{(1)} &= \sigma^{(1)}(W^{(1)} h^{(0)} + b^{(1)}) \\
+        h^{(1)} &= \sigma^{(1)}(W^{(1)} x + b^{(1)}) \\
+        h^{(2)} &= \sigma^{(2)}(W^{(2)} h^{(1)} + b^{(2)}) \\
         & \vdots \\
-        y^{\text{out}} &= \sigma^{(N)}(W^{(N)} h^{(N-1)} + b^{(N)})
+        f(x) &= \sigma^{(L)}(W^{(L)} h^{(L-1)} + b^{(L)})
     \end{split}
 \end{equation}
 
