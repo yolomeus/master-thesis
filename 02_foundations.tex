@@ -93,7 +93,13 @@ An $L$-layer DNN can be described as follows:
 
 
 \subsection{Optimization}
-The arguably most common way for optimizing a neural network is the gradient descent algorithm and its variants.
+Arguably, the most common way for optimizing a neural network are the gradient descent (GD) algorithm and its variants. For this, an objective function $J(\theta)$ is defined, based on the DNN's outputs and corresponding target labels over the training set.
+
+\begin{equation}
+    J(\theta) = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(f(x_i; \theta), y_i)
+\end{equation}
+
+Here, $\mathcal{L}$ is a differentiable loss function and $\theta$ represents the vector of all learnable parameters of the neural network $f(x)$.
 
 \subsubsection{Gradient Descent}
 batch and stochastic
