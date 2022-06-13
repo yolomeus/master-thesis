@@ -1,9 +1,9 @@
 \chapter{Foundations}
 \label{foundations}
 \section{Information Retrieval - Ranking Text}
-Ranking is an integral part of the information retrieval (IR) process. Typically the general IR problem can be formulated as follows: A user with a need for information expresses this information need through formulation of a query. Now given the query and a collection of documents, the IR system's task is to provide a list of documents that satisfy the user's information need. Further, the retrieved documents should be sorted by relevance w.r.t. the user's information need in descending order, i.e. the documents considered most relevant should be at the top of the list.
+Ranking is an integral part of the information retrieval (IR) process. The general IR problem can be formulated as follows: A user with a need for information expresses this information need through formulation of a query. Now given the query and a collection of documents, the IR system's task is to provide a list of documents that satisfy the user's information need. Further, the retrieved documents should be sorted by relevance w.r.t. the user's information need in descending order, i.e. the documents considered most relevant should be at the top of the list.
 
-While from this formulation only, the task might appear simple, there are several caveats to look out for when it comes to ranking. For instance, there is no restriction on the structure of the query. While we might expect a natural language question like "What color are giraffes?" a user might decide to enter a keyword query like "giraffes color". The same applies to documents: Depending on the corpus we are dealing with, the documents might be raw text, structured text like html or even another type of media e.g. image, audio or a combination thereof.
+While from this formulation only, the task might appear simple, there are several caveats to look out for when it comes to ranking. For instance, there is no restriction on the structure of the query. While we might expect a natural language question like "What color are giraffes?" a user might decide to enter a keyword query like "giraffes color". The same applies to documents: Depending on the corpus we are dealing with, the documents might be raw text, structured text like HTML or even another type of media e.g. image, audio or a combination thereof.
 
 Another possible issue is a mismatch in information need of the user and the corresponding query. Even if we find a perfect ordering of documents with respect to the query, we can not know for certain that the query actually reflects the user's information need. The user might not even know exactly what they're looking for until discovery through an iterative process, i.e. the information need is fuzzy and can not be specified through an exact query from the beginning on.
 
@@ -16,10 +16,10 @@ Because this work focuses on the ranking of text in the context of web search, w
 
 Given a set of $|Q|$ natural language queries $Q = \{q_i\}_{i=1}^{|Q|}$ and a collection of $|D|$ documents $D = \{d_i\}_{i=1}^{|D|}$, we want to find a scoring function $s: Q \times D \rightarrow \mathbb{R}$, such that for any query $q \in Q$ and documents $d, d' \in D$, it holds true that $s(q, d) > s(q, d')$ if $d$ is more relevant w.r.t $q$ than $d'$.
 
-To give the reader a more concrete idea and as we are going to build upon it throughout this work, we will now discuss two traditional approaches to text retrieval which, unlike neural retrieval, are based on exact matching, meaning query and document terms are compared directly.
+To give the reader a more concrete idea and as we are going to build upon it throughout this work, we will now discuss two traditional approaches to text retrieval which, unlike neural retrieval, are based on exact matching, meaning query and document terms are compared directly. Further, they're "bag of word" models, meaning queries and documents are treated as sets of terms without considering order.
 
 \subsection{TF-IDF}
-Term Frequency - Inverted Document Frequency weighting (TF-IDF), is a classical ranking approach that, given a query, assigns a relevance score to each document based on two assumptions:
+Term Frequency - Inverted Document Frequency weighting (TF-IDF), is a traditional ranking approach that, given a query, assigns a relevance score to each document based on two assumptions:
 \begin{enumerate}
     \item A document is relevant if terms from the query appear in it often.
     \item A document is relevant if the terms shared with the query are also rare in the collection.
@@ -31,11 +31,11 @@ From these assumptions, two metrics are derived:
           \begin{equation}
               w_{t,d} = \begin{cases}
                   1 + \log \text{tf}_{t, d} & \text{if } \text{tf}_{t, d} > 0 \\
-                  0                         & otherwise                       \\
+                  0                         & \text{otherwise}                \\
               \end{cases}
           \end{equation}
 
-          where $\text{tf}_{t, d}$ is the count of term $t$ in document $d$. The logarithmic scaling is motivated by the idea that a document does not linearly become more relevant by the number of terms in it: A document containing a term 10 times more often doesn't necessarily mean it is $10$ times more important, e.g. the document might just be very long document and contain more words in general. Note that this is just one possible normalization scheme out of many.
+          where $\text{tf}_{t, d}$ is the count of term $t$ in document $d$. The logarithmic scaling is motivated by the idea that a document does not linearly become more relevant by the number of terms in it: A document containing a term 10 times more often doesn't necessarily mean it is $10$ times more important, e.g. the document might just be very long and contain more words in general. Note that this is just one possible normalization scheme out of many.
 
     \item Inverted Document Frequency
           \begin{equation}
@@ -57,7 +57,7 @@ Alternatively, vector space idf vector
 \subsection{BM25}
 
 \section{Machine Learning}
-Machine learning can be described as a set of statistical methods, for automatically recognizing and extracting patterns from data. Typically we can distinguish between two main types of machine learning: Supervised learning and unsupervised learning.
+Machine learning can be described as a set of statistical methods, for automatically recognizing and extracting patterns from data. Typically, we can distinguish between two main types of machine learning: Supervised learning and unsupervised learning.
 
 In the case of supervised learning, we have a set of training instances $X = \{x_i\}_{i=0}^N$ and corresponding labels $Y = \{y_i\}_{i=0}^N$, assigning a certain characteristic to each data point. For example, this characteristic might be a probability distribution over a set of classes or a regression score. Now given the training data and labels, the goal is to find a hypothesis that explains the data, such that for unseen data points $x' \notin X$, the labels $y' \notin Y$ can be inferred automatically. If each $y_i$ represents one or more categories from a fixed set of classes $C = \{c_i\}_{i=1}^{|C|}$, this is called a classification problem.
 
@@ -66,10 +66,10 @@ In contrast, in unsupervised learning there is no access to any labels whatsoeve
 That being said, the separating lines between supervised and unsupervised learning are blurry. Especially with the emergence of semi-supervised approaches and "end2end" representation learning, modern ML methods often integrate parts of both.
 
 \section{Deep Learning}
-Deep learning is a subfield of ML that makes use of a class of models called Deep Neural Networks (DNN). Typically DNNs find application in the supervised learning scenario and are often used for classification tasks. In the following we explain the basic mechanisms of DNNs and common approaches to train them.
+Deep learning is a subfield of ML that makes use of a class of models called Deep Neural Networks (DNN). Typically, DNNs find application in the supervised learning scenario and are often used for classification tasks. In the following we explain the basic mechanisms of DNNs and common approaches to train them.
 
 \subsection{Deep Neural Networks}
-In essence, a Deep Neural Network (DNN) is a function approximator $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ that applies a series of non-linear transformations to its inputs, in order to produce an output. In its simplest form, an input vector $x \in \mathbb{R}^n$ is multiplied by a single weight matrix, a bias vector is added and the resulting vector is passed through a non-linear activation function $\sigma$.
+In essence, a Deep Neural Network (DNN) is a function approximator $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ that applies a series of non-linear transformations to its inputs, in order to produce an output. In its simplest form, an input vector $x \in \mathbb{R}^n$ is multiplied by a single weight matrix, a bias vector is added, and the resulting vector is passed through a non-linear activation function $\sigma$.
 
 \begin{equation}
     f(x) = \sigma(W x + b)
