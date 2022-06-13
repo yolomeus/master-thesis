@@ -125,6 +125,8 @@ Common choices for $\mathcal{L}$ include:
           in the case of regression.
 \end{itemize}
 
+\subsubsection{Stochastic Gradient Descent}
+The aforementioned algorithm is also known as the batch gradient descent (BGD) variant. Stochastic Gradient Descent (SGD) differs from BGD in the number of training samples that are used for a gradient update. Where BGD uses the gradient of the full training set for updating $\theta$, SGD only considers a single, randomly picked sample for each update. Not only can this approach be more efficient, since less redundant computations are performed, due to its stochastic nature and high variance, it is more likely to break out of local minima, allowing additional exploration for better solutions. \cite{ruder2016overview}
 
 \subsubsection{Mini-Batch Gradient Descent}
 
