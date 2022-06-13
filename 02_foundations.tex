@@ -102,7 +102,29 @@ Arguably, the most common way for optimizing a neural network are the gradient d
 Here, $\mathcal{L}$ is a differentiable loss function and $\theta$ represents the vector of all learnable parameters of the neural network $f(x)$.
 
 \subsubsection{Gradient Descent}
-batch and stochastic
+For GD, the gradient of $J(\theta)$ with respect to $\theta$ is computed and scaled by a hyperparameter called learning rate $\eta$. If the objective is to minimize, the scaled gradient is subtracted from the original parameter vector.
+
+\begin{equation}
+    \theta_{new} = \theta - \eta\nabla_\theta J(\theta)
+\end{equation}
+
+By repeating this procedure iteratively, we can gradually minimize $J(\theta)$.
+
+Common choices for $\mathcal{L}$ include:
+\begin{itemize}
+    \item \textbf{Cross Entropy Loss}
+          \begin{equation}
+              \text{CE}(y, \hat{y}) = - \sum_{k=1}^C y_k \log \hat{y}_k
+          \end{equation}
+          for classification tasks. Where $y_k$ is the ground truth probability of class $k$ and $\hat{y}_k$ the corresponding prediction.
+
+    \item \textbf{Mean Squared Error}
+          \begin{equation}
+              \text{MSE}(y, \hat{y}) = (y - \hat{y})^2
+          \end{equation}
+          in the case of regression.
+\end{itemize}
+
 
 \subsubsection{Mini-Batch Gradient Descent}
 
