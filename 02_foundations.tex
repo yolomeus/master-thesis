@@ -135,6 +135,27 @@ While SGD's high variance during training makes it more likely to escape local m
 To mitigate this issue, we can simply use more than $1$ sample, in order to achieve a more accurate estimate of the full gradient. Now, at each step a small subset of the dataset is sampled to reduce variance and stabilize training while retaining a level of stochasticity. This variant of gradient descent is called mini-batch gradient descent.
 
 \subsubsection{Backpropagation}
+Because a neural network can consist of multiple layers and thus, is a composition of multiple non-linear functions, computing the gradient w.r.t. to each parameter of the network can become a non-trivial and even cumbersome task, if done by hand. One popular way of automatically computing the gradients of a DNN is the backpropagation algorithm \cite{rumelhart1988learning}.
+
+Backpropagation is a direct application of the chain rule for calculating the derivative of the composition of two functions. Given two differentiable functions $f(x)$ and $g(x)$, the chain rule states that the derivate of their composition $f(g(x))$ is equal to the partial derivative of $f$ w.r.t. $g$, times the partial derivate of $g$ w.r.t $x$.
+
+\begin{equation}
+    \frac{\partial f(g(x))}{\partial x} = \frac{\partial f(g(x))}{\partial g(x)} \frac{\partial g(x)}{\partial x}
+\end{equation}
+
+Let $a^{(k)} = W^{(k)} h^{(k-1)} + b^{(k)}$ be the intermediate output of an $L$-layer DNN at layer $k$, before passing it through an activation function $\sigma$ (See \ref{eq:DNN}). With a single application of the chain rule, we can compute the gradient of the objective function $J$ w.r.t. $a^{(L)}$ like so:
+
+\begin{equation}
+    \frac{\partial J}{\partial a^{(L)}} = \frac{\partial J}{\partial \sigma(a^{(L)})} \frac{\partial \sigma(a^{(L)})}{\partial a^{(L)}}
+\end{equation}
+
+If we now apply the chain rule a second time, we can produce a term for computing the derivative w.r.t. $W^{(L)}$.
+
+\begin{equation}
+    \frac{\partial J}{\partial W^{(L)}} = \frac{\partial J}{\partial \sigma(a^{(L)})} \frac{\partial \sigma(a^{(L)})}{\partial a^{(L)}} \frac{\partial a^{(L)}}{W^{(L)}}
+\end{equation}
+
+Note that we now only need to know the derivatives of $J$, $\sigma$ and $a^{(L)}$ in isolation, in order to compute the derivative of their composition. By recursively applying this rule, we can compute partial derivatives of $J$ w.r.t to parameters of the DNN, up to an arbitrary depth, as long as all functions it is composed of are differentiable.
 
 \subsubsection{Momentum}
 \subsubsection{Adam}
