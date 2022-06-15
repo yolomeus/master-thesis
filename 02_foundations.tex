@@ -136,6 +136,25 @@ While SGD's high variance during training makes it more likely to escape local m
 
 To mitigate this issue, we can simply use more than $1$ sample, in order to achieve a more accurate estimate of the full gradient. Now, at each step a small subset of the dataset is sampled to reduce variance and stabilize training while retaining a level of stochasticity. This variant of gradient descent is called mini-batch gradient descent.
 
+Building on mini-batch GD, many algorithms have been introduced in the context of DNNs, that employ further optimizations in order to improve convergence speed and quality. Notable examples include:
+\begin{itemize}
+    \item Adagrad \cite{duchi2011adaptive}
+    \item RMSProp \cite{hinton2012neural}
+    \item Adam \cite{kingma2014adam}
+\end{itemize}
+
+\begin{algorithm}
+    \SetAlgoLined
+    \KwData{$X=\{(x_0, y_0), ..., (x_n, y_n)\}$ training examples and target labels.}
+    \KwIn{function $f$ with trainable parameters $\theta$}
+    initialize $\theta$ with random values \;
+    \While{not converged}{
+    $B \leftarrow \text{next k training pairs} \in X$ \;
+    $\theta \leftarrow \theta - \eta\nabla_\theta\big(\frac{1}{k} \sum_{(x_i, y_i) \in B}\mathcal{L}(f(x_i; \theta), y_i)\big)$ \;
+    }
+    \caption{Mini-Batch Gradient Descent with batch size $k$, learning rate $\eta$}
+\end{algorithm}
+
 \subsubsection{Backpropagation}
 Because a neural network can consist of multiple layers and thus, is a composition of multiple non-linear functions, computing the gradient w.r.t. to each parameter of the network can become a non-trivial and even cumbersome task, if done by hand. One popular way of automatically computing the gradients of a DNN is the backpropagation algorithm \cite{rumelhart1988learning}.
 
