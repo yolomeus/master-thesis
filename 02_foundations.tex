@@ -184,6 +184,13 @@ By modeling the chain of operations in a DNN as a computation graph, deep learni
 Regularization includes a number of techniques to improve the generalization capabilities of an ML model. If an ML model achieves a low error rate on training data, but a high error rate on test data, it is said to be overfitting. In this scenario, the model has essentially "memorized" the training data and can no longer adapt to unseen examples. Regularization techniques tackle this problem by limiting the hypothesis space of models, through favoring simple solutions over complex ones.
 
 \subsubsection{Weight Decay}
+Weight decay constraints the number of possible hypothesis, by adding a penalty based on model parameters. For example, L2-regularization encourages small weights that lie on a hypersphere, by adding the sum of squares over all parameters to the loss function.
+
+\begin{equation}
+    J(\theta) = \mathcal{L}(\theta) + \lambda ||\theta||_2^2
+\end{equation}
+
+As L2 is only a soft constraint, its effect can be regulated by hyperparameter $\lambda$.
 \subsubsection{Dropout}
 
 \subsection{Learning to Rank}
