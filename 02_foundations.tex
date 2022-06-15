@@ -191,7 +191,10 @@ Weight decay constraints the number of possible hypothesis, by adding a penalty 
 \end{equation}
 
 As L2 is only a soft constraint, its effect can be regulated by hyperparameter $\lambda$.
+
 \subsubsection{Dropout}
+Dropout is a DNN specific method that, during training time, randomly sets entries in the input vector of a layer to $0$ with probability $p$ \cite{DBLP:journals/corr/abs-1207-0580}. The initial idea of this approach is, to prevent groups of neurons from co-adapting, i.e. requiring the activation of one another in order to detect a certain feature. If dropout is employed, a neuron can no longer rely on the presence of another neuron. Dropout can also be seen as a way of training an ensemble of sub-networks of the original network which share the same parameters.
+
 
 \subsection{Learning to Rank}
 
