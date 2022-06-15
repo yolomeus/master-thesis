@@ -180,10 +180,9 @@ Note that we now only need to know the derivatives of $J$, $\sigma$ and $a^{(L)}
 
 By modeling the chain of operations in a DNN as a computation graph, deep learning frameworks like PyTorch \cite{NEURIPS2019_9015} or Tensorflow \cite{tensorflow2015-whitepaper} can automatically perform backpropagation, as long as each operation's derivative is known and pre-defined in the library.
 
-\subsubsection{Momentum}
-\subsubsection{Adam}
-
 \subsection{Regularization}
+Regularization includes a number of techniques to improve the generalization capabilities of an ML model. If an ML model achieves a low error rate on training data, but a high error rate on test data, it is said to be overfitting. In this scenario, the model has essentially "memorized" the training data and can no longer adapt to unseen examples. Regularization techniques tackle this problem by limiting the hypothesis space of models, through favoring simple solutions over complex ones.
+
 \subsubsection{Weight Decay}
 \subsubsection{Dropout}
 
