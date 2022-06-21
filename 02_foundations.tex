@@ -202,6 +202,35 @@ One DNN architecture which had an immense impact on research and real world appl
 In this section we will discuss the architecture and ideas behind it, as well as one of the most popular training approaches named BERT \cite{devlin-etal-2019-bert}.
 
 \subsection{Architecture}
-\subsection{Pre-Training - BERT}
+The transformer architecture is based on a single building block which, following an input layer, is repeatedly applied in order to form the full model. Throughout this thesis we will also refer to these building blocks as layers, e.g. a $12$-layer model consists of an input layer followed by $12$ blocks. A single transformer layer consists of:
+\begin{itemize}
+    \item a multi-head attention layer
+    \item a point-wise feed-forward layer
+    \item residual connections
+    \item layer normalization
+\end{itemize}
+
+We will first go over each of these elements and then explain how a transformer block is constructed from them.
+
+\subsubsection{Multi-Head Attention}
+% idea behind attention
+% att score function 
+% mh attention score function key, query, value
+
+\subsubsection{Point-wise Feed-forward}
+% simple DNN transformation
+% why? no one knows but also cheap
+
+\subsubsection{Residual Connection}
+% vanishing gradients
+% identity function idk read up
+% improve gradient flow for deep models
+\subsubsection{Layer Normalization}
+% see BA
+
+
+
+
+\subsection{BERT Pre-Training}
 
 \section{Probing}
