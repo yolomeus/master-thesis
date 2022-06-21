@@ -196,10 +196,11 @@ As L2 is only a soft constraint, its effect can be regulated by hyperparameter $
 Dropout is a DNN specific method that, during training time, randomly sets entries in the input vector of a layer to $0$ with probability $p$ \cite{DBLP:journals/corr/abs-1207-0580}. The initial idea of this approach is, to prevent groups of neurons from co-adapting, i.e. requiring the activation of one another in order to detect a certain feature. If dropout is employed, a neuron can no longer rely on the presence of another neuron. Dropout can also be seen as a way of training an ensemble of sub-networks of the original network which share the same parameters.
 
 
-\subsection{Learning to Rank}
-
-
 \section{Transformer Models}
+One DNN architecture which had an immense impact on research and real world applications over the last couple of years is the transformer \cite{vaswani2017attention}. Not only have transformer based models set multiple state-of-the-art records in a variety of NLP tasks \cite{devlin-etal-2019-bert, DBLP:journals/corr/abs-1907-11692, DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1909-08053, DBLP:journals/corr/abs-2005-14165}, they have since then also been adapted to many other domains such as computer vision \cite{DBLP:journals/corr/abs-2010-11929} or audio generation \cite{https://doi.org/10.48550/arxiv.2005.00341} and shown promising results.
+
+In this section we will discuss the architecture and ideas behind it, as well as one of the most popular training approaches named BERT \cite{devlin-etal-2019-bert}.
+
 \subsection{Architecture}
 \subsection{Pre-Training - BERT}
 
