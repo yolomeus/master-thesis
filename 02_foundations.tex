@@ -212,7 +212,24 @@ The transformer architecture is based on a single building block which, followin
 
 We will first go over each of these elements and then explain how a transformer block is constructed from them.
 
-\subsubsection{Multi-Head Attention}
+\subsection{Multi-Head Attention}
+
+\subsubsection{The Attention Mechanism}
+Originally, attention mechanisms have been proposed in the context of neural machine translation (NMT) \cite{bahdanau2014neural,luong2015effective}. Particularly, they were used for aligning words from a source language with their corresponding translations. 
+
+Generally speaking, attention is a mechanism that allows a model to focus on parts of its inputs, usually while considering a certain context. This could for example be words in a text (inputs) that are regarded important for answering a question (context) or patches of pixels in an image (inputs) that are important for detecting an object (context). In the initial example of NMT, the model would focus on the source language words (inputs) that are important w.r.t the previous word translation (context) in order to predict the next target translation.
+
+Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \mathbb{R}^{N \times d}$ and context vectors $C = (c_1, \dots, c_M) \in \mathbb{R}^{M \times d}$, we can describe the general attention mechanism as follows:
+
+
+\begin{align}
+        &s_{ij} = a(x_i, c_j) \\
+        &\alpha_{ij} = \frac{\exp(s_{ij})}{\sum_{k=1}^N \exp(s_{kj})} \\
+        &h_j = \sum_{k=1}^N \alpha_{kj} x_k
+\end{align}
+
+Where $a: \mathbb{R}^d \times \mathbb{R}^d \rightarrow \mathbb{R}$ is a scoring function that assigns importance to input $x_i$ given context $c_j$, resulting in a context-sensitive representation $h_j$ as weighted sum of $X$.
+
 % idea behind attention
 % att score function 
 % mh attention score function key, query, value
