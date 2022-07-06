@@ -236,8 +236,10 @@ Where $a: \mathbb{R}^d \times \mathbb{R}^d \rightarrow \mathbb{R}$ is a scoring 
 \todo{todo}
 
 \subsection{Point-wise Feed-forward}
-% simple DNN transformation
-% why? no one knows but also cheap
+The point-wise feed-forward component is a 2-layer MLP that is applied to each position along the sequence dimension, meaning weight parameters are shared across all positions. It follows the following architecture:
+\begin{equation}
+    \text{FFN}(x) = W^{(1)} \text{ReLU}(W^{(0)} x + b^{(0)}) + b^{(1)}
+\end{equation}
 
 \subsection{Residual Connection}
 % vanishing gradients
