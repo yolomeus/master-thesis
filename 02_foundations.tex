@@ -213,14 +213,16 @@ The transformer architecture is based on a single building block which, followin
     \item layer normalization
 \end{itemize}
 
-We will first go over each of these elements and then explain how a transformer block is constructed from them.
+We will first explain the input layer, then go over each of these elements and explain how a transformer block is constructed from them.
+
+\subsection{Input Layer}
+\todo{embeddings, positional encoding}
 
 \subsection{Multi-Head Self-Attention}
-
 \subsubsection{The Attention Mechanism}
-Originally, attention mechanisms have been proposed in the context of neural machine translation (NMT) \cite{bahdanau2014neural,luong2015effective}. Particularly, they were used for aligning words from a source language with their corresponding translations, i.e. pointing out the source words that are relevant for predicting the next translation target. The alignment is important, as different languages usually do not share the same word order, preventing a sequential translation of words.
+Originally, attention mechanisms have been proposed in the context of neural machine translation (NMT) \cite{bahdanau2014neural,luong2015effective}. Particularly, they were used for aligning words from a source language with their corresponding translations, i.e. pointing out the source words that are relevant for predicting the next translation target. The alignment is important, as different languages usually do not share the same word order, making a sequential word-to-word translation infeasible.
 
-Generally speaking, attention is a mechanism that allows a model to focus on parts of its inputs, usually while considering a certain context. This could for example be words in a text (inputs) that are regarded important for answering a question (context) or patches of pixels in an image (inputs) that are important for detecting an object (context).
+Generally speaking, attention is a mechanism that allows a model to focus on parts of its inputs, usually while considering a certain context. This could for example be words in a text (inputs) that are regarded important for answering a question (context) \cite{xiong2016dynamic} or patches of pixels in an image (inputs) that are important for detecting a certain object type (context) \cite{xu2015show}.
 
 Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \mathbb{R}^{N \times d}$ and $M$ context vectors $C = (c_1, \dots, c_M) \in \mathbb{R}^{M \times d}$, we can describe the general attention mechanism as follows:
 
