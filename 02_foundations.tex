@@ -242,6 +242,17 @@ The point-wise feed-forward component is a 2-layer MLP that is applied to each p
 \end{equation}
 
 \subsection{Residual Connection}
+After applying a layer or block of layers in a DNN, if we add the inputs back to its outputs, it is called a residual connection or skip connection:
+
+\begin{equation}
+    \text{residual}(x) = f^{(k)}(x) + x
+\end{equation}
+Where $f^{(k)}(x)$ is a layer at depth $k$.
+
+The most prominent motivation for residual connections is that they facilitate the training of deeper neural networks. A common issue with deep neural networks is the vanishing gradient problem. As computing gradients through backpropagation relies on a series of multiplications of potentially small values (Section~\ref{sec:backprop}), gradients tend to become smaller the further we propagate back. This makes training very deep networks harder, as early layers might receive little to no updates.
+
+Since $\text{residual}'(x) = f'(x) + 1$, the gradient of the residual connection will be $>1$, even if the gradient is $<1$, alleviating the effect of vanishing gradients. It can also be interpreted as preserving more of the initial input information throughout the network, treating the DNN layers as an addition to the identity function, instead of a full transformation of the input.
+
 % vanishing gradients
 % identity function idk read up
 % improve gradient flow for deep models
