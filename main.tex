@@ -21,8 +21,12 @@
 \usepackage{hyperref}
 
 \usepackage[ruled,vlined]{algorithm2e}
+\usepackage{todonotes}
 
+% CUSTOM COMMANDS
 \newcommand{\handindate}{xx.xx.2022}
+\newcommand{\ti}[1]{\textit{#1}}
+\newcommand{\tx}[1]{\text{#1}}
 
 \usepackage[backend=biber, style=alphabetic, maxcitenames=2]{biblatex}
 \addbibresource{bibliography.bib}
@@ -62,6 +66,6 @@ $\qquad$(Fabian Beringer)
 \addcontentsline{toc}{chapter}{\listtablename}
 \clearpage
 \phantomsection
-\addcontentsline{toc}{chapter}{Bibliography} 
+\addcontentsline{toc}{chapter}{Bibliography}
 \printbibliography
 \end{document}
