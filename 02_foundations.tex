@@ -30,18 +30,18 @@ From these assumptions, two metrics are derived:
     \item Term-Frequency
           \begin{equation}
               w_{t,d} = \begin{cases}
-                  1 + \log \text{tf}_{t, d} & \text{if } \text{tf}_{t, d} > 0 \\
-                  0                         & \text{otherwise}                \\
+                  1 + \log \tx{tf}_{t, d} & \tx{if } \tx{tf}_{t, d} > 0 \\
+                  0                         & \tx{otherwise}                \\
               \end{cases}
           \end{equation}
 
-          where $\text{tf}_{t, d}$ is the count of term $t$ in document $d$. The logarithmic scaling is motivated by the idea that a document does not linearly become more relevant by the number of terms in it: A document containing a term 10 times more often doesn't necessarily mean it is $10$ times more important, e.g. the document might just be very long and contain more words in general. Note that this is just one possible normalization scheme out of many.
+          where $\tx{tf}_{t, d}$ is the count of term $t$ in document $d$. The logarithmic scaling is motivated by the idea that a document does not linearly become more relevant by the number of terms in it: A document containing a term 10 times more often doesn't necessarily mean it is $10$ times more important, e.g. the document might just be very long and contain more words in general. Note that this is just one possible normalization scheme out of many.
 
     \item Inverted Document Frequency
           \begin{equation}
-              \text{idf}(t, d) = \log \frac{|D|}{\text{df}_t}
+              \tx{idf}(t, d) = \log \frac{|D|}{\tx{df}_t}
           \end{equation}
-          where $\text{df}_t$ counts the number of documents that a term occurs in over the full corpus. This way, terms that occur less frequent relative to the corpus size will receive a high IDF score and those that are more frequent a lower score.
+          where $\tx{df}_t$ counts the number of documents that a term occurs in over the full corpus. This way, terms that occur less frequent relative to the corpus size will receive a high IDF score and those that are more frequent a lower score.
 
 \end{enumerate}
 
@@ -50,7 +50,7 @@ From these assumptions, two metrics are derived:
 \end{table}
 To compute TF-IDF we can simply sum over the product of TF and IDF for each term in the query to produce a relevance score:
 \begin{equation}
-    \text{score}(q, d) = \sum_{t \in q} w_{t,d} \times \text{idf}_t
+    \tx{score}(q, d) = \sum_{t \in q} w_{t,d} \times \tx{idf}_t
 \end{equation}
 
 Alternatively, vector space idf vector
@@ -119,13 +119,13 @@ Common choices for $\mathcal{L}$ include:
 \begin{itemize}
     \item \textbf{Cross Entropy Loss}
           \begin{equation}
-              \text{CE}(y, \hat{y}) = - \sum_{k=1}^C y_k \log \hat{y}_k
+              \tx{CE}(y, \hat{y}) = - \sum_{k=1}^C y_k \log \hat{y}_k
           \end{equation}
           for classification tasks. Where $y_k$ is the ground truth probability of class $k$ and $\hat{y}_k$ the corresponding prediction.
 
     \item \textbf{Mean Squared Error}
           \begin{equation}
-              \text{MSE}(y, \hat{y}) = (y - \hat{y})^2
+              \tx{MSE}(y, \hat{y}) = (y - \hat{y})^2
           \end{equation}
           in the case of regression.
 \end{itemize}
@@ -151,7 +151,7 @@ Building on mini-batch GD, many algorithms have been introduced in the context o
     \KwIn{function $f$ with trainable parameters $\theta$}
     initialize $\theta$ with random values \;
     \While{not converged}{
-    $B \leftarrow \text{next k training pairs} \in X$ \;
+    $B \leftarrow \tx{next k training pairs} \in X$ \;
     $\theta \leftarrow \theta - \eta\nabla_\theta\big(\frac{1}{k} \sum_{(x_i, y_i) \in B}\mathcal{L}(f(x_i; \theta), y_i)\big)$ \;
     }
     \caption{Mini-Batch Gradient Descent with batch size $k$, learning rate $\eta$}
@@ -241,20 +241,20 @@ Self-Attention is a special case of attention where input vectors and context ve
 \subsection{Point-wise Feed-forward}
 The point-wise feed-forward component is a 2-layer MLP that is applied to each position along the sequence dimension, meaning weight parameters are shared across all positions. It follows the following architecture:
 \begin{equation}
-    \text{FFN}(x) = W^{(1)} \text{ReLU}(W^{(0)} x + b^{(0)}) + b^{(1)}
+    \tx{FFN}(x) = W^{(1)} \tx{ReLU}(W^{(0)} x + b^{(0)}) + b^{(1)}
 \end{equation}
 
 \subsection{Residual Connection}
 After applying a layer or block of layers in a DNN, if we add the inputs back to its outputs, it is called a residual connection or skip connection:
 
 \begin{equation}
-    \text{residual}(x) = f^{(k)}(x) + x
+    \tx{residual}(x) = f^{(k)}(x) + x
 \end{equation}
 Where $f^{(k)}(x)$ is a layer at depth $k$.
 
 The most prominent motivation for residual connections is that they facilitate the training of deeper neural networks. A common issue with deep neural networks is the vanishing gradient problem. As computing gradients through backpropagation relies on a series of multiplications of potentially small values (Section~\ref{sec:backprop}), gradients tend to become smaller the further we propagate back. This makes training very deep networks harder, as early layers might receive little to no updates.
 
-Since $\text{residual}'(x) = f'(x) + 1$, the gradient of the residual connection will be $>1$, even if the gradient is $<1$, alleviating the effect of vanishing gradients. It can also be interpreted as preserving more of the initial input information throughout the network, treating the DNN layers as an addition to the identity function, instead of a full transformation of the input.
+Since $\tx{residual}'(x) = f'(x) + 1$, the gradient of the residual connection will be $>1$, even if the gradient is $<1$, alleviating the effect of vanishing gradients. It can also be interpreted as preserving more of the initial input information throughout the network, treating the DNN layers as an addition to the identity function, instead of a full transformation of the input.
 
 % vanishing gradients
 % identity function idk read up
@@ -280,7 +280,7 @@ They are then used to normalize vector $z^{(k)}$:
 \end{equation}
 
 \begin{equation}
-    \text{LayerNorm}(z) = \Tilde{z}^{(k)}
+    \tx{LayerNorm}(z) = \Tilde{z}^{(k)}
 \end{equation}
 
 where $\gamma^{(k)}$ and $\beta^{(k)}$ are learned parameter vectors for layer $k$ and $\circ$ denotes the element-wise product. $\gamma^{(k)}$ and $\beta^{(k)}$ allow for learning an additional scale and shift of the normalized distribution if required.
