@@ -235,6 +235,7 @@ Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \mathbb{R}^{N \
 Where $a: \mathbb{R}^d \times \mathbb{R}^d \rightarrow \mathbb{R}$ is a scoring function that assigns importance scores to input $x_i$ given context $c_j$. The attention weights $\alpha_{ij}$ are then used to produce a context-sensitive representation $h_j$ as weighted sum of $X$.
 
 \subsubsection{Self-Attention}
+Self-Attention is a special case of attention where input vectors and context vectors stem from the same input sequence. It also introduces another set of vectors and treats these $3$ sets as \ti{query}, \ti{key} and \ti{value}
 \todo{todo}
 
 \subsection{Point-wise Feed-forward}
