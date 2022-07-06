@@ -94,6 +94,8 @@ An $L$-layer DNN can be described as follows:
     \end{split}
 \end{equation}
 
+\todo{popular activations}
+
 
 \subsection{Optimization}
 Arguably, the most common way for optimizing a neural network are the gradient descent (GD) algorithm and its variants. For this, an objective function $J(\theta)$ is defined, based on the DNN's outputs and corresponding target labels over the training set.
@@ -156,6 +158,7 @@ Building on mini-batch GD, many algorithms have been introduced in the context o
 \end{algorithm}
 
 \subsubsection{Backpropagation}
+\label{sec:backprop}
 Because a neural network can consist of multiple layers and thus, is a composition of multiple non-linear functions, computing the gradient w.r.t. to each parameter of the network can become a non-trivial and even cumbersome task, if done by hand. One popular way of automatically computing the gradients of a DNN is the backpropagation algorithm \cite{rumelhart1988learning}.
 
 Backpropagation is a direct application of the chain rule for calculating the derivative of the composition of two functions. Given two differentiable functions $f(x)$ and $g(x)$, the chain rule states that the derivate of their composition $f(g(x))$ is equal to the partial derivative of $f$ w.r.t. $g$, times the partial derivate of $g$ w.r.t $x$.
@@ -212,7 +215,7 @@ The transformer architecture is based on a single building block which, followin
 
 We will first go over each of these elements and then explain how a transformer block is constructed from them.
 
-\subsection{Multi-Head Attention}
+\subsection{Multi-Head Self-Attention}
 
 \subsubsection{The Attention Mechanism}
 Originally, attention mechanisms have been proposed in the context of neural machine translation (NMT) \cite{bahdanau2014neural,luong2015effective}. Particularly, they were used for aligning words from a source language with their corresponding translations. 
