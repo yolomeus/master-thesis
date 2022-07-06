@@ -257,9 +257,30 @@ Since $\text{residual}'(x) = f'(x) + 1$, the gradient of the residual connection
 % identity function idk read up
 % improve gradient flow for deep models
 \subsection{Layer Normalization}
-% see BA
+Layer Normalization \cite{ba2016layer} is another technique for training deeper neural networks. When training machine learning models on numerical features, it is common practice to normalize inputs, e.g. such that their distribution is centered at $0$ and has a standard deviation of $1$. This way, there's less variance across features, resulting in more stable training, improving convergence.
 
+However, since DNNs pass features through multiple layers, there's no guarantee that hidden representations will maintain a reasonable scaling, meaning each layer might have to adapt to a new distribution \cite{DBLP:journals/corr/IoffeS15}. Layer Normalization tackles this problem by computing mean $\mu^{(k)}$ and standard deviation $\sigma^{(k)}$ over the feature dimension of each hidden layer $k$:
 
+\begin{equation}
+    \mu^{(k)} = \frac{1}{D} \sum_{i=1}^D z_i^{(k)}
+\end{equation}
+
+\begin{equation}
+    \sigma^{(k)} = \sqrt{\frac{1}{D} \sum_{i=1}^D (z_i^{(k)} - \mu^{(k)})^2}
+\end{equation}
+
+Here $z_i^{(k)}$ denotes the $i$-th output of layer $k$ with hidden dimension $D$, before applying an activation function.\\
+They are then used to normalize vector $z^{(k)}$:
+
+\begin{equation}
+    \Tilde{z}^{(k)} = \gamma^{(k)} \circ \frac{(z^{(k)} - \mu^{(k)})}{\sigma^{(k)}} + \beta^{(k)}
+\end{equation}
+
+\begin{equation}
+    \text{LayerNorm}(z) = \Tilde{z}^{(k)}
+\end{equation}
+
+where $\gamma^{(k)}$ and $\beta^{(k)}$ are learned parameter vectors for layer $k$ and $\circ$ denotes the element-wise product. $\gamma^{(k)}$ and $\beta^{(k)}$ allow for learning an additional scale and shift of the normalized distribution if required.
 
 
 \subsection{BERT Pre-Training}
