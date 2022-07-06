@@ -14,7 +14,7 @@ While this list of issues is not comprehensive, at this point the complexity of 
 
 Because this work focuses on the ranking of text in the context of web search, we will now give a formal definition with that scenario in mind:
 
-Given a set of $|Q|$ natural language queries $Q = \{q_i\}_{i=1}^{|Q|}$ and a collection of $|D|$ documents $D = \{d_i\}_{i=1}^{|D|}$, we want to find a scoring function $s: Q \times D \rightarrow \mathbb{R}$, such that for any query $q \in Q$ and documents $d, d' \in D$, it holds true that $s(q, d) > s(q, d')$ if $d$ is more relevant w.r.t $q$ than $d'$.
+Given a set of $|Q|$ natural language queries $Q = \{q_i\}_{i=1}^{|Q|}$ and a collection of $|D|$ documents $D = \{d_i\}_{i=1}^{|D|}$, we want to find a scoring function $s: Q \times D \rightarrow \R$, such that for any query $q \in Q$ and documents $d, d' \in D$, it holds true that $s(q, d) > s(q, d')$ if $d$ is more relevant w.r.t $q$ than $d'$.
 
 To give the reader a more concrete idea and as we are going to build upon it throughout this work, we will now discuss two traditional approaches to text retrieval which, unlike neural retrieval, are based on exact matching, meaning query and document terms are compared directly. Further, they're "bag of word" models, meaning queries and documents are treated as sets of terms without considering order.
 
@@ -71,13 +71,13 @@ That being said, the separating lines between supervised and unsupervised learni
 Deep learning is a subfield of ML that makes use of a class of models called Deep Neural Networks (DNN). Typically, DNNs find application in the supervised learning scenario and are often used for classification tasks. In the following we explain the basic mechanisms of DNNs and common approaches to train them.
 
 \subsection{Deep Neural Networks}
-In essence, a Deep Neural Network (DNN) is a function approximator $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ that applies a series of non-linear transformations to its inputs, in order to produce an output. In its simplest form, an input vector $x \in \mathbb{R}^n$ is multiplied by a single weight matrix, a bias vector is added, and the resulting vector is passed through a non-linear activation function $\sigma$.
+In essence, a Deep Neural Network (DNN) is a function approximator $f: \R^n \rightarrow \R^m$ that applies a series of non-linear transformations to its inputs, in order to produce an output. In its simplest form, an input vector $x \in \R^n$ is multiplied by a single weight matrix, a bias vector is added, and the resulting vector is passed through a non-linear activation function $\sigma$.
 
 \begin{equation}
     f(x) = \sigma(W x + b)
 \end{equation}
 
-where $W \in \mathbb{R}^{m \times n}$ and $b \in \mathbb{R}^{m}$ are learnable parameters.
+where $W \in \R^{m \times n}$ and $b \in \R^{m}$ are learnable parameters.
 This model is commonly referred to as single layer feed-forward neural network (FFN) or single layer perceptron.
 
 When used for classification, a single layer FFN is limited to problems that require linear separation. In order to learn more complex, non-linear decision boundaries, multiple layers can be applied in sequence.
@@ -224,7 +224,7 @@ Originally, attention mechanisms have been proposed in the context of neural mac
 
 Generally speaking, attention is a mechanism that allows a model to focus on parts of its inputs, usually while considering a certain context. This could for example be words in a text (inputs) that are regarded important for answering a question (context) \cite{xiong2016dynamic} or patches of pixels in an image (inputs) that are important for detecting a certain object type (context) \cite{xu2015show}.
 
-Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \mathbb{R}^{N \times d}$ and $M$ context vectors $C = (c_1, \dots, c_M) \in \mathbb{R}^{M \times d}$, we can describe the general attention mechanism as follows:
+Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \R^{N \times d}$ and $M$ context vectors $C = (c_1, \dots, c_M) \in \R^{M \times d}$, we can describe the general attention mechanism as follows:
 
 \begin{align}
      & s_{ij} = a(x_i, c_j)                                         \\
@@ -232,7 +232,7 @@ Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \mathbb{R}^{N \
      & h_j = \sum_{k=1}^N \alpha_{kj} x_k
 \end{align}
 
-Where $a: \mathbb{R}^d \times \mathbb{R}^d \rightarrow \mathbb{R}$ is a scoring function that assigns importance scores to input $x_i$ given context $c_j$. The attention weights $\alpha_{ij}$ are then used to produce a context-sensitive representation $h_j$ as weighted sum of $X$.
+Where $a: \R^d \times \R^d \rightarrow \R$ is a scoring function that assigns importance scores to input $x_i$ given context $c_j$. The attention weights $\alpha_{ij}$ are then used to produce a context-sensitive representation $h_j$ as weighted sum of $X$.
 
 \subsubsection{Self-Attention}
 Self-Attention is a special case of attention where input vectors and context vectors stem from the same input sequence. It also introduces another set of vectors and treats these $3$ sets as \ti{query}, \ti{key} and \ti{value}
