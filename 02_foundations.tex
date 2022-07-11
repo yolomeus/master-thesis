@@ -216,6 +216,8 @@ The transformer architecture is based on a single building block which, followin
 We will first explain the input layer, then go over each of these elements and explain how a transformer block is constructed from them.
 
 \subsection{Input Layer}
+Before passing it to the transformer, a text sequence is tokenized using \ti{word-piece tokenization} \cite{}. Then, for each token in the sequence, a continuous representation is retrieved from the learned embedding matrix $M \in \R^{d \times |V|}$ where $|V|$ is the size of the vocabulary and $d$ the hidden dimension of the model. Because the transformer model in itself does not take the order of its inputs into account, \ti{positional encodings} are added.
+
 \todo{embeddings, positional encoding}
 
 \subsection{Multi-Head Self-Attention}
@@ -260,7 +262,7 @@ Self-Attention can further be extended to multi-head attention by running multip
     \tx{MultiHeadAttention}(Q, K, V) = \bigg[ \bigparallel_{i=1}^H \tx{SelfAttention}_i(Q,K,V) \bigg] W\lay o
 \end{equation}
 
-Where $H$ is the number of attention-heads, $||$ denotes concatenation and $W\lay o \in \R^{d_v H \times d}$ is another learned matrix which projects back to the model's original hidden dimension. 
+Where $H$ is the number of attention-heads, $||$ denotes concatenation and $W\lay o \in \R^{d_v H \times d}$ is a learned matrix for projecting back to the model's original hidden dimension.
 
 Note that in the default case, each attention layer has its own weight matrices. However,  we omit layer indices to keep the notation more simple.
 
@@ -274,7 +276,7 @@ The point-wise feed-forward component is a 2-layer MLP that is applied to each p
 After applying a layer or block of layers in a DNN, if we add the inputs back to its outputs, it is called a residual connection or skip connection:
 
 \begin{equation}
-    \tx{residual}(x) = f^{(k)}(x) + x
+    \tx{Residual}(x) = f^{(k)}(x) + x
 \end{equation}
 Where $f^{(k)}(x)$ is a layer at depth $k$.
 
@@ -308,6 +310,18 @@ These layer statistics are then used to normalize the hidden layer representatio
 
 
 Where $\gamma^{(k)}$ and $\beta^{(k)}$ are learned parameter vectors for layer $k$ and $\circ$ denotes the element-wise product. Further, $\gamma^{(k)}$ and $\beta^{(k)}$ are additional learnable parameters for adjusting scale and shift of the normalized distribution if required.
+
+\subsection{The Full Transformer Block}
+
+The full transformer block can be described with the following equations:
+
+\begin{align}
+    A              & = \tx{MultiHeadAttention}(X, X, X) \\
+    Z              & = \tx{LayerNorm}(A + X)            \\
+    \tx{TBlock}(X) & = \tx{LayerNorm}(\tx{FFN}(Z) + Z)
+\end{align}
+
+It consists of a multi-head attention layer and a point-wise fully connected layer, each followed by residual connection and layer normalization. Note that, since the inputs to the transformer block are sequences, layer norm statistics are computed over both sequence and hidden dimension independently.
 
 
 \subsection{BERT Pre-Training}
