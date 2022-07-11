@@ -235,7 +235,7 @@ Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \R^{N \times d}
 Where $a: \R^d \times \R^d \rightarrow \R$ is a scoring function that assigns importance scores to input $x_i$ given context $c_j$. The attention weights $\alpha_{ij}$ are then used to produce a context-sensitive representation $h_j$ as weighted sum of $X$.
 
 \subsubsection{Self-Attention}
-Self-Attention is a special case of attention where input vectors and context vectors stem from the same input sequence. It can be seen as the model attending to a sequence, given the sequence itself as context. The general formulation of self-attention further introduces a third sequence of \ti{value} vectors, resulting in three sequences termed \ti{query}, \ti{key} and \ti{value} vectors, which is an analogy to database lookups.
+Self-Attention is a special case of attention where input vectors and context vectors stem from the same input sequence. It can be seen as the model attending to a sequence, given the sequence itself as context. In \cite{vaswani2017attention} a third set of \ti{value} vectors is introduced, resulting in three sequences termed \ti{query}, \ti{key} and \ti{value} vectors, in analogy to memory lookups.
 
 To produce these vectors, the initial input sequence is transformed by three different learned weight matrices, namely $W^{(q)}, W^{(k)} \in \R^{d \times d_k}$ and $W^{(v)} \in \R^{d \times d_v}$.
 
@@ -250,12 +250,19 @@ Then, using the obtained query and key vectors $Q$ and $K$, a matrix of attentio
     \text{SelfAttention}(Q, K, V) = \text{softmax}\bigg(\frac{Q K^\top}{\sqrt{d_k}}\bigg) V
 \end{equation}
 
-As a consequence, each vector in the resulting sequence becomes an attention weighted sum of the vectors in $V$.
+As a consequence, each vector in the resulting sequence becomes an attention weighted sum over the vectors in $V$. Note the scaling by $\sqrt{d_k}$ which is supposed to prevent oversaturation of the softmax function, due to large dot-products.
 
-% very strong because based on Q and K, because model can inject context into value vectors, based on the rest of the sequence
-% scaling d_k for "look in paper" reason
-\todo{complete}
-\todo{multihead}
+From the memory lookup perspective: Query vectors $Q$ are matched with key vectors $K$, in order to produce compatibility scores. These scores are then used to retrieve value vectors from $V$ via soft-lookup.
+
+\subsubsection{Multi-Head Attention}
+Self-Attention can further be extended to multi-head attention by running multiple self-attention layers in parallel, then concatenating and projecting their outputs:
+\begin{equation}
+    \tx{MultiHeadAttention}(Q, K, V) = \bigg[ \bigparallel_{i=1}^H \tx{SelfAttention}_i(Q,K,V) \bigg] W\lay o
+\end{equation}
+
+Where $H$ is the number of attention-heads, $||$ denotes concatenation and $W\lay o \in \R^{d_v H \times d}$ is another learned matrix which projects back to the model's original hidden dimension. 
+
+Note that in the default case, each attention layer has its own weight matrices. However,  we omit layer indices to keep the notation more simple.
 
 \subsection{Point-wise Feed-forward}
 The point-wise feed-forward component is a 2-layer MLP that is applied to each position along the sequence dimension, meaning weight parameters are shared across all positions. It follows the following architecture:
