@@ -236,6 +236,13 @@ Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \R^{N \times d}
 
 Where $a: \R^d \times \R^d \rightarrow \R$ is a scoring function that assigns importance scores to input $x_i$ given context $c_j$. The attention weights $\alpha_{ij}$ are then used to produce a context-sensitive representation $h_j$ as weighted sum of $X$.
 
+Common choices for $a$ include:
+\begin{itemize}
+    \item $a(u, v) = u \cdot v$ (dot product)
+    \item $a(u, v) = w^\top \tanh(W u + U v)$ (additive)
+    \item $a(u, v) = \sigma(w^\top \tanh(W u + U v + b) + c)$ (MLP)
+\end{itemize}
+
 \subsubsection{Self-Attention}
 Self-Attention is a special case of attention where input vectors and context vectors stem from the same input sequence. It can be seen as the model attending to a sequence, given the sequence itself as context. In \cite{vaswani2017attention} a third set of \ti{value} vectors is introduced, resulting in three sequences termed \ti{query}, \ti{key} and \ti{value} vectors, in analogy to memory lookups.
 
