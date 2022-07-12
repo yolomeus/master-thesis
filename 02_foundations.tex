@@ -200,9 +200,9 @@ Dropout is a DNN specific method that, during training time, randomly sets entri
 
 
 \section{Transformer Models}
-One DNN architecture which had an immense impact on research and real world applications over the last couple of years is the transformer \cite{vaswani2017attention}. Not only have transformer based models set multiple state-of-the-art records in a variety of NLP tasks \cite{devlin-etal-2019-bert, DBLP:journals/corr/abs-1907-11692, DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1909-08053, DBLP:journals/corr/abs-2005-14165}, they have since then also been adapted to many other domains such as computer vision \cite{DBLP:journals/corr/abs-2010-11929} or audio generation \cite{https://doi.org/10.48550/arxiv.2005.00341} and shown promising results.
+One of the most prominent deep learning architectures of the past years is the transformer \cite{vaswani2017attention}. The transformer and its variants have set multiple state-of-the-art records in a variety of NLP tasks \cite{devlin-etal-2019-bert, DBLP:journals/corr/abs-1907-11692, DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1909-08053, DBLP:journals/corr/abs-2005-14165}, and have since then also been adapted to other domains such as computer vision \cite{DBLP:journals/corr/abs-2010-11929} or audio generation \cite{https://doi.org/10.48550/arxiv.2005.00341}.
 
-In this section we will discuss the architecture and ideas behind it, as well as one of the most popular training approaches named BERT \cite{devlin-etal-2019-bert}.
+In this section we will discuss the architecture and ideas behind it and explain one of the most popular training approaches for NLP, named BERT \cite{devlin-etal-2019-bert}.
 
 \subsection{Architecture}
 The transformer architecture is based on a single building block which, following an input layer, is repeatedly applied in order to form the full model. Throughout this thesis we will also refer to these building blocks as layers, e.g. a $12$-layer model consists of an input layer followed by $12$ blocks. A single transformer layer consists of:
