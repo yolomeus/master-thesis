@@ -328,7 +328,7 @@ The full transformer block can be described with the following equations:
     \tx{TBlock}(X) & = \tx{LayerNorm}(\tx{FFN}(Z) + Z)
 \end{align}
 
-It consists of a multi-head attention layer and a point-wise fully connected layer, each followed by residual connection and layer normalization. Note that, since the inputs to the transformer block are sequences, layer norm statistics are computed over both sequence and hidden dimension independently.
+It consists of a multi-head attention layer and a point-wise fully connected layer, each followed by residual connection and layer normalization.
 
 
 \subsection{BERT Pre-Training}
