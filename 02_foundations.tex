@@ -94,8 +94,14 @@ An $L$-layer DNN can be described as follows:
     \end{split}
 \end{equation}
 
-\todo{popular activations}
+Common choices for $\sigma$ include:
 
+\begin{itemize}
+    \item $\sigma(x) = \frac{1}{1 + e^{-x}}$ (sigmoid)
+    \item $\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$ (hyperbolic tangent)
+    \item $\text{softmax}(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}$ (softmax)
+    \item $\text{ReLU}(x) = \max(0, x)$ (rectified linear unit \cite{nair2010rectified})
+\end{itemize}
 
 \subsection{Optimization}
 Arguably, the most common way for optimizing a neural network are the gradient descent (GD) algorithm and its variants. For this, an objective function $J(\theta)$ is defined, based on the DNN's outputs and corresponding target labels over the training set.
