@@ -347,6 +347,17 @@ It consists of a multi-head attention layer and a point-wise fully connected lay
 
 
 \subsection{BERT Pre-Training}
+A key part in leading to the success of transformer models, is their effectiveness in large-scale transfer learning. In the context of NLP, the transfer learning procedure typically consists of two stages: First, a model is pre-trained on large amounts of human generated text data (e.g. from the internet), using language modeling as an objective. Then, the model is fine-tuned on a downstream task for which only limited amounts of data are available. As the model already learned basic language concepts during pre-training, it can now leverage this knowledge for the new task instead of learning it from scratch.
+
+One particular approach to transfer learning for transformers, which has pushed state-of-the-art on several NLP benchmarks, is BERT (Bidirectional Encoder Representations from Transformers) \cite{devlin-etal-2019-bert}. Unlike previous pre-training approaches that optimized for traditional \ti{left-to-right} language modeling \cite{DBLP:journals/corr/abs-1801-06146,Peters:2018,radford2018improving}, BERT employs a bidirectional objective.
+
+In left-to-right language modeling the goal is to predict the next word in a sequence of words, given the preceding words. BERT on the other hand employs a \ti{masked language model} (MLM) objective. Here, tokens from the input sequence are randomly masked out or replaced with random tokens. The model then has to predict what the actual token should be.
+
+This means that during pre-training, traditional language models only have access to the context left to their current prediction, while BERT has access to context in both directions.
+
+In addition to MLM, BERT introduces a \ti{next-sentence prediction} (NSP) task where, given two sentences, the model has to determine whether the second sentence follows the first, or was selected randomly. This is motivated by language tasks often requiring to model the relation between two sentences.
+
+While many improved training procedures have been proposed since BERT, which often replace NSP or introduce additional objectives \cite{DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1907-11692, 10.5555/3454287.3454804, Lan2020ALBERT}, MLM still remains an integral part of most of these approaches.
 
 \section{Probing}
 
