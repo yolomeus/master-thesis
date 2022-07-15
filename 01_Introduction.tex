@@ -1,21 +1,21 @@
 \chapter{Introduction}
-
+general retrieval ?
 \section{Motivation}
-Nowadays, modern approaches for NLP often rely on large language models. These models are first pre-trained on huge amounts of text data and then fine-tuned on a smaller, task specific dataset. Although this approach has shown great effectiveness compared to traditional approaches, due to their size and complexity, these language models are mostly being treated as black boxes.
+Over the last couple of years, contextualized language representations from deep neural network (DNN) models have become the go-to approach for tackling natural language processing (NLP) tasks. In particular, the \ti{transformer} \cite{vaswani2017attention} and its variants, combined with large-scale, unsupervised pre-training, have shown unprecedented performance in a variety of NLP benchmarks.
 
-This is where several issues arise.
+However, unlike traditional approaches, these models consist of billions of automatically learned parameters, effectively turning them into huge black box functions. Because of this, understanding why and how the model arrives at a certain decision, becomes a challenge in itself. Yet, as more and more NLP systems rely on these kinds of models, gaining a better understanding of their internal workings is crucial, especially when facing problems such as learned social biases \cite{Nadeem2021StereoSetMS,Bender2021OnTD, kurita2019measuring}, falsely motivated predictions \cite{10.1145/2939672.2939778, DBLP:journals/corr/abs-1802-00614} or simply trying to determine causes of prediction error. In addition, a better understanding might provide insights on model weaknesses and guide how to improve the model, e.g. when adapting for new domains.
 
-goal
-shine more light on how
-probing specifically targeted to IR
-use knowledge to improve
+has recently emerged for nlp, but retrieval which important: google guides how we access information etc
 
-
+we look at bert, initial break through approach, more recent iterations still similar in essence
 
 \section{Problem Statement}
-I am still alive.
-- shine light on knowledge dist
-- research question
+research question:
+\begin{itemize}
+    \item given set of tasks, presumably ranking related, which knowledge does bert encode?
+    \item how does ranking trained model differ from base language model
+    \item can we exploit these differences to inform training for ranking?
+\end{itemize}
 \section{Contribution}
 
 \section{Thesis Outline}
