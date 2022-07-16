@@ -281,10 +281,10 @@ From the memory lookup perspective: Query vectors $Q$ are matched with key vecto
 \subsubsection{Multi-Head Attention}
 Self-Attention can further be extended to multi-head attention by running multiple self-attention layers in parallel, then concatenating and projecting their outputs:
 \begin{equation}
-    \tx{MultiHeadAttention}(Q, K, V) = \bigg[ \bigparallel_{i=1}^H \tx{SelfAttention}_i(Q,K,V) \bigg] W\lay o
+    \tx{MultiHeadAttention}(Q, K, V) = \bigg[ \bigparallel_{i=1}^h \tx{SelfAttention}_i(Q,K,V) \bigg] W\lay o
 \end{equation}
 
-Where $H$ is the number of attention-heads, $||$ denotes concatenation and $W\lay o \in \R^{d_v H \times d}$ is a learned matrix for projecting back to the model's original hidden dimension.
+Where $h$ is the number of attention-heads, $||$ denotes concatenation and $W\lay o \in \R^{d_v h \times d}$ is a learned matrix for projecting back to the model's original hidden dimension.
 
 Note that in the default case, each attention layer has its own weight matrices. However,  we omit layer indices to keep the notation more simple.
 
@@ -315,14 +315,14 @@ Layer Normalization \cite{ba2016layer} is another technique for training deeper 
 However, since DNNs pass features through multiple layers, there's no guarantee that hidden representations will maintain a reasonable scale, meaning each layer might have to adapt to a new distribution \cite{DBLP:journals/corr/IoffeS15}. Layer Normalization tackles this problem by computing mean $\mu^{(k)}$ and standard deviation $\sigma^{(k)}$ over the feature dimension of each hidden layer $k$:
 
 \begin{equation}
-    \mu\lay k = \frac{1}{D} \sum_{i=1}^D z_i\lay k
+    \mu\lay k = \frac{1}{d} \sum_{i=1}^d z_i\lay k
 \end{equation}
 
 \begin{equation}
-    \sigma^{(k)} = \sqrt{\frac{1}{D} \sum_{i=1}^D (z_i^{(k)} - \mu^{(k)})^2}
+    \sigma^{(k)} = \sqrt{\frac{1}{d} \sum_{i=1}^d (z_i^{(k)} - \mu^{(k)})^2}
 \end{equation}
 
-Here $z_i^{(k)}$ denotes the $i$-th output of layer $k$ with hidden dimension $D$, before applying an activation function.\\
+Here $z_i^{(k)}$ denotes the $i$-th output of layer $k$ with hidden dimension $d$, before applying an activation function.\\
 These layer statistics are then used to normalize the hidden layer representation $z^{(k)}$:
 
 \begin{equation}
