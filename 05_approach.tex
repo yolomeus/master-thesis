@@ -2,9 +2,9 @@
 \label{chap:approach}
 
 \section{Methodology}
-Our goal is to understand whether properties that we expect to be relevant for ranking can be decoded from the hidden representations of a pre-trained transformer model. Further, we want to know to which degree different properties are encoded at each layer within the model.
+Our goal is to understand whether certain properties that we expect to be relevant for ranking can be decoded from the hidden representations of a pre-trained transformer model. Further, we want to know to which degree these properties are encoded at different layers within the model.
 
-To test this, we conduct the following experiment: First, we define a set of tasks that, based on traditional ranking methods, might be relevant for learning a ranking model. Then, for each task, we train a probing classifier on top of the model's fixed hidden representations. We repeat this procedure at every layer. Finally, we compare the classifier's performance across layers, to get a relative measure of how task-specific information is distributed throughout the model. To put our measures further into context, we also employ a random baseline that is trained for each task separately.
+To test this, we conduct the following experiment: First, we generate a set of datasets $D=\{d_1, d_2, \cdots, d_n \}$, each aimed at predicting a property $Y_i$ that, based on traditional ranking methods, can be considered relevant for ranking. Then, for each dataset, we train a probing classifier $\mathcal{P}_i$ on top of the fixed hidden representations $H\lay k \in \R^{N \times d}$ of subject model $\mathcal{M}$. This procedure is repeated at every layer $k$. Finally, we compare the classifier's performance across layers, to get a relative measure of how task-specific information is distributed throughout the model. To further put our measurements into perspective, we also employ a random baseline model $\mathcal{B}$ that is trained for each task separately.
 
 Following the probing experiments, we then attempt to develop an improved fine-tuning procedure, based on our findings.
 
