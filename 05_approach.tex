@@ -2,8 +2,21 @@
 \label{chap:approach}
 
 \section{Methodology}
+we perform layer-wise probing \dots
+\subsection{Models}
+\subsubsection{Subject Models}
+Subject of our probing experiments is the pre-trained BERT~\cite{devlin-etal-2019-bert} transformer model. In particular, we use the \ti{bert-base-uncased}\footnote{\url{https://huggingface.co/bert-base-uncased}} variant which consists of $12$ layers, with $h=12$ attention heads each and a hidden dimension of $d=786$. The model has been trained on BooksCorpus~\cite{7410368} and text passages from English Wikipedia\footnote{\url{https://en.m.wikipedia.org/}}, which consist of 800 million and 2.5 billion words respectively.
+
+In addition, we probe two fine-tuned \ti{bert-base-uncased} models that we term \ti{bert-msm-passage} and \ti{bert-msm-doc}. Both are trained on datasets from the TREC2019 deep learning track~\cite{DBLP:journals/corr/abs-2003-07820}. While \ti{bert-msm-passage} is trained to predict relevancy of \ti{passages} given a query, \ti{bert-msm-doc} is trained on \ti{document} level data. Hence, for this purpose we use the TREC2019 passage and document level dataset respectively.
+
+Note that all three models share the same architecture and only differ by which datasets they were trained on. Having access to additional versions of \ti{bert-base-uncased} that were fine-tuned specifically for ranking, gives us a way to compare if and how the distribution of information throughout the model changes when being adapted to the new task.
+
+\subsubsection{Probe}
+
+
 
 \section{Experimental Setup}
+\subsection{Probing Dataset Generation}
 
 \section{Evaluation Measures}
 \subsection{MDL}
