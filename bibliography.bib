@@ -728,19 +728,77 @@
 }
 
 @article{DBLP:journals/corr/abs-2003-07820,
-  author    = {Nick Craswell and
-               Bhaskar Mitra and
-               Emine Yilmaz and
-               Daniel Campos and
-               Ellen M. Voorhees},
-  title     = {Overview of the {TREC} 2019 deep learning track},
-  journal   = {CoRR},
-  volume    = {abs/2003.07820},
-  year      = {2020},
-  url       = {https://arxiv.org/abs/2003.07820},
+  author     = {Nick Craswell and
+                Bhaskar Mitra and
+                Emine Yilmaz and
+                Daniel Campos and
+                Ellen M. Voorhees},
+  title      = {Overview of the {TREC} 2019 deep learning track},
+  journal    = {CoRR},
+  volume     = {abs/2003.07820},
+  year       = {2020},
+  url        = {https://arxiv.org/abs/2003.07820},
   eprinttype = {arXiv},
-  eprint    = {2003.07820},
-  timestamp = {Wed, 27 Apr 2022 14:24:37 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-2003-07820.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+  eprint     = {2003.07820},
+  timestamp  = {Wed, 27 Apr 2022 14:24:37 +0200},
+  biburl     = {https://dblp.org/rec/journals/corr/abs-2003-07820.bib},
+  bibsource  = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{pimentel-etal-2020-information,
+  title     = {Information-Theoretic Probing for Linguistic Structure},
+  author    = {Pimentel, Tiago  and
+               Valvoda, Josef  and
+               Hall Maudslay, Rowan  and
+               Zmigrod, Ran  and
+               Williams, Adina  and
+               Cotterell, Ryan},
+  booktitle = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics},
+  month     = jul,
+  year      = {2020},
+  address   = {Online},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2020.acl-main.420},
+  doi       = {10.18653/v1/2020.acl-main.420},
+  pages     = {4609--4622},
+  abstract  = {The success of neural networks on a diverse set of NLP tasks has led researchers to question how much these networks actually {``}know{''} about natural language. Probes are a natural way of assessing this. When probing, a researcher chooses a linguistic task and trains a supervised model to predict annotations in that linguistic task from the network{'}s learned representations. If the probe does well, the researcher may conclude that the representations encode knowledge related to the task. A commonly held belief is that using simpler models as probes is better; the logic is that simpler models will identify linguistic structure, but not learn the task itself. We propose an information-theoretic operationalization of probing as estimating mutual information that contradicts this received wisdom: one should always select the highest performing probe one can, even if it is more complex, since it will result in a tighter estimate, and thus reveal more of the linguistic information inherent in the representation. The experimental portion of our paper focuses on empirically estimating the mutual information between a linguistic property and BERT, comparing these estimates to several baselines. We evaluate on a set of ten typologically diverse languages often underrepresented in NLP research{---}plus English{---}totalling eleven languages. Our implementation is available in https://github.com/rycolab/info-theoretic-probing.}
+}
+
+@article{Tenney2019WhatDY,
+  title={What do you learn from context? Probing for sentence structure in contextualized word representations},
+  author={Ian Tenney and Patrick Xia and Berlin Chen and Alex Wang and Adam Poliak and R. Thomas McCoy and Najoung Kim and Benjamin Van Durme and Samuel R. Bowman and Dipanjan Das and Ellie Pavlick},
+  journal={ArXiv},
+  year={2019},
+  volume={abs/1905.06316}
+}
+
+@inproceedings{tenney-etal-2019-bert,
+    title = "{BERT} Rediscovers the Classical {NLP} Pipeline",
+    author = "Tenney, Ian  and
+      Das, Dipanjan  and
+      Pavlick, Ellie",
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/P19-1452",
+    doi = "10.18653/v1/P19-1452",
+    pages = "4593--4601",
+    abstract = "Pre-trained text encoders have rapidly advanced the state of the art on many NLP tasks. We focus on one such model, BERT, and aim to quantify where linguistic information is captured within the network. We find that the model represents the steps of the traditional NLP pipeline in an interpretable and localizable way, and that the regions responsible for each step appear in the expected sequence: POS tagging, parsing, NER, semantic roles, then coreference. Qualitative analysis reveals that the model can and often does adjust this pipeline dynamically, revising lower-level decisions on the basis of disambiguating information from higher-level representations.",
+}
+
+@inproceedings{hewitt-liang-2019-designing,
+    title = "Designing and Interpreting Probes with Control Tasks",
+    author = "Hewitt, John  and
+      Liang, Percy",
+    booktitle = "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+    month = nov,
+    year = "2019",
+    address = "Hong Kong, China",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/D19-1275",
+    doi = "10.18653/v1/D19-1275",
+    pages = "2733--2743",
+    abstract = "Probes, supervised models trained to predict properties (like parts-of-speech) from representations (like ELMo), have achieved high accuracy on a range of linguistic tasks. But does this mean that the representations encode linguistic structure or just that the probe has learned the linguistic task? In this paper, we propose control tasks, which associate word types with random outputs, to complement linguistic tasks. By construction, these tasks can only be learned by the probe itself. So a good probe, (one that reflects the representation), should be selective, achieving high linguistic task accuracy and low control task accuracy. The selectivity of a probe puts linguistic task accuracy in context with the probe{'}s capacity to memorize from word types. We construct control tasks for English part-of-speech tagging and dependency edge prediction, and show that popular probes on ELMo representations are not selective. We also find that dropout, commonly used to control probe complexity, is ineffective for improving selectivity of MLPs, but that other forms of regularization are effective. Finally, we find that while probes on the first layer of ELMo yield slightly better part-of-speech tagging accuracy than the second, probes on the second layer are substantially more selective, which raises the question of which layer better represents parts-of-speech.",
 }
