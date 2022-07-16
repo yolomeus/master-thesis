@@ -3,5 +3,11 @@
         "approximator",
         "Backpropagation",
         "oversaturation"
+    ],
+    "grammarly.selectors": [
+        {
+            "language": "latex",
+            "scheme": "file"
+        }
     ]
 }
