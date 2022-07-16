@@ -5,9 +5,10 @@ Over the last couple of years, contextualized language representations from deep
 
 However, unlike traditional approaches, these models consist of billions of automatically learned parameters, effectively turning them into huge black box functions. Because of this, understanding why and how such a model arrives at a certain decision, becomes a challenge in itself. Yet, as more and more NLP systems rely on these kinds of models, gaining a better understanding of their internal workings becomes crucial, especially when facing problems such as learned social biases \cite{Nadeem2021StereoSetMS,Bender2021OnTD, kurita2019measuring}, falsely motivated predictions \cite{10.1145/2939672.2939778, DBLP:journals/corr/abs-1802-00614} or simply trying to determine causes of prediction error. In addition, a better understanding might provide insights on model weaknesses and guide model improvement, e.g. when adapting to new domains.
 
-Recent work on understanding neural language models has aimed at measuring the extent, to which certain knowledge is encoded in word representations. For this, a \ti{probing} classifier or \ti{probe} is trained on these representations given a language task. The probe's performance is then expected to reflect how well the representations capture the knowledge required for solving that task.
+Recent work on understanding neural language models has aimed at measuring the extent to which certain information is encoded in their word representations. To achieve this, a \ti{probing} classifier or \ti{probe} is trained to predict certain linguistic properties from the fixed embeddings. The probe's performance is then expected to reflect how well these representations capture said property. By employing multiple probing tasks, the presence of different properties can be tested. For example, by training a probe for part-of-speech tagging, we can test whether part-of-speech tags can be extracted from the representations.
 
-has recently emerged for nlp, but retrieval which important: google guides how we access information etc
+
+while has recently emerged for nlp, but retrieval which important: google guides how we access information etc
 
 we look at bert, initial break through approach, more recent iterations still similar in essence
 
