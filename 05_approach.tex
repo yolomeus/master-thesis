@@ -17,8 +17,18 @@ In addition, we probe two fine-tuned \ti{bert-base-uncased} models that we term 
 Note that all three models share the same architecture and only differ by which datasets they were trained on. Having access to additional versions of \ti{bert-base-uncased} that were fine-tuned specifically for ranking, gives us a way to compare if and how the distribution of information throughout the model changes when being adapted to the new task.
 
 \subsubsection{Probe}
+One problem in probing arises when trying to choose a probe of appropriate complexity \cite{hewitt-liang-2019-designing}. If the classifier is too complex, it might end up modeling new, complex features itself and hence, rely less on the information that is already present in the subject model's representations. On the other hand, if the classifier is too simple, it might not be able to properly decode the information at all.
 
+While there is recent debate on whether more complex models are actually problematic for probing \cite{pimentel-etal-2020-information}, following previous literature \cite{Tenney2019WhatDY,tenney-etal-2019-bert, hewitt-liang-2019-designing} we decide on a simple $2$-layer MLP which, despite its simplicity, is still capable of modeling non-linear relationships.
+Specifically, we use the same MLP as \cite{Tenney2019WhatDY}:
 
+\begin{equation}
+    P(x) = \tx{LayerNorm}(\tx{tanh}(x W^{(0)} + b^{(0)})) W\lay 1 + b^{(1)}
+\end{equation}
+
+Where $W\lay 0 \in \R^{d \times d}$,  $W\lay 1 \in \R^{d \times c}$ and $b\lay 0 \in \R^{d}$,  $b\lay 1 \in \R^{c}$ are learned parameters with hidden size $d$ and number of target classes $c$.
+
+pooling\dots
 
 \section{Experimental Setup}
 \subsection{Fine-tuning Subject Models}
