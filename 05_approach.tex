@@ -23,12 +23,25 @@ While there is recent debate on whether more complex models are actually problem
 Specifically, we use the same MLP as \cite{Tenney2019WhatDY}:
 
 \begin{equation}
-    P(x) = \tx{LayerNorm}(\tx{tanh}(x W^{(0)} + b^{(0)})) W\lay 1 + b^{(1)}
+    \hat{P}(x) = \tx{LayerNorm}(\tx{tanh}(x W^{(0)} + b^{(0)})) W\lay 1 + b^{(1)}
 \end{equation}
 
-Where $W\lay 0 \in \R^{d \times d}$,  $W\lay 1 \in \R^{d \times c}$ and $b\lay 0 \in \R^{d}$,  $b\lay 1 \in \R^{c}$ are learned parameters with hidden size $d$ and number of target classes $c$.
+Where $W\lay 0 \in \R^{|S| d \times d}$,  $W\lay 1 \in \R^{d \times c}$ and $b\lay 0 \in \R^{d}$,  $b\lay 1 \in \R^{c}$ are learned parameters with hidden size $d$ and number of target classes $c$.
 
-pooling\dots
+Since some tasks require operating over one or multiple spans $S=\{(\tx{start}_i, {end}_i)\}_{i=1}^{|S|}$, we further need to use a pooling mechanism, such that a fixed-length representation can be provided to the probe.
+Again, like \cite{Tenney2019WhatDY} we employ the simple attention pooling operator also used in \cite{lee-etal-2017-end, lee-etal-2018-higher}:
+
+\begin{equation}
+    \begin{aligned}
+         & \alpha_n = \frac{\exp(w^\top h_n)}{\sum_{k=i}^j{\exp(w^\top h_k)}}   \\
+         & \tx{pool}(h_i, h_{i+1},\dots, h_j)= \sum_{k=i}^j\alpha_k (W h_k + b)
+    \end{aligned}
+\end{equation}
+
+Where $w \in \R^{d}$, $W \in \R^{d \times d_{probe}}$, $b \in \R^{d_{probe}}$ are learned parameters which, in the case of multiple spans, are not shared between spans. The pooled span representations are concatenated and passed to the MLP, resulting in the full probe:
+\begin{equation}
+    P(h_1,\dots, h_N) = \hat{P}\bigg(\bigparallel_{(i, j) \in S}{\tx{pool}(h_i, h_{i+1},\dots, h_j)}\bigg)
+\end{equation}
 
 \section{Experimental Setup}
 \subsection{Fine-tuning Subject Models}
