@@ -8,6 +8,28 @@ To test this, we conduct the following experiment: First, we generate a set of d
 
 Following the probing experiments, we then attempt to develop an improved fine-tuning procedure, based on our findings.
 
+\subsection{Task Design}
+We propose a set of classification tasks with ranking properties as target variable. In this section we provide a list of the tasks we've chosen and explain the reasoning behind our selection.
+
+\subsection{BM25 Prediction}
+BM25 (\sect{bm25}) is a well-known text-retrieval method and still considered a first choice when it comes to computational efficiency. As heuristic designed around exact term matching, BM25 quantifies query-document pairs on a symbolic level, without the notion of higher level semantics.
+
+Being able to decode BM25 from BERT embeddings might give a hint on whether exact matching properties like term-frequency or even corpus level statistics like inverted document-frequency are encoded by neural ranking models.
+
+\subsection{Semantic Similarity}
+
+\subsection{Coreference Resolution}
+
+
+\subsection{Named Entity Recognition}
+
+\subsection{Fact Checking}
+
+\subsection{Relevance Estimation}
+
+\section{Multitask Learning}
+
+
 \subsection{Models}
 \subsubsection{Subject Models}
 \label{sec:subjects}
