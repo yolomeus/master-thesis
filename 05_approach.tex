@@ -12,24 +12,33 @@ Following the probing experiments, we then attempt to develop an improved fine-t
 \subsection{Task Design}
 We propose a set of classification tasks with ranking properties as target variable. In this section we provide a list of the tasks we've chosen and explain the reasoning behind our selection.
 
-\subsection{BM25 Prediction}
+\subsubsection{BM25 Prediction}
 BM25 (\sect{bm25}) is a well-known text-retrieval method and still considered a first choice when it comes to computational efficiency. As heuristic designed around exact term matching, BM25 quantifies query-document pairs on a symbolic level, without the notion of higher level semantics.
 
-Being able to decode BM25 from BERT embeddings might give a hint on whether exact matching properties like term-frequency or even corpus level statistics like inverted document-frequency are encoded by neural ranking models.
+Being able to decode BM25 from BERT embeddings might give a hint on whether exact matching properties like term-frequency or even corpus level statistics like inverted document-frequency are encoded by the neural ranking models.
 
-\subsection{Semantic Similarity}
+\subsubsection{Semantic Similarity}
+To measure semantic similarity, we compute cosine distance between query and document vectors in the GloVe\cite{pennington2014glove} embedding space:
+\begin{equation}
+    \tx{Sim}(q, d) = \frac{q^\top d}{||q|| \times ||d||}
+\end{equation}
+While these dense word representations encode semantics, unlike BERT they are not contextualized, meaning they do not change based on surrounding words in a sentence. In that sense, using semantic similarity as ranking measure may be interpreted as a kind of soft term-matching: Words between query and document that are similar in meaning increase the estimated relevance.
 
-\subsection{Coreference Resolution}
+\subsubsection{Coreference Resolution}
+Coreference resolution is the task of deciding whether two mentions in a text refer to the same entity. To model coreference we use binary classification over two spans of text in query and document, respectively.
 
+We argue that recognizing whether an entity is shared between query and document can be an important indicator on whether the document is relevant. For instance, knowing that "the us president" in a query refers to "joe biden" in a document is certainly helpful.
 
-\subsection{Named Entity Recognition}
+\subsubsection{Named Entity Recognition}
+Similar to coreference resolution, recognizing entities can be used to match concepts between query and document when performing retrieval. However, in the case of named entity recognition this matching is less restricted, as only entity \ti{types} are considered, instead of specific entities. For example, given the query: "How much PS does a jaguar have?", a document that contains car entities, should be prioritized over one with animal entities.
 
-\subsection{Fact Checking}
+For our task, we solely test the general ability of the model to encode entities, meaning we treat document and query as a whole and predict entity types of separate text spans.
 
-\subsection{Relevance Estimation}
+\subsubsection{Fact Checking}
+For fact checking, we leverage the existing FEVER \cite{thorne-etal-2018-fever} dataset. Here, instead of query and document, a claim and evidence text are provided. The goal is to classify whether the evidence supports or refutes the claim. This task requires high level semantic reasoning, making it relevant for more fine-grained ranking, i.e. providing documents that contain \ti{coherent} answers to a query and not only similar ones.
 
-\section{Multitask Learning}
-
+\subsubsection{Relevance Estimation}
+Because the TREC2019 dataset provides relevance labels, we can also directly probe what layers contain most information with respect to relevance prediction. This especially becomes interesting when comparing between models tuned for ranking and pure language models.
 
 \subsection{Models}
 \subsubsection{Subject Models}
