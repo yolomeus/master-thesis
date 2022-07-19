@@ -109,10 +109,53 @@ Because MDL depends on the number of targets in a probing dataset, it is not rea
 \end{equation}
 
 This means compression is a measure of how much easier it is for the probe to decode a property from the probed representations, or in other words how well they encode the task labels.
-\subsection{Accuracy}
-\subsection{Ranking}
-\subsubsection{MAP}
-\subsubsection{MRR}
-\subsubsection{NDCG}
-\subsubsection{Precision}
 
+\subsection{Accuracy}
+As a secondary measure for probing, we further employ accuracy:
+\begin{equation}
+    \tx{Accuracy}(\hat{y}, y) = \frac{1}{n} \sum_{i=1}^n \mathbf{1} [\hat{y}_i = y_i]
+\end{equation}
+This is simply the percentage of predictions $\hat{y}$ that match the correct target $y$.
+
+\subsection{Ranking}
+Typically, ranking metrics require a set of queries $Q=\{q_i\}_{i=1}^{|Q|}$, with each query being associated with a list of labeled candidate documents $C=\{c_i\}_{i=1}^{|C|}$. The list of candidate documents is expected to be ordered in terms of their predicted relevance and each document has a ground truth label with respect to the query.
+
+\subsubsection{MRR}
+Mean reciprocal rank measures the inverse position at which the first relevant document occurs in the result set, averaged over all queries:
+\begin{equation}
+    \text{MRR}(Q, C) = \frac{1}{|Q|} \sum_{q \in Q} \frac{1}{\tx{rank}(q, C)}
+\end{equation}
+Here, $\tx{rank}(q, C)$ refers to the rank, i.e. the position of the first document in $C$ that is labeled as relevant.
+
+\subsubsection{Precision@k}
+Precision@k measures precision at a specific threshhold in $C$, i.e. only the top-$k$ results are considered when computing precision:
+\begin{equation}
+    \tx{Precision@}k = \bigg(\frac{\tx{\#true positives}}{\tx{\#true positives} + \tx{\#false positives}}\bigg)_k
+\end{equation}
+
+\subsubsection{MAP}
+Unlike MRR, mean average precision (MAP) considers the rank of all relevant documents in the candidate set, not just the first one. Initially, average precision (AP) is computed over the set of candidates for a query:
+
+\begin{equation}
+    \text{AP}(q, C) = \frac{1}{|C_{rel}|} \sum_{k=1}^{|C|} \tx{Precision@k} \times y_k
+\end{equation}
+
+Where $|C_{rel}|$ is the total number of documents marked as relevant w.r.t. the query and $y_k$ is the ground truth relevance at position $k$ in $C$. Then taking the average AP over all queries gives us MAP:
+
+\begin{equation}
+    \text{MAP}(Q, C) = \frac{1}{|Q|} \sum_{q \in Q} \text{AP}(q, C)
+\end{equation}
+
+While MRR indicates the quality of the top-ranked document, MAP provides a better picture of the full candidate set ranking.
+
+\subsubsection{NDCG}
+Normalized Discounted Cumulative Gain (NDCG) quantifies a ranked list relative to its ideal ranking. NDCG can also be applied to non-binary labels. At first, a gain is computed, that rewards early placement of relevant documents in $C$, by logarithmically scaling relevance label $y_i$ as a function of the position and summing over all labels:
+\begin{equation}
+    \tx{DCG} = \sum_{i=1}^{|D|} \frac{y_i}{\log_2(i+1)}
+\end{equation}
+Then, the ideal DCG is computed by sorting $C$ according to the ground truth labels and using it to scale DCG.
+\begin{equation}
+    \tx{NDCG} = \frac{\tx{DCG}}{\tx{IDCG}}
+\end{equation}
+
+This way, a perfect ordering (of which multiple may exist) will result in an NDCG of $1$ while any suboptimal ordering will lie in $[0, 1)$. Because of the logarithmic scaling, more importance is attributed to relevant documents early in the list.
