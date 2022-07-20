@@ -10,6 +10,7 @@ To test this, we conduct the following experiment: First, we generate a set of d
 Following the probing experiments, we then attempt to develop an improved fine-tuning procedure, based on our findings.
 
 \subsection{Task Design}
+\label{sec:tasks}
 We propose a set of classification tasks with ranking properties as target variable. In this section we provide a list of the tasks we've chosen and explain the reasoning behind our selection.
 
 \subsubsection{BM25 Prediction}
@@ -82,6 +83,11 @@ Where $w \in \R^{d}$, $W \in \R^{d \times d_{probe}}$, $b \in \R^{d_{probe}}$ ar
 We fine-tune a \ti{bert-base-uncased} model on both, TREC2019 passage- and document-level datasets (\sect{trec2019}), to obtain ranking subject models \ti{bert-msm-passage} and \ti{bert-msm-doc} (\sect{subjects}), respectively. Each model is trained with a binary cross-entropy objective, for a maximum of $20$ epochs. Early stopping is performed after $3$ epochs, if no increase in validation MAP is observed. For hyperparameters, we keep the default settings suggested by \cite{devlin-etal-2019-bert}, using the Adam optimizer\cite{kingma2014adam} with a learning rate of 1e-5, a mini-batch size of $16$ and linear increase in learning rate over the first $1000$ steps. As BERT uses a fixed set of learned positional embeddings, the input length is limited to $512$ tokens. Hence, we truncate any passages and documents exceeding this maximum length, after applying BERT's word-piece tokenization.
 
 \subsection{Probing}
+All three subject models (\sect{subjects}) are probed at their intermediate output representations, meaning a classifier is learned for each layer separately. This includes the initial sequence of non-contextualized embeddings from the input embedding-matrix, which we refer to as layer $0$. We repeat this procedure for all of our proposed tasks (\sect{tasks}).
+
+As objective function, all probing tasks use cross-entropy loss (\autoref{eq:ce_loss}). The Adam optimization algorithm \cite{kingma2014adam} with a learning rate of 1e-4 and batch size $32$ is employed for updating the probe parameters, while the subject model's parameters stay fixed. Learning rate is halved each epoch if the validation loss does not improve. The maximum number of epochs is set to $50$, and we stop early if validation loss has not improved in $10$ epochs. We set the probe classifier's hidden size to $d_{probe}=256$ and apply dropout with rate $0.3$ before the output layer.
+
+
 \section{Evaluation Measures}
 \subsection{MDL}
 As mentioned in \sect{probe}, selecting a proper size for a probe can be difficult. With a large probing classifier, it becomes unclear whether the property probed for is decoded, or the classifier simply learns the task at hand. One way to address this problem, is to compare how well the classifier performs on randomly initialized baseline representations \cite{zhang-bowman-2018-language}. Further, \cite{DBLP:journals/corr/abs-1909-03368} propose the use of \ti{control tasks}, for which task labels are randomly assigned, and a probe is selected based on the difference in accuracy to the original task. Both approaches however, often do not reflect a large difference in accuracy, when compared to the original representations or task.

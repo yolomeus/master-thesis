@@ -126,6 +126,7 @@ Common choices for $\mathcal{L}$ include:
 \begin{itemize}
     \item \textbf{Cross Entropy Loss}
           \begin{equation}
+            \label{eq:ce_loss}
               \tx{CE}(y, \hat{y}) = - \sum_{k=1}^C y_k \log \hat{y}_k
           \end{equation}
           for classification tasks. Where $y_k$ is the ground truth probability of class $k$ and $\hat{y}_k$ the corresponding prediction.
