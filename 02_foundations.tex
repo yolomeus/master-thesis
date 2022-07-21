@@ -126,7 +126,7 @@ Common choices for $\mathcal{L}$ include:
 \begin{itemize}
     \item \textbf{Cross Entropy Loss}
           \begin{equation}
-            \label{eq:ce_loss}
+              \label{eq:ce_loss}
               \tx{CE}(y, \hat{y}) = - \sum_{k=1}^C y_k \log \hat{y}_k
           \end{equation}
           for classification tasks. Where $y_k$ is the ground truth probability of class $k$ and $\hat{y}_k$ the corresponding prediction.
@@ -360,3 +360,6 @@ This means that during pre-training, traditional language models only have acces
 In addition to MLM, BERT introduces a \ti{next-sentence prediction} (NSP) task where, given two sentences, the model has to determine whether the second sentence follows the first, or was selected randomly. This is motivated by language tasks often requiring to model the relation between two sentences.
 
 While many improved training procedures have been proposed since BERT, which often replace NSP or introduce additional objectives \cite{DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1907-11692, 10.5555/3454287.3454804, Lan2020ALBERT}, MLM still remains an integral part of most of these approaches.
+
+\section{Probing}
+Probing is a method for estimating the presence of certain properties in dense vector representations of neural network models. For this, a classifier (\ti{probe}) $P$ is trained on the fixed representations of a \ti{subject model} $\mathcal{M}$, to predict property $Y$. In NLP we typically probe for linguistic properties in word embeddings. For example, we could estimate the presence of part-of-speech (POS) information, by predicting POS tags. Based on the probe's performance, e.g. when compared to embeddings from a random baseline, we can conclude whether the property can be decoded from the subject model's representations or not.
