@@ -1,7 +1,26 @@
 \chapter{Informed Multi-Task Learning}
-\todo{explain motivation}
+Based on our findings from the probing experiments, we now propose a novel multitask learning approach. We made these key observations:
+
+\begin{itemize}
+    \item Most of the probed ranking properties can be decoded from layers earlier than the last.
+    \item Each property is mostly captured around specific layers.
+    \item Fine-tuning for ranking amplifies the presence of a property in certain layers.
+\end{itemize}
+
+Therefore, we design our experiment to satisfy the following criterions:
+\begin{itemize}
+    \item Exploit the fact that ranking properties emerge in intermediate layers.
+    \item Use the knowledge on which layers capture what property best.
+\end{itemize}
+
+The main idea of our approach is to aid fine-tuning, by infusing task knowledge into specific layers, through multitask learning. We want to simultaneously learn ranking properties at the layers that we found to be best at capturing them, especially when being fine-tuned for ranking.
+
+To achieve this, we fine-tune the \ti{bert-base-uncased} model to perform ranking on the TREC2019 dataset and at the same time learn classifiers on top of BERT's intermediate layer representations, to predict the ranking properties from our probing tasks.
+
 \section{Model Architecture}
 \section{Experimental Setup}
-\section{MTL Results}
+\subsection{Datasets and Sampling}
+\subsection{Training}
+\section{Results}
 \section{Ablation}
 % investigate if valid augmentation technnique in low resource scenario
