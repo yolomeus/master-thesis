@@ -10,7 +10,7 @@ Following the probing experiments, we then attempt to develop an improved fine-t
 
 \section{Task Design}
 \label{sec:tasks}
-We propose a set of classification tasks with ranking properties as target variable. In this section we provide a list of the tasks we've chosen and explain the reasoning behind our selection.
+We propose a set of classification tasks with ranking properties as target variable. \cite{tenney-etal-2019-bert} findings suggest that BERT stores language concepts in a hierarchical manner, with lower-level semantics being captured in early layers, while higher level concepts can be found closer to the output layer. To test whether this holds true for ranking, we choose tasks that require different levels of semantic abstraction in order to be solved. In this section we provide a list of the tasks we've chosen and explain the reasoning behind our selection.
 
 \subsubsection{BM25 Prediction}
 BM25 (\sect{bm25}) is a well-known text-retrieval method and still considered a first choice when it comes to computational efficiency. As heuristic designed around exact term matching, BM25 quantifies query-document pairs on a symbolic level, without the notion of higher level semantics.
