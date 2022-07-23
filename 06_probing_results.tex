@@ -1,36 +1,33 @@
 \chapter{Probing Results}
 \label{chap:results}
-In this section we will analyze and discuss the results from the probing experiments. Since the overall distribution of properties across layers follows a similar pattern across models, we will first focus on the distribution in general, then discuss the effects of fine-tuning in the following section.
+In this section we will analyze and discuss the results from the probing experiments. Since the overall distribution of properties across layers follows a similar pattern across models, we will first focus on the distribution on \ti{bert-base-uncased}, then discuss the effects of fine-tuning in the following section.
 
 \section{Distribution of Ranking Properties}
-Firstly, a general trend we can observe across tasks, is an increase in both compression and accuracy over the first couple of layers up to layer 4-6, suggesting that ranking concepts arise mostly in the mid-range of layers. Then, after a peak at some mid to upper level layer, we observe a constant decrease until the last layer. It is notable that accuracy seems to exhibit a less stable curve, with sudden peaks and drops in between adjacent layers, especially in the case of coreference and semantic similarity \autoref{fig:sem_sim_coref}. This observation coincides with \cite{voita-titov-2020-information} findings, that MDL and as a consequence compression, are a more reliable measure for probing than accuracy.
+Firstly, a general trend we can observe across tasks, is an increase in both compression and accuracy over the first couple of layers up to layer 4-6, suggesting that ranking concepts arise mostly in the mid-range of layers. Then, after a peak at some mid to upper level layer, we observe a constant decrease until the last layer. It is notable that accuracy appears to exhibit a less stable curve, with sudden peaks and drops in between adjacent layers, especially in the case of coreference and semantic similarity \autoref{fig:sem_sim_coref}. This observation coincides with \cite{voita-titov-2020-information} findings, that MDL and as a consequence compression, are a more reliable measure for probing than accuracy.
 
 For the most part, based on compression, ranking properties can be decoded more efficiently from our trained models than from the random baseline, meaning the probe model is not solely adapting to the task, but instead leveraging information present in the pre-trained representations.
 
 We can further observe that the difference in compression between early layers and the peak value varies depending on the task. This Indicates that some properties are more uniformly distributed across layers, while others are more concentrated at a particular layer. For example, decoding named entities results in similar compression scores from layer 1-11, while semantic similarity shows a distinct peak at layer 4.
 
-To better understand this behavior, we can have a look at the row-normalized heatmap in \autoref{fig:heatmap_comp_passage} of the \ti{bert-msm}. We can see that coreference and fact checking strongly center around layers 5-9, with fact checking showing a slightly wider spread. While bm25 exhibits a similar pattern, it is less focused around a particular layer, but instead more evenly distributed from layer 4-7. Semantic similarity and NER on the other hand look almost identical, with a rather flat distribution that appears to be centered around layer 4.
+To better understand this behavior, we can have a look at the row-normalized heatmap in \autoref{fig:heatmap_comp_base} of the \ti{bert-base-uncased} model. We can see that coreference and fact checking strongly center around layers 4-7 and 6-9 respectively, with fact checking showing a slightly wider spread. While BM25 exhibits a similar pattern, it is less focused around a particular layer, but instead more evenly distributed from layer 4-6. Semantic similarity and NER on the other hand look almost identical, with a rather flat distribution that is more prominent in early layers 1-4.
 
-When considering that coreference and fact checking are both tasks that require higher level semantics, based on the observation in \cite{tenney-etal-2019-bert}, it makes sense that both distributions are leaning more towards mid to upper layers. On the other hand, based on this, we would expect a lower level concept such as semantic similarity to be mostly present in early layers. Especially since it is a property that is already captured by non-contextual word embeddings. However, we observe it to be more evenly spread across layers. We hypothesize that, as a fundamental concept which higher level tasks build on, it's a property of the embedding space that needs to be preserved throughout the whole model.
-Further, even though NER appears to be a higher level semantic concept than semantic similarity at first, considering that similar categories of entities are likely grouped together in the embedding space \cite{DBLP:journals/corr/abs-1301-3781, pennington2014glove}, a relation to semantic similarity property becomes apparent. Given that NER requires us to predict \ti{categories} of entities, it might explain that NER shares a very similar distribution with semantic similarity.
+When considering that coreference and fact checking are both tasks that require higher level semantics, based on the observation in \cite{tenney-etal-2019-bert}, it makes sense that both distributions are leaning more towards mid to upper layers. On the other hand, based on this, we would expect a lower level concept such as semantic similarity to be mostly present in early layers. Especially since it is a property that can already be captured by non-contextual word embeddings. However, except a slight peak at layer 1, we observe it to be more evenly spread across layers. We hypothesize that, as a fundamental concept which higher level tasks build on, it's a property of the embedding space that needs to be preserved throughout the whole model.
 
+Further, even though NER appears to be a higher level concept than semantic similarity at first, considering that similar categories of entities are likely grouped together in the embedding space \cite{DBLP:journals/corr/abs-1301-3781, pennington2014glove}, a relation to semantic similarity property becomes apparent. Given that NER requires us to predict \ti{categories} of entities, it might explain that NER shares a very similar distribution with semantic similarity.
 
+BM25 depends on both local and corpus-level frequency statistics of words. Finding that layers 4-6 are best for inferring BM25 might indicate that some kind of direct term comparison between query and document is modeled within this range of the model. \cite{https://doi.org/10.48550/arxiv.2202.12191} who probe BERT for IDF, find that the IDF property is present in early layers and constantly decreases up to the final layer. However, unlike IDF, BM25 also encodes term frequency and considers the length of a document, supporting the idea that local interactions are more prominent in the mid-layers, while corpus level statistics are encoded more evenly across the model.
 
-bm25 cite idf paper, co-occurence information - document level, not only structural?
-
-
+Finally, as compression is a relative measure that compares MDL to the MDL of a uniform encoding, it is possible to compare it \ti{between} tasks. For this, we show absolute compression values in \autoref{fig:abs_heatmap_comp_base}. Firstly, the highest compression can be measured for NER with values $>6$. Further, a compression around $4.5$ is achieved for BM25, semantic similarity and coreference, with coreference showing some peaks closer to $5$. In contrast, for fact checking, we barely reach a compression of $>3.5$. These findings indicate that NER is the most easily extractable property from the pre-trained base model, while fact checking appears to be the hardest.
 \todo{compute centers of gravity?}
 
-heatmap: per task distribution consequences
-
-absolute for comparison across tasks
-
-coref and ner already well encoded, sem-seim surprisingly not as easy. due to finetuning?
 
 \section{Effects of Fine-tuning}
 passage more than doc and base
 drop in last layer
+bm25 increasing in upper layers fits idf paper
+coref and ner already well encoded, sem-seim surprisingly not as easy. due to finetuning?
 increase not in early but over mid layers, cite tenney finetune
+
 
 
 
@@ -65,11 +62,6 @@ increase not in early but over mid layers, cite tenney finetune
     \caption{stuffz}
 \end{figure}
 
-\begin{figure}
-    \includegraphics[width=\textwidth]{gfx/probing/heatmap_compression_passage}
-    \caption{\ti{bert-msm-passage}: Compression as a function of task and layer, row-normalized. Darker colors represent higher values.}
-    \label{fig:heatmap_comp_passage}
-\end{figure}
 
 \begin{figure}
     \includegraphics[width=\textwidth]{gfx/probing/heatmap_compression_base}
@@ -77,16 +69,26 @@ increase not in early but over mid layers, cite tenney finetune
     \label{fig:heatmap_comp_base}
 \end{figure}
 
-
 \begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{gfx/probing/abs_heatmap_compression_passage}
-    \caption{\ti{bert-msm-passage}: Compression as a function of task and layer, absolute values.}
+    \includegraphics[width=\textwidth]{gfx/probing/heatmap_compression_passage}
+    \caption{\ti{bert-msm-passage}: Compression as a function of task and layer, row-normalized. Darker colors represent higher values.}
+    \label{fig:heatmap_comp_passage}
 \end{figure}
+
 
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{gfx/probing/abs_heatmap_compression_base}
     \caption{\ti{bert-base-uncased}: Compression as a function of task and layer, absolute values.}
+    \label{fig:abs_heatmap_comp_base}
 \end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{gfx/probing/abs_heatmap_compression_passage}
+    \caption{\ti{bert-msm-passage}: Compression as a function of task and layer, absolute values.}
+    \label{fig:abs_heatmap_comp_passage}
+\end{figure}
+
+
 
