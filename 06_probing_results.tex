@@ -15,7 +15,6 @@ When considering that coreference and fact checking are both tasks that require 
 Further, even though NER appears to be a higher level semantic concept than semantic similarity at first, considering that similar categories of entities are likely grouped together in the embedding space \cite{DBLP:journals/corr/abs-1301-3781, pennington2014glove}, a relation to semantic similarity property becomes apparent. Given that NER requires us to predict \ti{categories} of entities, it might explain that NER shares a very similar distribution with semantic similarity.
 
 
-ner like semantic sim non intuitive, however grouping of concepts in vector space, eg word 2 vec visualization
 
 bm25 cite idf paper, co-occurence information - document level, not only structural?
 
@@ -34,50 +33,48 @@ drop in last layer
 increase not in early but over mid layers, cite tenney finetune
 
 
-\begin{figure}%[hb!]
+
+\begin{figure}[t]
     \centering
-    \makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth]{gfx/probing/bm25}}
-    \caption{\dots}
+    \begin{subfigure}{\textwidth}
+        \centering
+        \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{gfx/probing/sem_sim}}
+    \end{subfigure}
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{gfx/probing/coref}}
+    \end{subfigure}
+
+    \caption{stuffz}
+    \label{fig:sem_sim_coref}
 \end{figure}
 
 \begin{figure}
-    \label{fig:sem_sim}
-    \centering
-    \makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth]{gfx/probing/sem_sim}}
-    \caption{\dots }
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{gfx/probing/ner}}
+    \end{subfigure}
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{gfx/probing/fact_check}}
+    \end{subfigure}
+
+    \caption{stuffz}
 \end{figure}
 
 \begin{figure}
-    \label{fig:coref}
-    \centering
-    \makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth]{gfx/probing/coref}}
-    \caption{\dots}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth]{gfx/probing/ner}}
-    \caption{\dots}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \makebox[\textwidth][c]{\includegraphics[width=1.25\textwidth]{gfx/probing/fact_check}}
-    \caption{\dots}
-\end{figure}
-
-
-
-\begin{figure}
-    \label{fig:heatmap_comp_passage}
     \includegraphics[width=\textwidth]{gfx/probing/heatmap_compression_passage}
     \caption{\ti{bert-msm-passage}: Compression as a function of task and layer, row-normalized. Darker colors represent higher values.}
+    \label{fig:heatmap_comp_passage}
 \end{figure}
 
 \begin{figure}
-    \label{fig:heatmap_comp_base}
     \includegraphics[width=\textwidth]{gfx/probing/heatmap_compression_base}
     \caption{\ti{bert-base-uncased}: Compression as a function of task and layer, row-normalized. Darker colors represent higher values.}
+    \label{fig:heatmap_comp_base}
 \end{figure}
 
 
