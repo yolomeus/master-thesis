@@ -46,13 +46,15 @@ Following the pooling we apply a simple MLP classifier of the form:
 \subsection{Datasets and Sampling}
 Because our objective is now ranking on TREC2019, we can no longer rely on the original probing datasets, as they were sampled from the test set and hence this would result in test set overlap. Instead, we sample new query-document pairs from the TREC2019 train set. Our sampling goes as follows: We uniformly sample $100$k train queries for each task. Then, for each query we retrieve $10$ documents from the corpus using BM25, resulting in a dataset size of $1$mio samples which is approximately the size of the TREC2019 ranking dataset. Each task dataset is then constructed by applying the same procedure as in \sect{dataset_gen}, to automatically generate labels.
 
+\todo{fact checking excluded because fever too small, no pipeline for automatic generation}
+
 \subsection{Training}
 During training, we assemble mini-batches of size $32$, by sampling from the TREC2019 train set and all generated task datasets with a probability proportional to their size. As loss function we use the objective proposed in \cite{aghajanyan-etal-2021-muppet}:
 
 \begin{equation}
     \mathcal{L}(y, \hat{y}) = \sum_{t \in \tx{tasks}} \frac{\textnormal{CE}(y_t, \hat{y}_t)}{\log c_t}
 \end{equation}
-Where $c_t$ is the number of target classes and $y_t$, $\hat{y}_t$ are predictions and ground-truth labels with respect to task $t$, respectively. It scales each task loss, such that all losses would have equivalent values, if the class distribution were uniformly distributed, along with the predictions. Analogously to the probing experiments, regression tasks are cast to classification tasks by binning the targets into k = 10 categories.
+Where $c_t$ is the number of target classes and $y_t$, $\hat{y}_t$ are predictions and ground-truth labels with respect to task $t$, respectively. It scales each task loss, such that all losses would have equivalent values, if the class distribution were uniformly distributed, along with the predictions. Analogously to the probing experiments, regression tasks are cast to classification tasks by binning the targets into $k=10$ categories.
 We train each model for up to a maximum of $100$ epochs and perform early stopping after $3$ epochs of no improvement in MAP on the TREC2019 validation set. As optimizer, we use Adam\cite{kingma2014adam} with a learning rate of 2e-6 and linearly increase the learning rate over the first $10k$ steps. Each task specific classifier has a hidden size of $128$ and dropout with rate $0.2$ is applied before each layer.
 
 \section{Results}

@@ -2,3 +2,5 @@ approximator
 DNNs
 oversaturation
 encodings
+extractability
+coreference
