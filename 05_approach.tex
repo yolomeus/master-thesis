@@ -23,6 +23,7 @@ Being able to decode BM25 from BERT embeddings might give a hint on whether exac
 \subsubsection{Semantic Similarity}
 To measure semantic similarity, we compute cosine distance between query and document vectors in the GloVe\cite{pennington2014glove} embedding space:
 \begin{equation}
+    \label{eq:sem_sim}
     \tx{Sim}(q, d) = \frac{q^\top d}{||q|| \times ||d||}
 \end{equation}
 While these dense word representations encode semantics, unlike BERT they are not contextualized, meaning they do not change based on surrounding words in a sentence. In that sense, using semantic similarity as ranking measure may be interpreted as a kind of soft term-matching: Words between query and document that are similar in meaning increase the estimated relevance.
