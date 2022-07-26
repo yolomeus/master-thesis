@@ -98,7 +98,9 @@ We fine-tune a \ti{bert-base-uncased} model on both, TREC2019 passage- and docum
 \subsection{Probe Training}
 All three subject models (\autoref{sec:subjects}) are probed at their intermediate output representations, meaning a classifier is learned for each layer separately. This includes the initial sequence of non-contextualized embeddings from the input embedding-matrix, which we refer to as layer $0$. We repeat this procedure for all of our proposed tasks (\autoref{sec:tasks}).
 
-As objective function, all probing tasks use cross-entropy loss (\autoref{eq:ce_loss}). The Adam optimization algorithm \cite{kingma2014adam} with a learning rate of 1e-4 and batch size $32$ is employed for updating the probe parameters, while the subject model's parameters stay fixed. Learning rate is halved each epoch if the validation loss does not improve. The maximum number of epochs is set to $50$, and we stop early if validation loss has not improved in $10$ epochs. We set the probe classifier's hidden size to $d_{probe}=256$ and apply dropout with rate $0.3$ before the output layer.
+As objective function, all probing tasks use cross-entropy loss (\autoref{eq:ce_loss}) which is necessary to compute MDL. In order to achieve this, we cast regression tasks to classification tasks, by binning them into $k=10$ categories. To reduce the influence of outliers, we truncate any values that are further than two standard deviations away from the mean. This means any value $< \mu - 2 \sigma$ will be assigned to class $1$ and $> \mu + 2 \sigma$ to class $10$.
+
+We employ the Adam optimization algorithm \cite{kingma2014adam} with a learning rate of 1e-4 and a batch size of $32$ for updating the probe parameters, while the subject model's parameters stay fixed. Learning rate is halved each epoch if the validation loss does not improve. The maximum number of epochs is set to $50$, and we stop early if validation loss has not improved in $10$ epochs. We set the probe classifier's hidden size to $d_{probe}=256$ and apply dropout with rate $0.3$ before the output layer.
 
 \section{Evaluation Measures}
 In the following, we explain the evaluation measures that we employ for probing and any subsequent experiment.
@@ -117,8 +119,7 @@ For this, the probing dataset $D=\{(x_i, y_i)\}_{i=1}^n$ is divided into timeste
          & - \sum_{i=1}^{S-1} \log_2 P_{\theta_i}(y_{t_i + 1:t_{i+1}} | x_{t_i + 1:t_{i+1}})
     \end{aligned}
 \end{equation}
-
-where $c$ is the number of target classes.
+Where $c$ is the number of target classes.
 Following \cite{voita-titov-2020-information}, we choose timesteps at $0.1$, $0.2$, $0.4$, $0.8$, $1.6$, $3.2$, $6.25$, $12.5$, $25$, $50$ and $100$ percent of the dataset.
 
 \subsection{Compression}
@@ -127,7 +128,6 @@ Because MDL depends on the number of targets in a probing dataset, it is not rea
 \begin{equation}
     \tx{compression} = \frac{n \log_2(c)}{\tx{MDL}(y_{1:n} | x_{1:n})}
 \end{equation}
-
 This means compression is a measure of how much easier it is for the probe to decode a property from the probed representations, or in other words how well they encode the task labels.
 
 \subsection{Accuracy}
