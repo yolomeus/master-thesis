@@ -10,9 +10,6 @@ Following the probing experiments, we then attempt to develop an improved fine-t
 
 \section{Task Design}
 \label{sec:tasks}
-
-\todo{present examples from the datasets}
-
 We propose a set of classification tasks with ranking properties as target variable. \cite{tenney-etal-2019-bert} findings suggest that BERT stores language concepts in a hierarchical manner, with lower-level semantics being captured in early layers, while higher level concepts can be found closer to the output layer. To test whether this holds true for ranking, we choose tasks that require different levels of semantic abstraction in order to be solved. In this section we provide a list of the tasks we've chosen and explain the reasoning behind our selection, as well as how labels are generated automatically.
 
 \subsubsection{BM25 Prediction}
@@ -62,6 +59,8 @@ Subject of our probing experiments is the pre-trained BERT~\cite{devlin-etal-201
 In addition, we probe two fine-tuned \ti{bert-base-uncased} models that we term \ti{bert-msm-passage} and \ti{bert-msm-doc}. Both are trained on datasets from the TREC2019 deep learning track~\cite{DBLP:journals/corr/abs-2003-07820}. While \ti{bert-msm-passage} is trained to predict relevancy of \ti{passages} given a query, \ti{bert-msm-doc} is trained on \ti{document}-level data. Hence, for this purpose we use the TREC2019 passage- and document-level dataset respectively.
 
 Note that all three models share the same architecture and only differ by which datasets they were trained on. Having access to additional versions of \ti{bert-base-uncased} that were fine-tuned specifically for ranking, gives us a way to compare if and how the distribution of information throughout the model changes when being adapted to the new task.
+
+Finally, as a baseline model we probe \ti{random-embeddings}. For this we take a BERT embedding matrix and initialize its weights from a normal distribution $\sim \mathcal{N}(0, 1)$ and fix it during probing.
 
 \subsubsection{Probe}
 \label{sec:probe}
