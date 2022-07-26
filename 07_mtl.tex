@@ -1,29 +1,27 @@
 \chapter{Informed Multi-Task Learning}
-Based on our findings from the probing experiments, we now want to address the question on whether the knowledge obtained from probing can be leveraged to improve the BERT model for ranking. Hence, we follow a knew objective which is the task of re-ranking.
+Based on our findings from the probing experiments, we now want to address the question on whether the knowledge obtained from probing can be leveraged to improve the BERT model for ranking.
 
-Given a set of ... ... we want to learn a ranker s ... such that s(q, d) > s(q,d') if more relevant to query ...
+Hence, our knew objective becomes re-ranking: Given a query $q$ and a set of candidate documents $C=\{c_i\}_{i=1}^{|C|} \subseteq D$, we want to learn a ranker $s: Q \times D \rightarrow \R$, such that for any two candidate documents $c, c' \in C$, it holds true that $s(q, c) > s(q, c')$ if $c$ is more relevant than than $c'$, regarding $q$.
 
 During probing we made these key observations:
 
 \begin{itemize}
-    \item Most of the probed ranking properties can be decoded from layers earlier than the last.
-    \item Each property is mostly captured around specific layers.
-    \item Fine-tuning for ranking amplifies the presence of a property in certain layers.
+    \item Most of the probed ranking properties can be decoded from mid layers.
+    \item Property are captured around specific layers.
+    \item Fine-tuning for ranking can amplify the presence of a property in specific layers.
 \end{itemize}
 
-Therefore, we design our experiment to satisfy the following criterions:
+Therefore, we want our experiment to satisfy the following criterions:
 \begin{itemize}
     \item Exploit the fact that ranking properties emerge in intermediate layers.
     \item Use the knowledge on which layers capture what property best.
 \end{itemize}
+The main idea of our approach is to aid fine-tuning, by infusing task knowledge into specific layers, through \ti{multitask learning}. We want to simultaneously learn ranking properties at the layers that we found to be best at capturing them, especially when being fine-tuned for ranking.
 
-
-
-The main idea of our approach is to aid fine-tuning, by infusing task knowledge into specific layers, through multitask learning. We want to simultaneously learn ranking properties at the layers that we found to be best at capturing them, especially when being fine-tuned for ranking.
-To achieve this, we fine-tune the \ti{bert-base-uncased} model to perform ranking on the TREC2019 dataset and at the same time learn classifiers on top of BERT's intermediate layer representations, to predict the ranking properties from our probing tasks.
+To achieve this, for each task we first select a layer that we found to efficiently encode the corresponding  ranking property during probing. We then fine-tune the \ti{bert-base-uncased} model to perform ranking on the TREC2019 dataset. At the same time, we learn classifiers on top of BERT's intermediate layer representations of the pre-selected layers, to predict the respective ranking properties.
 
 \section{Model Architecture}
-Given the intermediate layer representations of the pre-trained \ti{bert-base-uncased} model $\{H\lay i\}_{i=0}^{12}$, with $H\lay i = (h_1, h_2, \dots, h_{N})$ being the sequence of token embeddings at layer~$i$, for each task (\sect{tasks}), we select a layer based on the probing results. We then apply average pooling across the sequence dimension to retrieve a fixed size embedding:
+Given the intermediate layer representations of the pre-trained \ti{bert-base-uncased} model $\{H\lay i\}_{i=0}^{12}$, with $H\lay i = (h_1, h_2, \dots, h_{N})$ being the sequence of token embeddings at layer~$i$, for each task (\autoref{sec:tasks}), we select a layer based on the probing results. We then apply average pooling across the sequence dimension to retrieve a fixed size embedding:
 
 \begin{equation}
     \tx{pool}(h_i, h_{i+1},\dots, h_j)= \frac{1}{j} \sum_{k=i}^j h_k
@@ -44,9 +42,9 @@ Following the pooling we apply a simple MLP classifier of the form:
 
 \section{Experimental Setup}
 \subsection{Datasets and Sampling}
-Because our objective is now ranking on TREC2019, we can no longer rely on the original probing datasets, as they were sampled from the test set and hence this would result in test set overlap. Instead, we sample new query-document pairs from the TREC2019 train set. Our sampling goes as follows: We uniformly sample $100$k train queries for each task. Then, for each query we retrieve $10$ documents from the corpus using BM25, resulting in a dataset size of $1$mio samples which is approximately the size of the TREC2019 ranking dataset. Each task dataset is then constructed by applying the same procedure as in \sect{dataset_gen}, to automatically generate labels.
+Because our objective is now re-ranking on TREC2019, we can no longer rely on the original probing datasets, as they were sampled from the test set and hence, this would result in test set overlap. Instead, we sample new query-document pairs from the TREC2019 train set. Our sampling goes as follows: We uniformly sample $100$k train queries for each task. Then, for each query we retrieve $10$ documents from the corpus using BM25, resulting in a dataset size of $1$mio samples which is approximately the size of the TREC2019 ranking dataset. Each task dataset is then constructed by applying the same procedure as in \autoref{sec:dataset_gen} and \autoref{sec:tasks}, to automatically generate labels.
 
-\todo{fact checking excluded because fever too small, no pipeline for automatic generation}
+We exclude the fact-checking task, as we do not have a straight forward way to automatically generate samples and the dataset itself is too small in comparison to the other datasets.
 
 \subsection{Training}
 During training, we assemble mini-batches of size $32$, by sampling from the TREC2019 train set and all generated task datasets with a probability proportional to their size. As loss function we use the objective proposed in \cite{aghajanyan-etal-2021-muppet}:
