@@ -31,20 +31,8 @@ While with TREC2019, two types of tasks are provided, namely full ranking and re
 
 \section{Probing Dataset Generation}
 \label{sec:dataset_gen}
-For all of our probing tasks, we automatically generate datasets from the TREC2019 passage-level test set. To achieve this, we sample $60$k query-document pairs from the test set of which $40$k are used as training set and $10$k as validation and test set, respectively. We then use existing tools to extract the properties that we are interested in and use them to label the data. In the following we explain our usage of tools for each dataset.
-
-\subsection{BM25 Prediction}
-To generate BM25 scores we leverage the Elasticsearch BM25 implementation\footnote{\url{https://www.elastic.co/de/elasticsearch/}}. We first index the full test dataset, then compute bm25 for each query pool, and uniformly sample the $60$k query-document pairs.
-
-\subsection{Named Entity Recognition}
-For identifying named entities we use spacy's \cite{spacy2} named entity recognition module. It is capable of detecting and assign one of $18$ different types of entities. We only include pairs that contain at least one entity.
+For all of our probing tasks, we automatically generate datasets from the TREC2019 passage-level test set. To achieve this, we sample $60$k query-document pairs from the test set of which $40$k are used as training set and $10$k as validation and test set, respectively. We then use existing tools to extract the properties that we are interested in and use them to label the data. Details on how we generate labels for each task are described in \autoref{sec:tasks}. 
 
 
-\subsection{Semantic Similarity}
-To compute semantic similarity between query and document we first embed all words in the GloVe \cite{pennington2014glove} vector space. We then compute the average embedding for each query and document over the sequence dimension and compute their cosine similarity (\autoref{eq:sem_sim}).
 
-\subsection{Coreference Resolution}
-To detect and score entity pairs, we use the neuralcoref pipeline extension for spacy\footnote{\url{https://github.com/huggingface/neuralcoref}}. It consists of a rule-based mentions-detection module, followed by a feed-forward neural network which produces a binary coreference score for each detected pair.
 
-\subsection{Fact Checking}
-Fact checking is the only dataset that we don't sample from TREC2019. Instead, we leverage the existing labels of the FEVER fact check dataset \cite{thorne-etal-2018-fever} and sample claim-evidence pairs from the train set.
