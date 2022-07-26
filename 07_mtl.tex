@@ -56,7 +56,31 @@ Where $c_t$ is the number of target classes and $y_t$, $\hat{y}_t$ are predictio
 We train each model for up to a maximum of $100$ epochs and perform early stopping after $3$ epochs of no improvement in MAP on the TREC2019 validation set. As optimizer, we use Adam\cite{kingma2014adam} with a learning rate of 2e-6 and linearly increase the learning rate over the first $10k$ steps. Each task specific classifier has a hidden size of $128$ and dropout with rate $0.2$ is applied before each layer.
 
 \section{Results}
-\section{Ablation}
-The prior experiment has shown that explicitly infusing additional task information at specific layers, can result in increased ranking performance. Because of this, we further want to investigate whether this is still a valid augmentation technique in a limited data scenario.
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{lc|cccc|c}
+        \hline
+        \tf{Tasks}  & \tf{Layer} & \tf{MAP}   & \tf{MRR}   & \tf{NDCG@10} & \tf{P@10}  & \tf{avg}   \\ \hline\hline
+        \tx{TREC}   & 12         & 0.436      & 0.926      & 0.678        & 0.784      & 0.706      \\ \hline
+        \tx{+BM25}  & 5          & 0.437      & 0.947      & 0.682        & \tf{0.791} & 0.714      \\
+        ~           & 6          & 0.439      & \tf{0.953} & \tf{0.690}   & 0.772      & 0.714      \\
+        ~           & 12         & 0.420      & 0.912      & 0.659        & 0.749      & 0.685      \\ \hline
 
-For this, we conduct the following ablation study: Given a subset of TREC2019 query-document pairs, we resample from this subset multiple times and automatically create additional training samples for each of the additional task used in the MTL experiment. We then proceed to train using our proposed multitask method and repeat the experiment for different subset sizes.
+        \tx{+NER}   & 4          & \tf{0.447} & \tf{0.950} & 0.685        & 0.788      & \tf{0.717} \\
+        ~           & 5          & \tf{0.444} & 0.934      & 0.680        & 0.772      & 0.708      \\
+        ~           & 12         & \tf{0.447} & 0.944      & \tf{0.688}   & \tf{0.791} & \tf{0.717} \\ \hline
+        \tx{+SEM}   & 1          & 0.436      & 0.934      & 0.682        & 0.784      & 0.709      \\
+        ~           & 4          & 0.440      & 0.928      & 0.682        & 0.779      & 0.707      \\
+        ~           & 12         & 0.436      & 0.928      & 0.669        & 0.774      & 0.702      \\ \hline
+        \tx{+COREF} & 5          & 0.442      & \tf{0.965} & \tf{0.694}   & \tf{0.798} & \tf{0.725} \\
+        ~           & 7          & 0.425      & 0.944      & 0.668        & 0.770      & 0.702      \\
+        ~           & 12         & 0.442      & 0.948      & 0.681        & 0.788      & 0.715      \\
+    \end{tabular}
+    \caption{Test results for single additional task runs. The first row corresponds to a baseline that was solely trained for ranking on TREC2019. +[TASK] indicates multitask training on TREC2019 and [TASK]. Top 3 runs for each metric are highlighted in bold.}
+\end{table}
+
+\section{Ablation}
+The prior experiment has shown that explicitly infusing additional task information at specific layers, can result in increased ranking performance. Because of this, we further want to investigate whether this could be a valid augmentation technique in a limited data scenario.
+
+For this, we conduct the following ablation study: Given a subset of TREC2019 query-document pairs, we resample multiple times from this subset and automatically create additional training samples for each of the tasks used in the MTL experiment. We then proceed to train using our proposed multitask method and repeat the experiment for different subset sizes.
+
