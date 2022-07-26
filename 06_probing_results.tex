@@ -18,7 +18,7 @@ Further, even though NER appears to be a higher level concept than SEM at first,
 BM25 depends on both local and corpus-level frequency statistics of words. Finding that layers 4-6 are best for inferring BM25 might indicate that some kind of direct term comparison between query and document is modeled within this range of the model. \cite{https://doi.org/10.48550/arxiv.2202.12191} who probe BERT for IDF, find that the IDF property is present in early layers and constantly decreases up to the final layer. However, unlike IDF, BM25 also encodes term frequency and considers the length of a document, supporting the idea that local interactions are more prominent in the mid-layers, while corpus level statistics are encoded more evenly across the model.
 
 Finally, as compression is a relative measure that compares MDL to the MDL of a uniform encoding, it is possible to compare it \ti{between} tasks. For this, we show absolute compression values in \autoref{fig:abs_heatmap_comp_base}. Firstly, the highest compression can be measured for NER with values $>6$. Further, a compression around $4.5$ is achieved for BM25, SEM and COREF, with COREF showing some peaks closer to $5$. In contrast, for fact checking, we barely reach a compression of $>3.5$. These findings indicate that NER is the most easily extractable property from the pre-trained base model, while fact checking appears to be the hardest.
-\todo{compute centers of gravity?}
+\todo{compute centers of gravity? maybe table}
 
 
 \section{Effects of Fine-tuning for Ranking}
@@ -51,7 +51,7 @@ Lastly, we can use a heatmap of the absolute compression values to visualize how
         \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{gfx/probing/coref}}
     \end{subfigure}
 
-    \caption{stuffz}
+    \caption{Layer to probing score for BM25, semantic similarity and coreference properties. We report accuracy on the test set.}
     \label{fig:sem_sim_coref}
 \end{figure}
 
@@ -67,7 +67,7 @@ Lastly, we can use a heatmap of the absolute compression values to visualize how
         \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{gfx/probing/fact_check}}
     \end{subfigure}
 
-    \caption{stuffz}
+    \caption{Layer to probing score for NER and fact checking properties. We report accuracy on the test set.}
 \end{figure}
 
 
