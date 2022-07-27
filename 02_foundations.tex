@@ -53,9 +53,14 @@ To compute TF-IDF we can simply sum over the product of TF and IDF for each term
     \tx{score}(q, d) = \sum_{t \in q} w_{t,d} \times \tx{idf}_t
 \end{equation}
 
-Alternatively, vector space idf vector
 \subsection{BM25}
 \label{sec:bm25}
+BM25 builds on the TF-IDF scores  by introducing additional hyperparameters and accounting for document length through a normalization term \cite{robertson2009probabilistic}. This way, short documents are preferred over long documents, if both have the same term frequency.
+
+\begin{equation}
+    \text{bm25}_{t,d} = \tx{idf}_t \frac{w_{t,d}}{k_1 \big((1 - b) + b \frac{\tx{len}(d)}{\tx{avglen}}\big) + w_{t,d}}
+\end{equation}
+Here, the free parameters $k_1$ and $b$ determine the how quick the bm25 function saturates with increasing term frequency (typically, $k_1=1.2$) and the degree to which document length affects the score, respectively. $\tx{len}(d)$ is the length of $d$ and \tx{avglen} the average document length over the corpus.
 
 \section{Machine Learning}
 Machine learning encompasses a set of statistical methods, for automatically recognizing and extracting patterns from data. Typically, we can distinguish between two main types of machine learning: Supervised learning and unsupervised learning.
