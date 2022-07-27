@@ -1,20 +1,22 @@
 \chapter{Introduction}
-general retrieval ?
 \section{Motivation}
 Over the last couple of years, contextualized language representations from deep neural network (DNN) models have become the go-to approach for tackling natural language processing (NLP) tasks. In particular, the \ti{transformer} \cite{vaswani2017attention} and its variants, combined with large-scale, unsupervised pre-training, have shown unprecedented performance in a variety of NLP benchmarks.
 
 However, unlike traditional approaches, these models consist of billions of automatically learned parameters, effectively turning them into huge black box functions. Because of this, understanding why and how such a model arrives at a certain decision, becomes a challenge in itself. Yet, as more and more NLP systems rely on these kinds of models, gaining a better understanding of their internal workings becomes crucial, especially when facing problems such as learned social biases \cite{Nadeem2021StereoSetMS,Bender2021OnTD, kurita2019measuring}, falsely motivated predictions \cite{10.1145/2939672.2939778, DBLP:journals/corr/abs-1802-00614} or simply for determining causes of prediction error. In addition, a better understanding might provide insights on model weaknesses and guide model improvement, e.g. when adapting a model to new domains.
 
-Recent work on understanding neural language models has aimed at measuring the extent to which certain information is encoded in their word representations. To achieve this, a \ti{probing} classifier or \ti{probe} is trained to predict certain linguistic properties from these representations. The probe's performance is then expected to reflect how well said property is captured. By employing multiple probing tasks, the presence of different types of information can be estimated. For example, by training a probe for part-of-speech tagging, it can be tested whether it is possible to extract part-of-speech tags from the representations.
+Recent work on understanding neural language models has aimed at measuring the extent to which certain information is encoded in their word representations \cite{tenney-etal-2019-bert,Tenney2019WhatDY,DBLP:journals/corr/abs-1909-03368}. To achieve this, a \ti{probing} classifier or \ti{probe} is trained to predict certain linguistic properties from these representations. The probe's performance is then expected to reflect how well said property is captured. By employing multiple probing tasks, the presence of different types of information can be estimated. For example, by training a probe for part-of-speech tagging, it can be tested whether it is possible to extract part-of-speech information from the representations.
 
+While the probing paradigm recently emerged for understanding how language models encode general linguistic properties, it has yet to be explored how \ti{downstream task} information is stored, especially when fine-tuned. In particular, we're interested in the \ti{text retrieval} problem.
 
-while has recently emerged for nlp, but retrieval which important: google guides how we access information etc
+but retrieval which important: google guides how we access information etc
 
 we look at bert, initial break through approach, more recent iterations still similar in essence
 
 \section{Problem Statement}
-two part thesis\dots
-research question:
+This thesis is structured into two parts: First, we apply the probing paradigm in order to understand how a BERT model captures certain ranking properties.
+
+Second, we try to leverage the insights gained from our probing, by designing a multi-task learning setup. Our goal is to improve BERT's ranking performance when compared to a standard fine-tuning approach.
+Our research questions are as follows:
 \begin{itemize}
     \item given set of tasks, presumably ranking related, which knowledge does bert encode?
     \item how does ranking trained model differ from base language model
