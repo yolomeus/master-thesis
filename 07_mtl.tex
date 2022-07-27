@@ -69,8 +69,6 @@ Interestingly, this does not apply to NER which, except from MRR, instead perfor
 
 In terms of MAP, we also find NER to yield the highest benefit while the highest increase in MRR, NDCG and precision stems from the additional COREF task. Considering that probing showed the most absolute increase in coref information when fine-tuning for ranking (\autoref{fig:abs_heatmap_comp_base}, \autoref{fig:abs_heatmap_comp_passage}), this might be additional evidence for coreference being a useful ability for a neural ranker to learn. Moreover, the performance of NER which seems to be closely related to COREF, suggests that entities in general play an important role for learning to rank.
 
-\todo{why ner good for map?}
-
 \begin{table}[h]
     \centering
     \begin{tabular}{lc|cccc|c}
@@ -141,8 +139,77 @@ Most surprisingly, in the pairwise scenario, the $3$ task MTL setup still improv
 \todo{all 4 is still training}
 
 
-\section{Ablation}
+\section{Additional Ablation Study}
 The prior experiment has shown that explicitly infusing additional task information at specific layers, can result in increased ranking performance. Because of this, we further want to investigate whether this could be a valid augmentation technique in a limited data scenario.
 
-For this, we conduct the following ablation study: Given a subset of TREC2019 query-document pairs, we resample multiple times from this subset and automatically create additional training samples for each of the tasks used in the MTL experiment. We then proceed to train using our proposed multitask method and repeat the experiment for different subset sizes.
+For this, we conduct the following ablation study: Given a subset of TREC2019 query-document pairs, we resample multiple times from this subset and automatically create additional training samples for each of the tasks used in the MTL experiment. We then proceed to train using our proposed multitask method (point-wise) and repeat the experiment for different subset sizes and MTL configurations.
+
+\subsection{Results}
+In the following tables, we present the results for different sample sizes and MTL setups. The first table (\autoref{tab:ablation1}) represents the baseline which did not use any MTL augmentation.
+
+At first, we tried limiting the augmentation to a single task (BM25), since this has been shown to work best in our previous experiments. However, when resampling from the same small set, we can only observe a consistent benefit at sample size $100,000$ (\autoref{tab:ablation2}).
+
+We then continued to sample from all tasks which resulted in an overall drop in performance compared to the baseline (\autoref{tab:ablation3}).
+
+Suspecting the other tasks to overshadow ranking, we further tried limiting the total sample size of additional tasks to $50\%$ of the ranking sample size (\autoref{tab:ablation4}). However, while this approach performed better than using the full sample size, it was still outperformed by the baseline.
+
+\begin{table}
+    \centering
+    \begin{tabular}{r|cccc}
+        \hline
+        \tf{\#samples} & \tf{MAP} & \tf{MRR} & \tf{NDCG@10} & \tf{P@10} \\ \hline\hline
+        1000           & 0.379    & 0.844    & 0.545        & 0.653     \\
+        10,000         & 0.401    & 0.917    & 0.623        & 0.730     \\
+        100,000        & 0.423    & 0.917    & 0.651        & 0.760     \\
+        500,000        & 0.424    & 0.922    & 0.673        & 0.784     \\
+        1,000,000      & 0.465    & 0.915    & 0.691        & 0.805     \\
+    \end{tabular}
+    \caption{Test results for model trained on limited sample sizes of TREC2019.}
+    \label{tab:ablation1}
+
+    \bigskip
+
+    \centering
+    \begin{tabular}{r|cccc}
+        \hline
+        \tf{\#samples} & \tf{MAP} & \tf{MRR} & \tf{NDCG@10} & \tf{P@10} \\ \hline\hline
+        1000           & 0.355    & 0.864    & 0.548        & 0.633     \\
+        10,000         & 0.389    & 0.867    & 0.595        & 0.686     \\
+        100,000        & 0.431    & 0.940    & 0.674        & 0.765     \\
+        500,000        & 0.421    & 0.947    & 0.676        & 0.765     \\
+        1,000,000      & 0.430    & 0.919    & 0.683        & 0.770     \\
+    \end{tabular}
+    \caption{Test results for model trained jointly on limited TREC2019 sample and generated BM25 dataset of equal size.}
+    \label{tab:ablation2}
+
+    \bigskip
+
+    \centering
+    \begin{tabular}{r|cccc}
+        \hline
+        \tf{\#samples} & \tf{MAP} & \tf{MRR} & \tf{NDCG@10} & \tf{P@10} \\ \hline\hline
+        1000           & 0.344    & 0.850    & 0.527        & 0.628     \\
+        10,000         & 0.395    & 0.884    & 0.600        & 0.693     \\
+        100,000        & 0.425    & 0.940    & 0.657        & 0.758     \\
+        500,000        & 0.424    & 0.912    & 0.658        & 0.753     \\
+        1,000,000      & 0.454    & 0.953    & 0.676        & 0.770     \\
+    \end{tabular}
+    \caption{Test results for model trained jointly on limited TREC2019 sample and generated BM25, SEM and NER datasets of equal size.}
+    \label{tab:ablation3}
+
+    \bigskip
+
+    \centering
+    \begin{tabular}{r|cccc}
+        \hline
+        \tf{\#samples} & \tf{MAP} & \tf{MRR} & \tf{NDCG@10} & \tf{P@10} \\ \hline\hline
+        1000           & 0.346    & 0.828    & 0.532        & 0.644     \\
+        10,000         & 0.390    & 0.921    & 0.626        & 0.721     \\
+        100,000        & 0.408    & 0.922    & 0.647        & 0.747     \\
+        500,000        & 0.431    & 0.922    & 0.665        & 0.765     \\
+        1,000,000      & 0.432    & 0.961    & 0.662        & 0.751     \\
+    \end{tabular}
+    \caption{Test results for model trained jointly on limited TREC2019 sample and generated BM25, SEM and NER datasets with each dataset being 50\% of the sample size.}
+    \label{tab:ablation4}
+\end{table}
 
