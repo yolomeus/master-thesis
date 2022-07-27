@@ -35,13 +35,13 @@ From these assumptions, two metrics are derived:
               \end{cases}
           \end{equation}
 
-          where $\tx{tf}_{t, d}$ is the count of term $t$ in document $d$. The logarithmic scaling is motivated by the idea that a document does not linearly become more relevant by the number of terms in it: A document containing a term 10 times more often doesn't necessarily mean it is $10$ times more important, e.g. the document might just be very long and contain more words in general. Note that this is just one possible normalization scheme out of many.
+          Where $\tx{tf}_{t, d}$ is the count of term $t$ in document $d$. The logarithmic scaling is motivated by the idea that a document does not linearly become more relevant by the number of terms in it: A document containing a term 10 times more often doesn't necessarily mean it is $10$ times more important, e.g. the document might just be very long and contain more words in general. Note that this is just one possible normalization scheme out of many.
 
     \item Inverted Document Frequency
           \begin{equation}
               \tx{idf}(t, d) = \log \frac{|D|}{\tx{df}_t}
           \end{equation}
-          where $\tx{df}_t$ counts the number of documents that a term occurs in over the full corpus. This way, terms that occur less frequent relative to the corpus size will receive a high IDF score and those that are more frequent a lower score.
+          Where $\tx{df}_t$ counts the number of documents that a term occurs in over the full corpus. This way, terms that occur less frequent relative to the corpus size will receive a high IDF score and those that are more frequent a lower score.
 
 \end{enumerate}
 
@@ -77,8 +77,7 @@ In essence, a Deep Neural Network (DNN) is a function approximator $f: \R^n \rig
 \begin{equation}
     f(x) = \sigma(W x + b)
 \end{equation}
-
-where $W \in \R^{m \times n}$ and $b \in \R^{m}$ are learnable parameters.
+Where $W \in \R^{m \times n}$ and $b \in \R^{m}$ are learnable parameters.
 This model is commonly referred to as single layer feed-forward neural network (FFN) or single layer perceptron.
 
 When used for classification, a single layer FFN is limited to problems that require linear separation. In order to learn more complex, non-linear decision boundaries, multiple layers can be applied in sequence.
@@ -110,7 +109,6 @@ Arguably, the most common way for optimizing a neural network are the gradient d
 \begin{equation}
     J(\theta) = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(f(x_i; \theta), y_i)
 \end{equation}
-
 Here, $\mathcal{L}$ is a differentiable loss function and $\theta$ represents the vector of all learnable parameters of the neural network $f(x)$.
 
 \subsubsection{Gradient Descent}
@@ -129,13 +127,13 @@ Common choices for $\mathcal{L}$ include:
               \label{eq:ce_loss}
               \tx{CE}(y, \hat{y}) = - \sum_{k=1}^C y_k \log \hat{y}_k
           \end{equation}
-          for classification tasks. Where $y_k$ is the ground truth probability of class $k$ and $\hat{y}_k$ the corresponding prediction.
+          For classification tasks, where $y_k$ is the ground truth probability of class $k$ and $\hat{y}_k$ the corresponding prediction.
 
     \item \textbf{Mean Squared Error}
           \begin{equation}
               \tx{MSE}(y, \hat{y}) = (y - \hat{y})^2
           \end{equation}
-          in the case of regression.
+          In the case of regression.
 \end{itemize}
 
 \subsubsection{Stochastic Gradient Descent}
@@ -174,19 +172,16 @@ Backpropagation is a direct application of the chain rule for calculating the de
 \begin{equation}
     \frac{\partial f(g(x))}{\partial x} = \frac{\partial f(g(x))}{\partial g(x)} \frac{\partial g(x)}{\partial x}
 \end{equation}
-
 Let $a^{(k)} = W^{(k)} h^{(k-1)} + b^{(k)}$ be the intermediate output of an $L$-layer DNN at layer $k$, before passing it through an activation function $\sigma$ (See \ref{eq:DNN}). With a single application of the chain rule, we can compute the gradient of the objective function $J$ w.r.t. $a^{(L)}$ like so:
 
 \begin{equation}
     \frac{\partial J}{\partial a^{(L)}} = \frac{\partial J}{\partial \sigma(a^{(L)})} \frac{\partial \sigma(a^{(L)})}{\partial a^{(L)}}
 \end{equation}
-
 If we now apply the chain rule a second time, we can produce a term for computing the derivative w.r.t. $W^{(L)}$.
 
 \begin{equation}
     \frac{\partial J}{\partial W^{(L)}} = \frac{\partial J}{\partial \sigma(a^{(L)})} \frac{\partial \sigma(a^{(L)})}{\partial a^{(L)}} \frac{\partial a^{(L)}}{W^{(L)}}
 \end{equation}
-
 Note that we now only need to know the derivatives of $J$, $\sigma$ and $a^{(L)}$ separately, in order to compute the derivative of their composition. By recursively applying this rule, we can compute partial derivatives of $J$ w.r.t to parameters of the DNN, up to an arbitrary depth, as long as all functions it is composed of are differentiable.
 
 By modeling the chain of operations in a DNN as a computation graph, deep learning frameworks like PyTorch \cite{NEURIPS2019_9015} or Tensorflow \cite{tensorflow2015-whitepaper} can automatically perform backpropagation, as long as each operation's derivative is known and pre-defined in the library.
@@ -200,7 +195,6 @@ Weight decay constraints the number of possible hypothesis, by adding a penalty 
 \begin{equation}
     J(\theta) = \mathcal{L}(\theta) + \lambda ||\theta||_2^2
 \end{equation}
-
 As L2 is only a soft constraint, its effect can be regulated by hyperparameter $\lambda$.
 
 \subsubsection{Dropout}
@@ -222,7 +216,6 @@ The transformer architecture is based on a single building block which, after an
     \item residual connections
     \item layer normalization
 \end{itemize}
-
 We will first explain the input layer, then go over each of these elements and explain how a transformer block is constructed from them.
 
 \subsection{Input Layer}
@@ -236,7 +229,6 @@ One way for generating positional encodings, is to introduce a new set of learne
 \begin{equation}
     \text{PE}_{(pos, 2i + 1)} = \cos\bigg(\frac{pos}{10000^{\frac{2i}{d}}}\bigg)
 \end{equation}
-
 Where $pos$ and $i$ denote position along in along sequence and hidden dimension respectively. They found this approach to perform nearly identical to learned embeddings in the case of machine translation.
 
 \subsection{Multi-Head Self-Attention}
@@ -252,7 +244,6 @@ Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \R^{N \times d}
      & \alpha_{ij} = \frac{\exp(s_{ij})}{\sum_{k=1}^N \exp(s_{kj})} \\
      & h_j = \sum_{k=1}^N \alpha_{kj} x_k
 \end{align}
-
 Where $a: \R^d \times \R^d \rightarrow \R$ is a scoring function that assigns importance scores to input $x_i$ given context $c_j$. The attention weights $\alpha_{ij}$ are then used to produce a context-sensitive representation $h_j$ as weighted sum of $X$.
 
 Common choices for $a$ include:
@@ -277,7 +268,6 @@ Then, using the obtained query and key vectors $Q$ and $K$, a matrix of attentio
 \begin{equation}
     \text{SelfAttention}(Q, K, V) = \text{softmax}\bigg(\frac{Q K^\top}{\sqrt{d_k}}\bigg) V
 \end{equation}
-
 As a consequence, each vector in the resulting sequence becomes an attention weighted sum over the vectors in $V$. Note the scaling by $\sqrt{d_k}$ which is supposed to prevent oversaturation of the softmax function, due to large dot-products.
 
 From the memory lookup perspective: Query vectors $Q$ are matched with key vectors $K$, in order to produce compatibility scores. These scores are then used to retrieve value vectors from $V$ via soft-lookup.
@@ -287,7 +277,6 @@ Self-Attention can further be extended to multi-head attention by running multip
 \begin{equation}
     \tx{MultiHeadAttention}(Q, K, V) = \bigg[ \bigparallel_{i=1}^h \tx{SelfAttention}_i(Q,K,V) \bigg] W\lay o
 \end{equation}
-
 Where $h$ is the number of attention-heads, $||$ denotes concatenation and $W\lay o \in \R^{d_v h \times d}$ is a learned matrix for projecting back to the model's original hidden dimension.
 
 Note that in the default case, each attention layer has its own weight matrices. However,  we omit layer indices to keep the notation more simple.
@@ -304,7 +293,7 @@ After applying a layer or block of layers in a DNN, if we add the inputs back to
 \begin{equation}
     \tx{Residual}(x) = f^{(k)}(x) + x
 \end{equation}
-Where $f^{(k)}(x)$ is a layer at depth $k$.
+Where $f^{(k)}(x)$ is the layer at depth $k$.
 
 The most prominent motivation for residual connections is that they facilitate the training of deeper neural networks. A common issue with deep neural networks is the vanishing gradient problem. As computing gradients through backpropagation relies on a series of multiplications of potentially small values (Section~\ref{sec:backprop}), gradients tend to become smaller the further we propagate back. This makes training very deep networks harder, as early layers might receive little to no updates.
 
@@ -325,16 +314,12 @@ However, since DNNs pass features through multiple layers, there's no guarantee 
 \begin{equation}
     \sigma^{(k)} = \sqrt{\frac{1}{d} \sum_{i=1}^d (z_i^{(k)} - \mu^{(k)})^2}
 \end{equation}
-
 Here $z_i^{(k)}$ denotes the $i$-th output of layer $k$ with hidden dimension $d$, before applying an activation function.\\
 These layer statistics are then used to normalize the hidden layer representation $z^{(k)}$:
 
 \begin{equation}
     \tx{LayerNorm}(z\lay k) = \gamma \lay k \circ \frac{z\lay k - \mu\lay k}{\sigma\lay k} + \beta\lay k
 \end{equation}
-
-
-
 Where $\gamma^{(k)}$ and $\beta^{(k)}$ are learned parameter vectors for layer $k$ and $\circ$ denotes the element-wise product. Further, $\gamma^{(k)}$ and $\beta^{(k)}$ are additional learnable parameters for adjusting scale and shift of the normalized distribution if required.
 
 \subsection{The Full Transformer Block}
@@ -346,7 +331,6 @@ The full transformer block can be described with the following equations:
     Z              & = \tx{LayerNorm}(A + X)            \\
     \tx{TBlock}(X) & = \tx{LayerNorm}(\tx{FFN}(Z) + Z)
 \end{align}
-
 It consists of a multi-head attention layer and a point-wise fully connected layer, each followed by residual connection and layer normalization.
 
 

@@ -4,7 +4,6 @@
 \section{TREC 2019 - Deep Learning Track}
 \label{sec:trec2019}
 The TREC 2019 deep learning track focuses on studying text retrieval on large-scale data \cite{DBLP:journals/corr/abs-2003-07820}. It provides two datasets, one for passage retrieval and one for document retrieval. The datasets are based on MS MARCO \cite{DBLP:journals/corr/NguyenRSGTMD16} which consists of $\sim 1$mio real world user queries from the Bing search engine and a corpus of $\sim 8.8$mio passages. For this thesis we focus on the passage retrieval dataset (TREC2019) if not stated otherwise. Further, we will refer to passages from this dataset as documents, to be consistent with the common information retrieval terminology.
-
 \begin{table}[h]
     \centering
     \begin{tabular}{c|ccc}
@@ -15,7 +14,6 @@ The TREC 2019 deep learning track focuses on studying text retrieval on large-sc
     \end{tabular}
     \caption{Number of queries for each dataset split in the two TREC 2019 datasets.}
 \end{table}
-
 \begin{table}[h]
     \centering
 
@@ -26,6 +24,7 @@ The TREC 2019 deep learning track focuses on studying text retrieval on large-sc
     \end{tabular}
     \caption{Corpus size for each TREC dataset.}
 \end{table}
+
 While with TREC2019, two types of tasks are provided, namely full ranking and re-ranking, we will only perform the re-ranking task. This means, given a pool of $1000$ documents for each query, we need to provide an ordering, such that relevant documents are placed at the top. On average, a query has $\sim 1.1$ relevant documents in its pool which were marked as relevant by human annotators. Note that each annotator only had access to $\sim 10$ passages during annotation, meaning a pool is likely to contain false negatives, i.e. relevant passages that are not marked as such.
 
 \section{Probing Dataset Generation}

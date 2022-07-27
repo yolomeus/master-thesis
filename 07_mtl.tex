@@ -26,13 +26,11 @@ Given the intermediate layer representations of the pre-trained \ti{bert-base-un
 \begin{equation}
     \tx{pool}(h_i, h_{i+1},\dots, h_j)= \frac{1}{j} \sum_{k=i}^j h_k
 \end{equation}
-
 In the case of tasks that require multiple spans, we first average along each span $(i,j) \in S$ and then concatenate the resulting vectors:
 
 \begin{equation}
     \tx{multi-pool}(h_1, \dots, h_N) = \bigparallel_{(i, j) \in S}{\tx{pool}(h_i, h_{i+1},\dots, h_j)}
 \end{equation}
-
 Following the pooling we apply a simple MLP classifier of the form:
 
 \begin{equation}

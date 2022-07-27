@@ -72,7 +72,6 @@ Specifically, we use the same MLP as \cite{Tenney2019WhatDY}:
 \begin{equation}
     \hat{P}(x) = \tx{LayerNorm}(\tx{tanh}(x W^{(0)} + b^{(0)})) W\lay 1 + b^{(1)}
 \end{equation}
-
 Where $W\lay 0 \in \R^{|S| d \times d}$,  $W\lay 1 \in \R^{d \times c}$ and $b\lay 0 \in \R^{d}$,  $b\lay 1 \in \R^{c}$ are learned parameters with hidden size $d$ and number of target classes $c$.
 
 Since some tasks require operating over one or multiple spans $S=\{(\tx{start}_i, {end}_i)\}_{i=1}^{|S|}$, we further need to use a pooling mechanism, such that a fixed-length representation can be provided to the probe.
@@ -84,7 +83,6 @@ Again, like \cite{Tenney2019WhatDY} we employ the simple attention pooling opera
          & \tx{pool}(h_i, h_{i+1},\dots, h_j)= \sum_{k=i}^j\alpha_k (W h_k + b)
     \end{aligned}
 \end{equation}
-
 Where $w \in \R^{d}$, $W \in \R^{d \times d_{probe}}$, $b \in \R^{d_{probe}}$ are learned parameters which, in the case of multiple spans, are not shared between spans. The pooled span representations are concatenated and passed to the MLP, resulting in the full probe:
 \begin{equation}
     P(h_1,\dots, h_N) = \hat{P}\bigg(\bigparallel_{(i, j) \in S}{\tx{pool}(h_i, h_{i+1},\dots, h_j)}\bigg)
@@ -159,13 +157,11 @@ Unlike MRR, mean average precision (MAP) considers the rank of all relevant docu
 \begin{equation}
     \text{AP}(q, C) = \frac{1}{|C_{rel}|} \sum_{k=1}^{|C|} \tx{Precision@k} \times y_k
 \end{equation}
-
 Where $|C_{rel}|$ is the total number of documents marked as relevant w.r.t. the query and $y_k$ is the ground truth relevance at position $k$ in $C$. Then taking the average AP over all queries gives us MAP:
 
 \begin{equation}
     \text{MAP}(Q, C) = \frac{1}{|Q|} \sum_{q \in Q} \text{AP}(q, C)
 \end{equation}
-
 While MRR indicates the quality of the top-ranked document, MAP provides a better picture of the full candidate set ranking.
 
 \subsubsection{NDCG}
@@ -177,6 +173,5 @@ Then, the ideal DCG is computed by sorting $C$ according to the ground truth lab
 \begin{equation}
     \tx{NDCG} = \frac{\tx{DCG}}{\tx{IDCG}}
 \end{equation}
-
 This way, a perfect ordering (of which multiple may exist) will result in an NDCG of $1$ while any suboptimal ordering will lie in $[0, 1)$. Because of the logarithmic scaling, more importance is attributed to relevant documents early in the list.
 
