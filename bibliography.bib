@@ -1031,3 +1031,96 @@
   year   = {2017},
   note   = {To appear}
 } 
+
+@article{Nogueira2019PassageRW,
+  title   = {Passage Re-ranking with BERT},
+  author  = {Rodrigo Nogueira and Kyunghyun Cho},
+  journal = {ArXiv},
+  year    = {2019},
+  volume  = {abs/1901.04085}
+}
+
+@article{Onal2017NeuralIR,
+  title   = {Neural information retrieval: at the end of the early years},
+  author  = {Kezban Dilek Onal and Ye Zhang and Ismail Seng{\"o}r Alting{\"o}vde and Md. Mustafizur Rahman and Pinar Senkul and Alexander Braylan and Brandon Dang and Heng-Lu Chang and Henna Kim and Quinten McNamara and Aaron Angert and Edward Banner and Vivek Khetan and Tyler McDonnell and An Thanh Nguyen and Dan Xu and Byron C. Wallace and M. de Rijke and Matthew Lease},
+  journal = {Information Retrieval Journal},
+  year    = {2017},
+  volume  = {21},
+  pages   = {111-182}
+}
+
+@article{Guo2020ADL,
+  title   = {A Deep Look into Neural Ranking Models for Information Retrieval},
+  author  = {J. Guo and Yixing Fan and Liang Pang and Liu Yang and Qingyao Ai and Hamed Zamani and Chen Wu and W. Bruce Croft and Xueqi Cheng},
+  journal = {ArXiv},
+  year    = {2020},
+  volume  = {abs/1903.06902}
+}
+
+@article{Nogueira2019MultiStageDR,
+  title   = {Multi-Stage Document Ranking with BERT},
+  author  = {Rodrigo Nogueira and Wei Yang and Kyunghyun Cho and Jimmy J. Lin},
+  journal = {ArXiv},
+  year    = {2019},
+  volume  = {abs/1910.14424}
+}
+
+@article{DBLP:journals/corr/abs-1912-01385,
+  author     = {Sebastian Hofst{\"{a}}tter and
+                Markus Zlabinger and
+                Allan Hanbury},
+  title      = {{TU} Wien @ {TREC} Deep Learning '19 - Simple Contextualization for
+                Re-ranking},
+  journal    = {CoRR},
+  volume     = {abs/1912.01385},
+  year       = {2019},
+  url        = {http://arxiv.org/abs/1912.01385},
+  eprinttype = {arXiv},
+  eprint     = {1912.01385},
+  timestamp  = {Thu, 02 Jan 2020 18:08:18 +0100},
+  biburl     = {https://dblp.org/rec/journals/corr/abs-1912-01385.bib},
+  bibsource  = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{Hofsttter2020LocalSO,
+  title   = {Local Self-Attention over Long Text for Efficient Document Retrieval},
+  author  = {Sebastian Hofst{\"a}tter and Hamed Zamani and Bhaskar Mitra and Nick Craswell and Allan Hanbury},
+  journal = {Proceedings of the 43rd International ACM SIGIR Conference on Research and Development in Information Retrieval},
+  year    = {2020}
+}
+
+@inproceedings{10.1145/3404835.3463049,
+  author    = {Mitra, Bhaskar and Hofst\"{a}tter, Sebastian and Zamani, Hamed and Craswell, Nick},
+  title     = {Improving Transformer-Kernel Ranking Model Using Conformer and Query Term Independence},
+  year      = {2021},
+  isbn      = {9781450380379},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3404835.3463049},
+  doi       = {10.1145/3404835.3463049},
+  abstract  = {The Transformer-Kernel (TK) model has demonstrated strong reranking performance on the TREC Deep Learning benchmark---and can be considered to be an efficient (but slightly less effective) alternative to other Transformer-based architectures that employ (i) large-scale pretraining (high training cost), (ii) joint encoding of query and document (high inference cost), and (iii) larger number of Transformer layers (both high training and high inference costs). Since, a variant of the TK model---called TKL---has been developed that incorporates local self-attention to efficiently process longer input sequences in the context of document ranking. In this work, we propose a novel Conformer layer as an alternative approach to scale TK to longer input sequences. Furthermore, we incorporate query term independence and explicit term matching to extend the model to the full retrieval setting. We benchmark our models under the strictly blind evaluation setting of the TREC 2020 Deep Learning track and find that our proposed architecture changes lead to improved retrieval quality over TKL. Our best model also outperforms all non-neural runs ("trad") and two-thirds of the pretrained Transformer-based runs ("nnlm") on NDCG@10.},
+  booktitle = {Proceedings of the 44th International ACM SIGIR Conference on Research and Development in Information Retrieval},
+  pages     = {1697–1702},
+  numpages  = {6},
+  keywords  = {deep learning, document ranking, efficiency},
+  location  = {Virtual Event, Canada},
+  series    = {SIGIR '21}
+}
+
+@inproceedings{10.1145/3437963.3441667,
+author = {Yates, Andrew and Nogueira, Rodrigo and Lin, Jimmy},
+title = {Pretrained Transformers for Text Ranking: BERT and Beyond},
+year = {2021},
+isbn = {9781450382977},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3437963.3441667},
+doi = {10.1145/3437963.3441667},
+abstract = {The goal of text ranking is to generate an ordered list of texts retrieved from a corpus in response to a query. Although the most common formulation of text ranking is search, instances of the task can also be found in many natural language processing applications. This tutorial, based on a forthcoming book, provides an overview of text ranking with neural network architectures known as transformers, of which BERT is the best-known example. The combination of transformers and self-supervised pretraining has, without exaggeration, revolutionized the fields of natural language processing (NLP), information retrieval (IR), and beyond. We provide a synthesis of existing work as a single point of entry for both researchers and practitioners. Our coverage is grouped into two categories: transformer models that perform reranking in multi-stage ranking architectures and learned dense representations that perform ranking directly. Two themes pervade our treatment: techniques for handling long documents and techniques for addressing the tradeoff between effectiveness (result quality) and efficiency (query latency). Although transformer architectures and pretraining techniques are recent innovations, many aspects of their application are well understood. Nevertheless, there remain many open research questions, and thus in addition to laying out the foundations of pretrained transformers for text ranking, we also attempt to prognosticate the future.},
+booktitle = {Proceedings of the 14th ACM International Conference on Web Search and Data Mining},
+pages = {1154–1156},
+numpages = {3},
+keywords = {transformers, text ranking},
+location = {Virtual Event, Israel},
+series = {WSDM '21}
+}

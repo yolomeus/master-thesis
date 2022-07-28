@@ -1,6 +1,6 @@
 \chapter{Previous Work}
 \label{chap:prev}
-two part thesis, these are relevant \dots
+As this is a two part thesis, there are mainly two fields of work it builds upon. In this section we will first introduce related work in neural information retrieval that leverage pre-trained transformer models. We then provide a quick overview of previous work in probing for NLP, as well as Multi-task learning approaches.
 
 tenney, hewitt all the good probing
 effects of finetuning https://arxiv.org/abs/2004.14448
@@ -8,6 +8,22 @@ the idf paper
 probing different berts
 bertnesia
 
-\section{NLP + Neural Ranking}
+\section{Neural IR with Transformers}
+In this section we present work on text ranking using transformers. If the reader is interested in a general overview of neural information retrieval, we recommend \cite{mitra2018an, Onal2017NeuralIR, Guo2020ADL}.
+
+With the break-through of BERT \cite{devlin-etal-2019-bert} achieving state-of-the-art in various NLP benchmarks, it didn't take long for researchers to also try applying the pre-trained BERT model to the information retrieval problem. In \cite{Nogueira2019PassageRW}, a BERT model is fine-tuned on the MS Marco dataset \cite{DBLP:journals/corr/NguyenRSGTMD16} to perform re-ranking of text passages. Even though a simple approach was used which treated relevance estimation as binary classification, it outperformed the existing baselines on the MS Marco leaderboard at that time. Now often termed monoBERT, this approach has become a popular baseline for neural text ranking.
+
+Later, in \cite{Nogueira2019MultiStageDR} a new ranking objective is proposed that computes scores, indicating whether one document is more relevant than the other, over all possible document pairs in a candidate set. This pairwise objective is titled duoBERT and achieves better ranking performance with a quadratic increase in computational cost w.r.t. the size of the candidate set.
+
+\cite{DBLP:journals/corr/abs-1912-01385} on the other hand, do not rely on pre-trained models and instead redesign a neural ranking architecture based on transformer encoders, to be more efficient, titled transformer kernel. Building on this approach further variants of this approach are proposed in \cite{Hofsttter2020LocalSO, 10.1145/3404835.3463049}.
+
+Unlike the previously mentioned methods that leverage a single model to estimate relevance of query-document pairs, \ti{dense retrieval} approaches, focus on pre-computing embeddings and using them for retrieval later on.
+\todo{something something dense retrieval, check survey...}
+
+For a more comprehensive survey on transformers for IR we refer to \cite{10.1145/3437963.3441667}.
+
 \section{Probing}
+
 \section{Multitask Learning}
+https://arxiv.org/pdf/1901.11504.pdf
+https://arxiv.org/pdf/1811.01088.pdf
