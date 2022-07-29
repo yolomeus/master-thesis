@@ -223,6 +223,7 @@ The transformer architecture is based on a single building block which, after an
 \end{itemize}
 We will first explain the input layer, then go over each of these elements and explain how a transformer block is constructed from them.
 
+
 \subsection{Input Layer}
 The transformer's input layer takes in a sequence of tokens and produces continuous representations, by selecting corresponding vectors from a learned embedding matrix $M \in \R^{d \times |V|}$. Here $|V|$ denotes the size of the vocabulary and $d$ the hidden dimension of the model. Because the transformer model itself does not encode the order of inputs, \ti{positional encodings} are added to the initial embeddings, in order to inject positional information.
 
@@ -337,6 +338,12 @@ The full transformer block can be described with the following equations:
     \tx{TBlock}(X) & = \tx{LayerNorm}(\tx{FFN}(Z) + Z)
 \end{align}
 It consists of a multi-head attention layer and a point-wise fully connected layer, each followed by residual connection and layer normalization.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{gfx/transformer}
+    \caption{Schematic overview of the transformer block and the transformer's input layer at the bottom.}
+\end{figure}
 
 
 \subsection{BERT Pre-Training}
