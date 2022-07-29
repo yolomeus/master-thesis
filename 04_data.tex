@@ -33,8 +33,19 @@ Opposed to this, documents in the document dataset are automatically marked as r
 
 \section{Probing Dataset Generation}
 \label{sec:dataset_gen}
-For all of our probing tasks, we automatically generate datasets from the TREC2019 passage-level test set. To achieve this, we sample $60$k query-document pairs from the test set of which $40$k are used as training set and $10$k as validation and test set, respectively. We then use existing tools to extract the properties that we are interested in and use them to label the data. Details on how we generate labels for each task are described in \autoref{sec:tasks}.
+For all of our probing tasks (\autoref{sec:tasks}), we automatically generate datasets from the TREC2019 passage-level test set. To achieve this, we sample $60$k query-document pairs from the test set of which $40$k are used as training set and $10$k as validation and test set, respectively. We then use existing tools to extract the properties that we are interested in and use them to label the data. Details on how we generate labels for each task are described in \autoref{sec:tasks}. We show examples for each task in \autoref{tab:data_examples}.
 
-\todo{example for each task table like tenney?}
-
-\todo{distribution of passage lengths}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|p{0.2\textwidth}|p{0.4\textwidth}|c}
+        \hline
+        \tf{Task} & \tf{Query}                                                 & \tf{Document}                                                                                                                                                       & \tf{Target}  \\ \hline\hline
+        BM25      & how many days to defrost                                   & The best way to safely and quickly defrost chicken, he says, is\dots                                                                                                & 11.44        \\ \hline
+        SEM       & how many of grams a sugar should a person have in one day? & According to the Institute of Medicine, Food and Nutrition Board, the average person needs 0.32 grams of protein per pound of body weight\dots                      & 0.316        \\ \hline
+        NER       & what company was skittles made by?                         & \tf{[Wrigley]} is a company that makes and sells gum, hard candies, and lollipops\dots                                                                              & Organization \\ \hline
+        COREF     & at what age do \tf{[kittens]} get their first shots        & Kittens this age will begin to eat regular cat food, and will begin to use a litter box. \tf{[They]} are still quite small at this age\dots                         & True         \\ \hline
+        FACT      & Big Brother 18 is hosted by Emma Willis.                   & Big Brother 2017, also known as Big Brother 18, is the upcoming eighteenth series of the British reality television series Big Brother, hosted by Emma Willis \dots & Supports     \\ \hline
+    \end{tabular}
+    \caption{Training examples from each probing dataset and their respective targets. Targets within the text are highlighted in square brackets.}
+    \label{tab:data_examples}
+\end{table}
