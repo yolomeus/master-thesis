@@ -150,9 +150,7 @@ In the following tables, we present the results for different sample sizes and M
 
 At first, we tried limiting the augmentation to a single task (BM25), since this has been shown to work best in our previous experiments. However, when resampling from the same small set, we can only observe a consistent benefit at sample size $100,000$ (\autoref{tab:ablation2}).
 
-We then continued to sample from all tasks which resulted in an overall drop in performance compared to the baseline (\autoref{tab:ablation3}).
-
-Suspecting the other tasks to overshadow ranking, we further tried limiting the total sample size of additional tasks to $50\%$ of the ranking sample size (\autoref{tab:ablation4}). However, while this approach performed better than using the full sample size, it was still outperformed by the baseline.
+We then continued to sample from all tasks which resulted in an overall drop in performance compared to the baseline (\autoref{tab:ablation3}). Suspecting the other tasks to overshadow ranking, we further tried limiting the total sample size of additional tasks to $50\%$ of the ranking sample size (\autoref{tab:ablation4}). However, while this approach performed better than using the full sample size, it was still outperformed by the baseline.
 
 \begin{table}
     \centering
