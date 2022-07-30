@@ -69,7 +69,7 @@ Interestingly, this does not apply to NER which, except from MRR, instead perfor
 
 In terms of MAP, we also find NER to yield the highest benefit while the highest increase in MRR, NDCG and precision stems from the additional COREF task. Considering that probing showed the most absolute increase in coref information when fine-tuning for ranking (\autoref{fig:abs_heatmap_comp_base}, \autoref{fig:abs_heatmap_comp_passage}), this might be additional evidence for coreference being a useful ability for a neural ranker to learn. Moreover, the performance of NER which seems to be closely related to COREF, suggests that entities in general play an important role for learning to rank.
 
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \begin{tabular}{lc|cccc|c}
         \hline
@@ -98,7 +98,7 @@ The results for the full multitask runs are shown in \autoref{tab:multi_runs}. I
 
 Another hypothesis suggests that too many tasks start to conflict each other, leading to hidden representations that are no longer coherent with each other and hence, less useful for learning the ranking task. Interestingly \cite{aghajanyan-etal-2021-muppet} found their multitask learning setup to perform best when at least $10$ tasks were used, meaning it is also possible that $3$ additional tasks are simply not enough.
 
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \begin{tabular}{lc|cccc|c}
         \hline
