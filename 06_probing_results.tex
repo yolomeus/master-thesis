@@ -9,7 +9,7 @@ For the most part, based on compression, ranking properties can be decoded more 
 
 We can further observe that the difference in compression between early layers and the peak value varies depending on the task. This Indicates that some properties are more uniformly distributed across layers, while others are more concentrated at a particular layer. For example, decoding named entities results in similar compression scores from layer 1-11, while SEM shows a distinct peak at layer 4.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
     \begin{subfigure}{\textwidth}
         \centering
@@ -30,7 +30,7 @@ We can further observe that the difference in compression between early layers a
     \label{fig:sem_sim_coref}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
     \begin{subfigure}{\textwidth}
         \centering
@@ -65,7 +65,7 @@ BM25 depends on both local and corpus-level frequency statistics of words. Findi
 
 Finally, since compression is a relative measure that compares MDL to the MDL of a uniform encoding, it is possible to compare it \ti{between} tasks. For this, we show absolute compression values in \autoref{fig:abs_heatmap_comp_base}. Firstly, the highest compression can be measured for NER with values $>6$. Further, a compression around $4.5$ is achieved for BM25, SEM and COREF, with COREF showing some peaks closer to $5$. In contrast, for fact checking, we barely reach a compression of $>3.5$. These findings indicate that NER is the most easily extractable property from the pre-trained base model, while fact checking appears to be the hardest.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{gfx/probing/abs_heatmap_compression_base}
     \caption{\ti{bert-base-uncased} - compression as a function of task and layer, absolute values.}

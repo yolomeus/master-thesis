@@ -1,6 +1,7 @@
 \chapter{Foundations}
 \label{foundations}
 \section{Information Retrieval - Ranking Text}
+\label{sec:ir}
 Ranking is an integral part of the information retrieval (IR) process. The general IR problem can be formulated as follows: A user with a need for information expresses this information need through formulation of a query. Now given the query and a collection of documents, the IR system's task is to provide a list of documents that satisfy the user's information need. Further, the retrieved documents should be sorted by relevance w.r.t. the user's information need in descending order, i.e. the documents considered most relevant should be at the top of the list.
 
 While from this formulation only, the task might appear simple, there are several caveats to look out for when it comes to ranking. For instance, there is no restriction on the structure of the query. While we might expect a natural language question like "What color are giraffes?" a user might decide to enter a keyword query like "giraffes color". The same applies to documents: Depending on the corpus we are dealing with, the documents might be raw text, structured text like HTML or even another type of media e.g. image, audio or a combination thereof.
@@ -63,6 +64,7 @@ BM25 builds on the TF-IDF scores  by introducing additional hyperparameters and 
 Here, the free parameters $k_1$ and $b$ determine the how quick the bm25 function saturates with increasing term frequency (typically, $k_1=1.2$) and the degree to which document length affects the score, respectively. $\tx{len}(d)$ is the length of $d$ and \tx{avglen} the average document length over the corpus.
 
 \section{Machine Learning}
+\label{sec:ml}
 Machine learning encompasses a set of statistical methods, for automatically recognizing and extracting patterns from data. Typically, we can distinguish between two main types of machine learning: Supervised learning and unsupervised learning.
 
 In the case of supervised learning, we have a set of training instances $X = \{x_i\}_{i=1}^N$ and corresponding labels $Y = \{y_i\}_{i=1}^N$, assigning a certain characteristic to each data point. For example, this characteristic might be a probability distribution over a set of classes or a regression score. If each $y_i$ represents one or more categories from a fixed set of classes $C = \{c_i\}_{i=1}^{|C|}$, this is called a classification problem.
@@ -74,6 +76,7 @@ In contrast, in unsupervised learning there is no access to any labels whatsoeve
 That being said, the separating lines between supervised and unsupervised learning are blurry. Especially with the emergence of semi-supervised approaches and "end2end" representation learning, modern ML methods often integrate parts of both.
 
 \section{Deep Learning}
+\label{sec:dl}
 Deep learning is a subfield of ML that makes use of a class of models called Deep Neural Networks (DNN). Typically, DNNs find application in the supervised learning scenario and are often used for classification tasks. In the following we explain the basic mechanisms of DNNs and common approaches to train them.
 
 \subsection{Deep Neural Networks}
@@ -207,6 +210,7 @@ Dropout is a DNN specific method that, during training time, randomly sets entri
 
 
 \section{Transformer Models}
+\label{sec:transformer}
 One of the most prominent deep learning architectures of the past years is the transformer \cite{vaswani2017attention}. The transformer and its variants have set multiple state-of-the-art records in a variety of NLP tasks \cite{devlin-etal-2019-bert, DBLP:journals/corr/abs-1907-11692, DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1909-08053, DBLP:journals/corr/abs-2005-14165}, and have since then also been adapted to other domains such as computer vision \cite{DBLP:journals/corr/abs-2010-11929} or audio generation \cite{https://doi.org/10.48550/arxiv.2005.00341}.
 
 Unlike previous methods for embedding words in vector spaces, which relied on word co-occurrence to learn a single fixed vector for each token \cite{pennington2014glove, DBLP:journals/corr/abs-1301-3781}, transformers are able to produce \ti{contextualized} word embeddings. This means that the representation of each word in a sequence changes dynamically based on its context, i.e. all other words in the sequence.

@@ -6,7 +6,7 @@ To test this, we conduct the following experiment: First, we generate a set of d
 
 Following the probing experiments, we then attempt to develop an improved fine-tuning procedure, based on our findings.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{gfx/probing/probing}
     \caption{Schematic overview of the probing procedure. Each task is probed at every layer.}
@@ -94,6 +94,7 @@ Where $w \in \R^{d}$, $W \in \R^{d \times d_{probe}}$, $b \in \R^{d_{probe}}$ ar
 \end{equation}
 
 \section{Probing Setup}
+\label{sec:probing_setup}
 \subsection{Fine-tuning Subject Models}
 We fine-tune a \ti{bert-base-uncased} model on both, TREC2019 passage- and document-level datasets (\autoref{sec:trec2019}), to obtain ranking subject models \ti{bert-msm-passage} and \ti{bert-msm-doc} (\autoref{sec:subjects}), respectively. Each model is trained with a binary cross-entropy objective, for a maximum of $20$ epochs. Early stopping is performed after $3$ epochs, if no increase in validation MAP is observed. For hyperparameters, we keep the default settings suggested by \cite{devlin-etal-2019-bert}, using the Adam optimizer\cite{kingma2014adam} with a learning rate of 1e-5, a mini-batch size of $16$ and linear increase in learning rate over the first $1000$ steps. As BERT uses a fixed set of learned positional embeddings, the input length is limited to $512$ tokens. Hence, we truncate any passages and documents exceeding this maximum length, after applying BERT's word-piece tokenization.
 
@@ -105,6 +106,7 @@ As objective function, all probing tasks use cross-entropy loss (\autoref{eq:ce_
 We employ the Adam optimization algorithm \cite{kingma2014adam} with a learning rate of 1e-4 and a batch size of $32$ for updating the probe parameters, while the subject model's parameters stay fixed. Learning rate is halved each epoch if the validation loss does not improve. The maximum number of epochs is set to $50$, and we stop early if validation loss has not improved in $10$ epochs. We set the probe classifier's hidden size to $d_{probe}=256$ and apply dropout with rate $0.3$ before the output layer.
 
 \section{Evaluation Measures}
+\label{sec:metrics}
 In the following, we explain the evaluation measures that we employ for probing and any subsequent experiment.
 
 \subsection{MDL}

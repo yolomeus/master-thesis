@@ -6,22 +6,33 @@ However, unlike traditional approaches, these models consist of billions of auto
 
 Recent work on understanding neural language models has aimed at measuring the extent to which certain information is encoded in their word representations \cite{tenney-etal-2019-bert,Tenney2019WhatDY,DBLP:journals/corr/abs-1909-03368}. To achieve this, a \ti{probing} classifier or \ti{probe} is trained to predict certain linguistic properties from these representations. The probe's performance is then expected to reflect how well said property is captured. By employing multiple probing tasks, the presence of different types of information can be estimated. For example, by training a probe for part-of-speech tagging, it can be tested whether it is possible to extract part-of-speech information from the representations.
 
-While the probing paradigm recently emerged for understanding how language models encode general linguistic properties, it has yet to be explored how \ti{downstream task} information is stored, especially when fine-tuned. In particular, we're interested in the \ti{text retrieval} problem.
+While the probing paradigm recently emerged for understanding how neural language models encode general linguistic properties, it has yet to be explored what kind of information is stored regarding \ti{downstream tasks}, when fine-tuning such models. In our particular case, we're interested in the task of \ti{text retrieval}.
 
-but retrieval which important: google guides how we access information etc
+
+
 
 we look at bert, initial break through approach, more recent iterations still similar in essence
 
 \section{Problem Statement}
-This thesis is structured into two parts: First, we apply the probing paradigm in order to understand how a BERT model captures certain ranking properties.
-
-Second, we try to leverage the insights gained from our probing, by designing a multi-task learning setup. Our goal is to improve BERT's ranking performance when compared to a standard fine-tuning approach.
-Our research questions are as follows:
+Given a pre-trained BERT language model, we want to find out, to what extent its hidden representations capture commonly known ranking properties. We further want to know how this kind of information is distributed across different layers of the model and whether these insights help us to build a better ranking model. Our research questions are as follows:
 \begin{itemize}
-    \item given set of tasks, presumably ranking related, which knowledge does bert encode?
-    \item how does ranking trained model differ from base language model
-    \item can we exploit these differences to inform training for ranking?
+    \item Does BERT encode known ranking properties?
+    \item If this is the case, which layers capture which property?
+    \item Does the distribution change if we fine-tune the model for ranking?
+    \item Can we improve BERT's ranking abilities based on those findings?
 \end{itemize}
+
 \section{Contribution}
+This thesis is structured into two parts: First, we apply the probing paradigm in order to understand how a BERT model captures certain ranking properties. We perform extensive analysis and evaluate how ranking related information is distributed throughout the model.
+
+Second, we leverage the insights gained from our probing experiments, by designing a multi-task learning setup for BERT. We show that infusing additional task information can result in improved ranking performance when compared to a standard fine-tuning approach.
 
 \section{Thesis Outline}
+\begin{itemize}
+    \item In the first chapter, we provide foundations needed for this thesis. We briefly discuss traditional ranking approaches (\autoref{sec:ir}), then provide the basic ideas behind machine learning and deep learning (\autoref{sec:ml}, \autoref{sec:dl}) and explain the transformer model (\autoref{sec:transformer}) which is the main subject of our study.
+    \item In \autoref{chap:datasets} we present the datasets that were used in this thesis.
+    \item \autoref{chap:approach} explains our approach to probing, including task design (\autoref{sec:tasks}), the experimental setup (\autoref{sec:probing_setup}) as well as the evaluation measures (\autoref{sec:metrics}) that were used.
+    \item In \autoref{chap:results} we present the results from the probing experiments and provide an in-depth analysis.
+    \item \autoref{chap:mtl} builds upon the findings from \autoref{chap:results}. We introduce a novel multi-task learning (MTL) setup, to aid the fine-tuning of BERT for ranking. Again, we present our results and provide analysis (\autoref{sec:mtl_results}). Furthermore, we perform an ablation study that investigates how this MTL setup behaves in a low resource scenario (\autoref{sec:ablation}).
+    \item In \autoref{chap:conclusion} we conclude this thesis, discuss limitations of our approach (\autoref{sec:limitations}) and give an outlook on potential future work (\autoref{sec:future})
+\end{itemize}

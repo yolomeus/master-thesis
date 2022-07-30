@@ -1,4 +1,5 @@
 \chapter{Informed Multi-Task Learning}
+\label{chap:mtl}
 Based on our findings from the probing experiments, we now want to address the question on whether the knowledge obtained from probing can be leveraged to improve the BERT model for ranking.
 
 Hence, our knew objective becomes re-ranking: Given a query $q$ and a set of candidate documents $C=\{c_i\}_{i=1}^{|C|} \subseteq D$, we want to learn a ranker $s: Q \times D \rightarrow \R$, such that for any two candidate documents $c, c' \in C$, it holds true that $s(q, c) > s(q, c')$ if $c$ is more relevant than than $c'$, regarding $q$.
@@ -60,6 +61,7 @@ In addition to binary cross-entropy loss, we further experiment with a pairwise 
 Where $\lambda=0.2$ is the margin and $y^+, y^-$ are the model's predictions for a relevant and non-relevant document, respectively.
 
 \section{Results}
+\label{sec:mtl_results}
 \subsection{Single Additional Task}
 For runs where a single additional task is introduced (\autoref{tab:single_runs}), we can observe a general improvement across the board. It also becomes apparent that the selection of layer which the additional task is trained on actually plays a role: For BM25, SEM and COREF, layer $12$ shows worse or equal performance for most metrics, when compared to layers that were selected based on our probing results. For instance, BM25 consistently outperforms the baseline at layers $5$ and $6$, but performs significantly worse than the baseline at layer $12$.
 
@@ -138,6 +140,7 @@ Most surprisingly, in the pairwise scenario, the $3$ task MTL setup still improv
 
 
 \section{Additional Ablation Study}
+\label{sec:ablation}
 The prior experiment has shown that explicitly infusing additional task information at specific layers, can result in increased ranking performance. Because of this, we further want to investigate whether this could be a valid augmentation technique in a limited data scenario.
 
 For this, we conduct the following ablation study: Given a subset of TREC2019 query-document pairs, we resample multiple times from this subset and automatically create additional training samples for each of the tasks used in the MTL experiment. We then proceed to train using our proposed multitask method (point-wise) and repeat the experiment for different subset sizes and MTL configurations.
