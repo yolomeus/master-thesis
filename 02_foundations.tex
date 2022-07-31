@@ -4,12 +4,13 @@
 \label{sec:ir}
 Ranking is an integral part of the information retrieval (IR) process. The general IR problem can be formulated as follows: A user with a need for information expresses this information need through formulation of a query. Now given the query and a collection of documents, the IR system's task is to provide a list of documents that satisfy the user's information need. Further, the retrieved documents should be sorted by relevance w.r.t. the user's information need in descending order, i.e. the documents considered most relevant should be at the top of the list.
 
-While from this formulation only, the task might appear simple, there are several caveats to look out for when it comes to ranking. For instance, there is no restriction on the structure of the query. While we might expect a natural language question like "What color are giraffes?" a user might decide to enter a keyword query like "giraffes color". The same applies to documents: Depending on the corpus we are dealing with, the documents might be raw text, structured text like HTML or even another type of media e.g. image, audio or a combination thereof.
+While from this formulation only the task might appear simple, there are several caveats to look out for when it comes to ranking. For instance, there is no restriction on the structure of the query. While we might expect a natural language question like "What color are giraffes?" a user might decide to enter a keyword query like "giraffes color". The same applies to documents: Depending on the corpus we are dealing with, the documents might be raw text, structured text like HTML or even another type of media e.g. image, audio or a combination thereof.
 
 Another possible issue is a mismatch between information need of the user and the corresponding query. Even if we find a perfect ordering of documents with respect to the query, we can not know for certain that the query actually reflects the user's information need. The user might not even know exactly what they're looking for until discovery through an iterative process, i.e. the information need is fuzzy and can not be specified through an exact query from the beginning on.
 
-Further, a query might require additional context information in order for an IR system to find relevant documents. For example, depending on the time at which a query is prompted, the correct answer might change: "Who is president?" should return a different set of documents, as soon as a new president has been elected. Also, since not specified further, it is up to interpretation which country's president the user is interested in and might depend on their location.
-In addition, even the corpus might not be static either and change or grow over time, e.g. web search has to deal with an ever-growing corpus: the internet.
+Furthermore, a query might require additional context information in order for an IR system to find relevant documents. For example, depending on the time at which a query is prompted, the correct answer might change: "Who is president?" should return a different set of documents as soon as a new president has been elected. Also, since not specified further, it is up to interpretation what country's president the user is interested in. This also shows that some queries might depend on the user's location, i.e. the user might be interested in the president in their respective country.
+
+In addition, the corpus might not be static either and change or grow over time. For example, web search has to deal with an ever-growing corpus: The internet.
 
 While this list of issues is not comprehensive, at this point the complexity of the ranking problem should have become apparent.
 
@@ -56,7 +57,7 @@ To compute TF-IDF we can simply sum over the product of TF and IDF for each term
 
 \subsection{BM25}
 \label{sec:bm25}
-BM25 builds on the TF-IDF scores  by introducing additional hyperparameters and accounting for document length through a normalization term \cite{robertson2009probabilistic}. This way, short documents are preferred over long documents, if both have the same term frequency.
+BM25 builds on the TF-IDF scores  by introducing additional hyperparameters and accounting for document length through a normalization term \cite{robertson2009probabilistic}. That way, short documents are preferred over long documents, if both have the same term frequency.
 
 \begin{equation}
     \text{bm25}_{t,d} = \tx{idf}_t \frac{w_{t,d}}{k_1 \big((1 - b) + b \frac{\tx{len}(d)}{\tx{avglen}}\big) + w_{t,d}}
@@ -65,11 +66,11 @@ Here, the free parameters $k_1$ and $b$ determine the how quick the bm25 functio
 
 \section{Machine Learning}
 \label{sec:ml}
-Machine learning encompasses a set of statistical methods, for automatically recognizing and extracting patterns from data. Typically, we can distinguish between two main types of machine learning: Supervised learning and unsupervised learning.
+Machine learning encompasses a set of statistical methods for automatically recognizing and extracting patterns from data. Typically, we can distinguish between two main types of machine learning: Supervised learning and unsupervised learning.
 
 In the case of supervised learning, we have a set of training instances $X = \{x_i\}_{i=1}^N$ and corresponding labels $Y = \{y_i\}_{i=1}^N$, assigning a certain characteristic to each data point. For example, this characteristic might be a probability distribution over a set of classes or a regression score. If each $y_i$ represents one or more categories from a fixed set of classes $C = \{c_i\}_{i=1}^{|C|}$, this is called a classification problem.
 
-Now given the training data and labels, the goal is to find a hypothesis that explains the data, such that for unseen data points $x' \notin X$, the labels $y' \notin Y$ can be inferred automatically. One way to estimate the generalization ability of a model or algorithm, is to divide the dataset into a training and a test set, and only train on the training set while using the test set for evaluation. If the test set models the full distribution of data adequately, it can act as a proxy for estimating the error on unseen samples.
+Now given the training data and labels, the goal is to find a hypothesis that explains the data, such that for unseen data points $x' \notin X$, the labels $y' \notin Y$ can be inferred automatically. One way to estimate the generalization ability of a model or algorithm is to divide the dataset into a training and a test set, and only train on the training set while using the test set for evaluation. If the test set models the full distribution of data adequately, it can act as a proxy for estimating the error on unseen samples.
 
 In contrast, in unsupervised learning there is no access to any labels whatsoever. Characteristics of the data need to be learned solely from the data $X$ itself. Examples for this include clustering where $X$ is clustered into groups, representation learning which usually tries to find vector representations for $X$, as well as dimensionality reduction that, if each $X$ is already a vector, tries to compress them into more compact but still informative representations.
 
@@ -80,7 +81,7 @@ That being said, the separating lines between supervised and unsupervised learni
 Deep learning is a subfield of ML that makes use of a class of models called Deep Neural Networks (DNN). Typically, DNNs find application in the supervised learning scenario and are often used for classification tasks. In the following we explain the basic mechanisms of DNNs and common approaches to train them.
 
 \subsection{Deep Neural Networks}
-In essence, a Deep Neural Network (DNN) is a function approximator $f: \R^n \rightarrow \R^m$ that applies a series of non-linear transformations to its inputs, in order to produce an output. In its simplest form, an input vector $x \in \R^n$ is multiplied by a single weight matrix, a bias vector is added, and the resulting vector is passed through a non-linear activation function $\sigma$.
+In essence, a Deep Neural Network (DNN) is a function approximator $f: \R^n \rightarrow \R^m$ that applies a series of non-linear transformations to its inputs in order to produce an output. In its simplest form, an input vector $x \in \R^n$ is multiplied by a single weight matrix, a bias vector is added, and the resulting vector is passed through a non-linear activation function $\sigma$.
 
 \begin{equation}
     f(x) = \sigma(W x + b)
@@ -101,7 +102,6 @@ An $L$-layer DNN can be described as follows:
         f(x) &= \sigma^{(L)}(W^{(L)} h^{(L-1)} + b^{(L)})
     \end{split}
 \end{equation}
-
 Common choices for $\sigma$ include:
 
 \begin{itemize}
@@ -142,12 +142,12 @@ By repeating this procedure iteratively, we can gradually minimize $J(\theta)$. 
 \end{itemize}
 
 \subsubsection{Stochastic Gradient Descent}
-The aforementioned algorithm is also known as the batch gradient descent (BGD) variant. Stochastic Gradient Descent (SGD) differs from BGD in the number of training samples that are used for a gradient update. Where BGD uses the gradient of the full training set for updating $\theta$, SGD only considers a single, randomly picked sample for each update. Not only can this approach be more efficient, since less redundant computations are performed, due to its stochastic nature and high variance, it is more likely to break out of local minima, allowing additional exploration for better solutions. \cite{ruder2016overview}
+The aforementioned algorithm is also known as the batch gradient descent (BGD) variant. Stochastic Gradient Descent (SGD) differs from BGD in the number of training samples that are used for a gradient update. Where BGD uses the gradient of the full training set for updating $\theta$, SGD only considers a single, randomly picked sample for each update. Not only can this approach be more efficient, since less redundant computations are performed, due to its stochastic nature it is more likely to break out of local minima, allowing additional exploration for better solutions. \cite{ruder2016overview}
 
 \subsubsection{Mini-Batch Gradient Descent}
 While SGD's high variance during training makes it more likely to escape local minima, it can also come with the disadvantage of unstable training. In this scenario, convergence might be hindered by overshooting desirable minima.
 
-To mitigate this issue, we can simply use more than $1$ sample, in order to achieve a more accurate estimate of the full gradient. Now, at each step a small subset of the dataset is sampled to reduce variance and stabilize training while retaining a level of stochasticity. This variant of gradient descent is called mini-batch gradient descent.
+To mitigate this issue, we can simply use more than one sample in order to achieve a more accurate estimate of the full gradient. Now, at each step a small subset of the dataset is sampled to reduce variance and stabilize training while retaining a level of stochasticity. This variant of gradient descent is called mini-batch gradient descent.
 
 Building on mini-batch GD, many algorithms have been introduced in the context of DNNs, that employ further optimizations in order to improve convergence speed and quality. Notable examples include:
 \begin{itemize}
@@ -177,7 +177,7 @@ Backpropagation is a direct application of the chain rule for calculating the de
 \begin{equation}
     \frac{\partial f(g(x))}{\partial x} = \frac{\partial f(g(x))}{\partial g(x)} \frac{\partial g(x)}{\partial x}
 \end{equation}
-Let $a^{(k)} = W^{(k)} h^{(k-1)} + b^{(k)}$ be the intermediate output of an $L$-layer DNN at layer $k$, before passing it through an activation function $\sigma$ (See \ref{eq:DNN}). With a single application of the chain rule, we can compute the gradient of the objective function $J$ w.r.t. $a^{(L)}$ like so:
+Let $a^{(k)} = W^{(k)} h^{(k-1)} + b^{(k)}$ be the intermediate output of an $L$-layer DNN at layer $k$, before passing it through an activation function $\sigma$ (See \ref{eq:DNN}). With a single application of the chain rule we can compute the gradient of the objective function $J$ w.r.t. $a^{(L)}$ like so:
 
 \begin{equation}
     \frac{\partial J}{\partial a^{(L)}} = \frac{\partial J}{\partial \sigma(a^{(L)})} \frac{\partial \sigma(a^{(L)})}{\partial a^{(L)}}
@@ -192,10 +192,10 @@ Note that we now only need to know the derivatives of $J$, $\sigma$ and $a^{(L)}
 By modeling the chain of operations in a DNN as a computation graph, deep learning frameworks like PyTorch \cite{NEURIPS2019_9015} or Tensorflow \cite{tensorflow2015-whitepaper} can automatically perform backpropagation, as long as each operation's derivative is known and pre-defined in the library.
 
 \subsection{Regularization}
-Regularization includes a number of techniques to improve the generalization capabilities of an ML model. If an ML model achieves a low error rate on training data, but a high error rate on test data, it is said to be overfitting. In this scenario, the model has essentially "memorized" the training data and can no longer adapt to unseen examples. Regularization techniques tackle this problem by limiting the hypothesis space of models, through favoring simple solutions over complex ones.
+Regularization includes a number of techniques to improve the generalization capabilities of an ML model. If an ML model achieves a low error rate on training data but a high error rate on test data, it is said to be \ti{overfitting}. In this scenario, the model has essentially "memorized" the training data and can no longer adapt to unseen examples. Regularization techniques tackle this problem by limiting the hypothesis space of models through favoring simple solutions over complex ones.
 
 \subsubsection{Weight Decay}
-Weight decay constraints the number of possible hypothesis, by adding a penalty based on model parameters. For example, L2-regularization encourages small weights that lie on a hypersphere, by adding the sum of squares over all parameters to the loss function.
+Weight decay constraints the number of possible hypothesis by adding a penalty based on model parameters. For example, L2-regularization encourages small weights that lie on a hypersphere by adding the sum of squares over all parameters to the loss function.
 
 \begin{equation}
     J(\theta) = \mathcal{L}(\theta) + \lambda ||\theta||_2^2
@@ -203,7 +203,7 @@ Weight decay constraints the number of possible hypothesis, by adding a penalty 
 As L2 is only a soft constraint, its effect can be regulated by hyperparameter $\lambda$.
 
 \subsubsection{Dropout}
-Dropout is a DNN specific method that, during training time, randomly sets entries in the input vector of a layer to $0$ with probability $p$ \cite{DBLP:journals/corr/abs-1207-0580}. The initial idea of this approach is, to prevent groups of neurons from co-adapting, i.e. requiring the activation of one another in order to detect a certain feature. If dropout is employed, a neuron can no longer rely on the presence of another neuron. Dropout can also be seen as a way of training an ensemble of sub-networks of the original network which share the same parameters.
+Dropout is a DNN specific method that, during training time, randomly sets entries in the input vector of a layer to $0$ with probability $p$ \cite{DBLP:journals/corr/abs-1207-0580}. The initial idea of this approach is to prevent groups of neurons from co-adapting, i.e. requiring the activation of one another in order to detect a certain feature. If dropout is employed, a neuron can no longer rely on the presence of another neuron. Dropout can also be interpreted as a way of training an ensemble of sub-networks of the original network which share the same parameters.
 
 
 \section{Transformer Models}
@@ -226,9 +226,9 @@ We will first explain the input layer, then go over each of these elements and e
 
 
 \subsection{Input Layer}
-The transformer's input layer takes in a sequence of tokens and produces continuous representations, by selecting corresponding vectors from a learned embedding matrix $M \in \R^{d \times |V|}$. Here $|V|$ denotes the size of the vocabulary and $d$ the hidden dimension of the model. Because the transformer model itself does not encode the order of inputs, \ti{positional encodings} are added to the initial embeddings, in order to inject positional information.
+The transformer's input layer takes in a sequence of tokens and produces continuous representations by selecting corresponding vectors from a learned embedding matrix $M \in \R^{d \times |V|}$. Here $|V|$ denotes the size of the vocabulary and $d$ the hidden dimension of the model. Because the transformer model itself does not encode the order of its inputs, \ti{positional encodings} are added to the initial embeddings for injecting positional information.
 
-One way for generating positional encodings, is to introduce a new set of learned embeddings of dimension $d$, one for each input position. However, this approach requires a fixed maximum input length, as all embeddings have to be defined before training. Alternatively, \cite{vaswani2017attention} propose to use sine and cosine waves, as a function of the position:
+One way for generating positional encodings is to introduce a new set of learned embeddings of dimension $d$, one for each input position. However, this approach requires a fixed maximum input length, as all embeddings have to be defined before training. Alternatively, \cite{vaswani2017attention} propose to use sine and cosine waves as a function of the position:
 
 \begin{equation}
     \text{PE}_{(pos, 2i)} = \sin\bigg(\frac{pos}{10000^{\frac{2i}{d}}}\bigg)
@@ -236,7 +236,7 @@ One way for generating positional encodings, is to introduce a new set of learne
 \begin{equation}
     \text{PE}_{(pos, 2i + 1)} = \cos\bigg(\frac{pos}{10000^{\frac{2i}{d}}}\bigg)
 \end{equation}
-Where $pos$ and $i$ denote position along in along sequence and hidden dimension respectively. They found this approach to perform nearly identical to learned embeddings in the case of machine translation.
+Where $pos$ and $i$ denote position along sequence and hidden dimension respectively. They found this approach to perform nearly identical to learned embeddings in the case of machine translation.
 
 \subsection{Multi-Head Self-Attention}
 \subsubsection{The Attention Mechanism}
@@ -251,7 +251,7 @@ Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \R^{N \times d}
      & \alpha_{ij} = \frac{\exp(s_{ij})}{\sum_{k=1}^N \exp(s_{kj})} \\
      & h_j = \sum_{k=1}^N \alpha_{kj} x_k
 \end{align}
-Where $a: \R^d \times \R^d \rightarrow \R$ is a scoring function that assigns importance scores to input $x_i$ given context $c_j$. The attention weights $\alpha_{ij}$ are then used to produce a context-sensitive representation $h_j$ as weighted sum of $X$.
+Where $a: \R^d \times \R^d \rightarrow \R$ is a scoring function that assigns importance scores to input $x_i$ given context $c_j$. The attention weights $\alpha_{ij}$ are then used to produce a context-sensitive representation $h_j$ as weighted sum over $X$.
 
 Common choices for $a$ include:
 \begin{itemize}
@@ -275,7 +275,7 @@ Then, using the obtained query and key vectors $Q$ and $K$, a matrix of attentio
 \begin{equation}
     \text{SelfAttention}(Q, K, V) = \text{softmax}\bigg(\frac{Q K^\top}{\sqrt{d_k}}\bigg) V
 \end{equation}
-As a consequence, each vector in the resulting sequence becomes an attention weighted sum over the vectors in $V$. Note the scaling by $\sqrt{d_k}$ which is supposed to prevent oversaturation of the softmax function, due to large dot-products.
+As a consequence, each vector in the resulting sequence becomes an attention weighted sum over the vectors in $V$. Note the scaling by $\sqrt{d_k}$, which is supposed to prevent oversaturation of the softmax function due to large dot-products.
 
 From the memory lookup perspective: Query vectors $Q$ are matched with key vectors $K$, in order to produce compatibility scores. These scores are then used to retrieve value vectors from $V$ via soft-lookup.
 
@@ -304,7 +304,7 @@ Where $f^{(k)}(x)$ is the layer at depth $k$.
 
 The most prominent motivation for residual connections is that they facilitate the training of deeper neural networks. A common issue with deep neural networks is the vanishing gradient problem. As computing gradients through backpropagation relies on a series of multiplications of potentially small values (Section~\ref{sec:backprop}), gradients tend to become smaller the further we propagate back. This makes training very deep networks harder, as early layers might receive little to no updates.
 
-Since $\tx{residual}'(x) = f'(x) + 1$, the gradient of the residual connection will be $>1$, even if the gradient is $<1$, alleviating the effect of vanishing gradients. It can also be interpreted as preserving more of the initial input information throughout the network, treating the DNN layers as an addition to the identity function, instead of a full transformation of the input.
+Since $\tx{residual}'(x) = f'(x) + 1$, the gradient of the residual connection will be $>~1$, even if the gradient is $<1$, alleviating the effect of vanishing gradients. It can also be interpreted as preserving more of the initial input information throughout the network, treating the DNN layers as an addition to the identity function instead of a full transformation of the input.
 
 % vanishing gradients
 % identity function idk read up
@@ -348,7 +348,7 @@ It consists of a multi-head attention layer and a point-wise fully connected lay
 
 
 \subsection{BERT Pre-Training}
-A key part in leading to the success of transformer models, is their effectiveness in large-scale transfer learning. In the context of NLP, the transfer learning procedure typically consists of two stages: First, a model is pre-trained on large amounts of human generated text data (e.g. from the internet), using language modeling as an objective. Then, the model is fine-tuned on a downstream task for which only limited amounts of data are available. As the model already learned basic language concepts during pre-training, it can now leverage this knowledge for the new task instead of learning it from scratch.
+A key part in leading to the success of transformer models is their effectiveness in large-scale transfer learning. In the context of NLP, the transfer learning procedure typically consists of two stages: First, a model is pre-trained on large amounts of human generated text data (e.g. from the internet), using language modeling as an objective. Then, the model is fine-tuned on a downstream task for which only limited amounts of data are available. As the model already learned basic language concepts during pre-training, it can now leverage this knowledge for the new task instead of learning it from scratch.
 
 One particular approach to transfer learning for transformers, which has pushed state-of-the-art on several NLP benchmarks, is BERT (Bidirectional Encoder Representations from Transformers) \cite{devlin-etal-2019-bert}. Unlike previous pre-training approaches that optimized for traditional \ti{left-to-right} language modeling \cite{DBLP:journals/corr/abs-1801-06146,Peters:2018,radford2018improving}, BERT employs a bidirectional objective.
 
@@ -361,4 +361,4 @@ In addition to MLM, BERT introduces a \ti{next-sentence prediction} (NSP) task w
 While many improved training procedures have been proposed since BERT, which often replace NSP or introduce additional objectives \cite{DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1907-11692, 10.5555/3454287.3454804, Lan2020ALBERT}, MLM still remains an integral part of most of these approaches.
 
 \section{Probing}
-Probing is a method for estimating the presence of certain properties in dense vector representations of neural network models. For this, a classifier (\ti{probe}) $P$ is trained on the fixed representations of a \ti{subject model} $\mathcal{M}$, to predict property $Y$. In NLP we typically probe for linguistic properties in word embeddings. For example, we could estimate the presence of part-of-speech (POS) information, by predicting POS tags. Based on the probe's performance, e.g. when compared to embeddings from a random baseline, we can conclude whether the property can be decoded from the subject model's representations or not.
+Probing is a method for estimating the presence of certain properties in dense vector representations of neural network models. For this, a classifier (\ti{probe}) $P$ is trained on the fixed representations of a \ti{subject model} $\mathcal{M}$, to predict property $Y$. In NLP we typically probe for linguistic properties in word embeddings. For example, we could estimate the presence of part-of-speech (POS) information by predicting POS tags. Based on the probe's performance, e.g. when compared to embeddings from a random baseline, we can conclude whether the property can be decoded from the subject model's representations.
