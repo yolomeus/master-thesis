@@ -100,7 +100,9 @@ All three subject models (\autoref{sec:subjects}) are probed at their intermedia
 
 As objective function, all probing tasks use cross-entropy loss (\autoref{eq:ce_loss}) which is necessary to compute MDL. In order to achieve this, we cast regression tasks to classification tasks by binning them into $k=10$ categories. To reduce the influence of outliers, we truncate any values that are further than two standard deviations away from the mean. This means any value $< \mu - 2 \sigma$ will be assigned to class $1$ and $> \mu + 2 \sigma$ to class $10$.
 
-We employ the Adam optimization algorithm \cite{kingma2014adam} with a learning rate of 1e-4 and a batch size of $32$ for updating the probe parameters, while the subject model's parameters stay fixed. Learning rate is halved each epoch if the validation loss does not improve. The maximum number of epochs is set to $50$, and we stop early if validation loss has not improved in $10$ epochs. We set the probe classifier's hidden size to $d_{probe}=256$ and apply dropout with rate $0.3$ before the output layer.
+We employ the Adam optimization algorithm \cite{kingma2014adam} with a learning rate of 1e-4 and a batch size of $32$ for updating the probe's parameters, while the subject model's parameters stay fixed. Learning rate is halved each epoch if the validation loss does not improve. The maximum number of epochs is set to $50$, and we stop early if validation loss has not improved in $10$ epochs. We set the probe classifier's hidden size to $d_{probe}=256$ and apply dropout with rate $0.3$ before the output layer.
+
+All probing experiments are conducted on a server with 128GB of system memory, using a single Nvidia GTX 1080ti GPU.
 
 \section{Evaluation Measures}
 \label{sec:metrics}

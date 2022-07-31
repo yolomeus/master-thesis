@@ -58,6 +58,9 @@ In addition to binary cross-entropy loss, we further experiment with a pairwise 
 \end{equation}
 Where $\lambda=0.2$ is the margin and $y^+, y^-$ are the model's predictions for a relevant and non-relevant document, respectively.
 
+Each model is trained on a server with $256$GB of system memory, using either a single Nvidia A100 or V100 GPU.
+
+
 \section{Results}
 \label{sec:mtl_results}
 \subsection{Single Additional Task}
