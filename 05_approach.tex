@@ -53,9 +53,6 @@ For fact checking, we leverage the existing FEVER \cite{thorne-etal-2018-fever} 
 
 Since this is the only dataset that we don't sample from TREC2019, we can simply leverage the existing labels of FEVER and sample claim-evidence pairs from its train set.
 
-\subsubsection{Relevance Estimation}
-Because the TREC2019 dataset provides relevance labels, we can also directly probe what layers contain most information with respect to relevance prediction. This especially becomes interesting when comparing between models tuned for ranking and pure language models.
-
 \subsection{Probing Models}
 \subsubsection{Subject Models}
 \label{sec:subjects}
