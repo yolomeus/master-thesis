@@ -33,9 +33,9 @@ Opposed to this, documents in the document dataset are automatically marked as r
 
 \section{Probing Dataset Generation}
 \label{sec:dataset_gen}
-For all of our probing tasks (\autoref{sec:tasks}), we automatically generate datasets from the TREC2019 passage-level test set. To achieve this, we sample $60$k query-document pairs from the test set of which $40$k are used as training set and $10$k as validation and test set, respectively. We then use existing tools to extract the properties that we are interested in and use them to label the data. Details on how we generate labels for each task are described in \autoref{sec:tasks}. Examples for each task are shown in \autoref{tab:data_examples}.
+For all of our probing tasks (\autoref{sec:tasks}), we automatically generate datasets from the TREC2019 passage-level test set. To achieve this, we sample $60$k query-document pairs from the test set of which $40$k are used as training set and $10$k as validation and test set, respectively. We then use existing tools to extract the properties that we are interested in and use them to label the data. Details on how we generate labels for each task are described in \autoref{sec:tasks}. Examples for each task are shown in \autoref{tab:data_examples}. Throughout this thesis, we will abbreviate each task name as follows: Semantic similarity (SEM), named entity recognition (NER), coreference (COREF), fact checking (FACT).
 
-\begin{table}[h]
+\begin{table}
     \centering
     \begin{tabular}{l|p{0.2\textwidth}|p{0.4\textwidth}|c}
         \hline
@@ -49,3 +49,28 @@ For all of our probing tasks (\autoref{sec:tasks}), we automatically generate da
     \caption{Training examples from each probing dataset and their respective targets. Target spans within the text are highlighted in square brackets.}
     \label{tab:data_examples}
 \end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{gfx/probing/labels/sem}
+    \caption{Distribution of semantic similarity target scores.}
+
+    \bigskip
+
+    \centering
+    \includegraphics[width=\textwidth]{gfx/probing/labels/bm25}
+    \caption{Distribution of BM25 target scores.}
+
+    \bigskip
+
+    \centering
+    \includegraphics[width=\textwidth]{gfx/probing/labels/fever_coref}
+    \caption{Distribution of FEVER and COREF labels. COREF negatives are sampled for each positive.}
+
+    \bigskip
+
+    \centering
+    \includegraphics[width=\textwidth]{gfx/probing/labels/ner}
+    \caption{Distribution of named entity types in the NER dataset.}
+
+\end{figure}
