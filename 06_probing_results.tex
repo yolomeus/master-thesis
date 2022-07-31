@@ -45,7 +45,7 @@ We can further observe that the difference in compression between early layers a
     \caption{Layer to probing score for NER and fact checking properties. We report accuracy on the test set.}
 \end{figure}
 
-To better understand this behavior, we can have a look at the row-normalized heatmap in \autoref{fig:heatmap_comp_base} of the \ti{bert-base-uncased} model. We can see that COREF and fact checking strongly center around layers 4-7 and 6-9 respectively, with fact checking showing a slightly wider spread. While BM25 exhibits a similar pattern, it is less focused around a particular layer, but instead more evenly distributed from layer 4-6. SEM and NER on the other hand look almost identical, with a rather flat distribution that is more prominent in early layers 1-4.
+To better understand this behavior, we can have a look at the row-normalized heatmap in \autoref{fig:heatmap_comp_base} of the \ti{bert-base-uncased} model. We can see that COREF and fact checking strongly center around layers 4-7 and 6-9 respectively, with fact checking showing a slightly wider spread. While BM25 exhibits a similar pattern, it is less focused around a particular layer, but instead more evenly distributed from layer 4-6. SEM and named entity recognition (NER) on the other hand look almost identical, with a rather flat distribution that is more prominent in early layers 1-4.
 
 \begin{figure}[!ht]
     \includegraphics[width=\textwidth]{gfx/probing/heatmap_compression_base}
