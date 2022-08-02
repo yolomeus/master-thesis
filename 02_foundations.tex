@@ -2,23 +2,21 @@
 \label{foundations}
 \section{Information Retrieval - Ranking Text}
 \label{sec:ir}
-Ranking is an integral part of the information retrieval (IR) process. The general IR problem can be formulated as follows: A user with a need for information expresses this information need through formulation of a query. Now given the query and a collection of documents, the IR system's task is to provide a list of documents that satisfy the user's information need. Further, the retrieved documents should be sorted by relevance w.r.t. the user's information need in descending order, i.e. the documents considered most relevant should be at the top of the list.
+Ranking is an integral part of the information retrieval (IR) process. The general IR problem can be formulated as follows: A user with a need for information expresses this information need through formulation of a query. Now given the query and a collection of documents, the IR system's task is to provide a list of documents that satisfy the user's information need. Furthermore, the retrieved documents should be sorted by relevance with respect to the user's query in descending order, i.e. the documents considered most relevant should be at the top of the list.
 
-While from this formulation only the task might appear simple, there are several caveats to look out for when it comes to ranking. For instance, there is no restriction on the structure of the query. While we might expect a natural language question like "What color are giraffes?" a user might decide to enter a keyword query like "giraffes color". The same applies to documents: Depending on the corpus we are dealing with, the documents might be raw text, structured text like HTML or even another type of media e.g. image, audio or a combination thereof.
+While given this formulation the task might appear simple at first, there are several caveats to look out for when it comes to ranking. For instance, there is no restriction on the structure of the query. While we might expect a natural language question like "What color are giraffes?" a user might decide to enter a keyword query like "giraffes color". The same applies to documents: Depending on the corpus we are dealing with, the documents might be raw text, structured text like HTML or even another type of media e.g. image, audio or a combination thereof.
 
-Another possible issue is a mismatch between information need of the user and the corresponding query. Even if we find a perfect ordering of documents with respect to the query, we can not know for certain that the query actually reflects the user's information need. The user might not even know exactly what they're looking for until discovery through an iterative process, i.e. the information need is fuzzy and can not be specified through an exact query from the beginning on.
+Another possible issue is a mismatch between information need of the user and the corresponding query. Even if we find a perfect ordering of documents with respect to the query, we can not know for certain that the query actually reflects the user's information need. The user might not even know exactly what they're looking for until discovery through an iterative process, i.e. the information need is fuzzy and can not be defined by a single query from the start.
 
-Furthermore, a query might require additional context information in order for an IR system to find relevant documents. For example, depending on the time at which a query is prompted, the correct answer might change: "Who is president?" should return a different set of documents as soon as a new president has been elected. Also, since not specified further, it is up to interpretation what country's president the user is interested in. This also shows that some queries might depend on the user's location, i.e. the user might be interested in the president in their respective country.
+Furthermore, a query might require additional contextual information in order for an IR system to find relevant documents. For example, depending on the time at which a query is prompted, the correct answer might change: "Who is the president?" should return a different set of documents as soon as a new president has been elected. Also, since not specified further, it is up to interpretation what country's president the user is interested in. This also shows that some queries might depend on the user's location, i.e. the user might be interested in the president in their respective country.
 
-In addition, the corpus might not be static either and change or grow over time. For example, web search has to deal with an ever-growing corpus: The internet.
+In addition, the corpus might not be static either and change or grow over time. For example, web search has to deal with an ever-growing corpus: the Internet.
 
-While this list of issues is not comprehensive, at this point the complexity of the ranking problem should have become apparent.
-
-Because this work focuses on the ranking of text in the context of web search, we will now give a formal definition with that scenario in mind:
+While this list of issues is not comprehensive, at this point the complexity of the ranking problem should have become apparent. Because this work focuses on the ranking of text in the context of web search, we will now give a formal definition with that scenario in mind:
 
 Given a set of $|Q|$ natural language queries $Q = \{q_i\}_{i=1}^{|Q|}$ and a collection of $|D|$ documents $D = \{d_i\}_{i=1}^{|D|}$, we want to find a scoring function $s: Q \times D \rightarrow \R$, such that for any query $q \in Q$ and documents $d, d' \in D$, it holds true that $s(q, d) > s(q, d')$ if $d$ is more relevant w.r.t $q$ than $d'$.
 
-To give the reader a more concrete idea and as we are going to build upon it throughout this thesis, we will now discuss two traditional approaches to text retrieval which, unlike neural retrieval, are based on exact matching, meaning query and document terms are compared directly. Further, they're "bag of word" models, meaning queries and documents are treated as sets of terms without considering order.
+To give the reader a more concrete idea and as we are going to build upon it throughout this thesis, we will now discuss two traditional approaches to text retrieval which, unlike neural IR, are based on exact matching, meaning query and document terms are compared directly. Moreover, they're "bag of word" models, meaning queries and documents are treated as sets of terms without considering order.
 
 \subsection{TF-IDF}
 Term Frequency - Inverted Document Frequency weighting (TF-IDF), is a traditional ranking approach that, given a query, assigns a relevance score to each document based on two assumptions:
@@ -37,13 +35,13 @@ From these assumptions, two metrics are derived:
               \end{cases}
           \end{equation}
 
-          Where $\tx{tf}_{t, d}$ is the count of term $t$ in document $d$. The logarithmic scaling is motivated by the idea that a document does not linearly become more relevant by the number of terms in it: A document containing a term 10 times more often doesn't necessarily mean it is $10$ times more important, e.g. the document might just be very long and contain more words in general. Note that this is just one possible normalization scheme out of many.
+          where $\tx{tf}_{t, d}$ is the count of term $t$ in document $d$. The logarithmic scaling is motivated by the idea that a document does not linearly become more relevant by the number of terms in it: A document containing a term 10 times more often doesn't necessarily mean it is $10$ times more important, e.g. the document might just be very long and contain more words in general. Note that this is just one possible normalization scheme out of many.
 
     \item Inverted Document Frequency
           \begin{equation}
               \tx{idf}(t, d) = \log \frac{|D|}{\tx{df}_t}
           \end{equation}
-          Where $\tx{df}_t$ counts the number of documents that a term occurs in over the full corpus. This way, terms that occur less frequent relative to the corpus size will receive a high IDF score and those that are more frequent a lower score.
+          where $\tx{df}_t$ counts the number of documents that a term occurs in over the full corpus. This way, terms that occur less frequently relative to the corpus size will receive a higher IDF score and those that are more frequent will receive a lower score.
 
 \end{enumerate}
 
@@ -66,30 +64,30 @@ Here, the free parameters $k_1$ and $b$ determine the how quick the bm25 functio
 
 \section{Machine Learning}
 \label{sec:ml}
-Machine learning encompasses a set of statistical methods for automatically recognizing and extracting patterns from data. Typically, we can distinguish between two main types of machine learning: Supervised learning and unsupervised learning.
+Machine learning (ML) encompasses a set of statistical methods for automatically recognizing and extracting patterns from data. Typically, we can distinguish between two main types of machine learning: Supervised learning and unsupervised learning.
 
-In the case of supervised learning, we have a set of training instances $X = \{x_i\}_{i=1}^N$ and corresponding labels $Y = \{y_i\}_{i=1}^N$, assigning a certain characteristic to each data point. For example, this characteristic might be a probability distribution over a set of classes or a regression score. If each $y_i$ represents one or more categories from a fixed set of classes $C = \{c_i\}_{i=1}^{|C|}$, this is called a classification problem.
+In the case of supervised learning, we have a set of training instances $X = \{x_i\}_{i=1}^N$ and corresponding labels $Y = \{y_i\}_{i=1}^N$, assigning a certain characteristic to each data point. For example, this characteristic might be a probability distribution over a set of classes or a regression score. If each $y_i$ represents one or more categories from a fixed set of classes $C = \{c_i\}_{i=1}^{|C|}$, it is called a classification problem.
 
-Now given the training data and labels, the goal is to find a hypothesis that explains the data, such that for unseen data points $x' \notin X$, the labels $y' \notin Y$ can be inferred automatically. One way to estimate the generalization ability of a model or algorithm is to divide the dataset into a training and a test set, and only train on the training set while using the test set for evaluation. If the test set models the full distribution of data adequately, it can act as a proxy for estimating the error on unseen samples.
+Now given the training data and labels, the goal is to find a hypothesis that explains this data, such that for unseen data points $x' \notin X$, the labels $y' \notin Y$ can be inferred automatically. One way to estimate the generalization ability of a model or algorithm is to divide the dataset into a training and a test set, and only train on the training set while using the test set for evaluation. If the test set models the full distribution of data adequately, it may act as a proxy for estimating the error on unseen samples.
 
-In contrast, in unsupervised learning there is no access to any labels whatsoever. Characteristics of the data need to be learned solely from the data $X$ itself. Examples for this include clustering where $X$ is clustered into groups, representation learning which usually tries to find vector representations for $X$, as well as dimensionality reduction that, if each $X$ is already a vector, tries to compress them into more compact but still informative representations.
+In contrast, when performing unsupervised learning there is no access to any labels whatsoever. Characteristics of the data need to be learned solely from the data $X$ itself. Examples for this include clustering where $X$ is clustered into groups, representation learning which usually tries to find vector representations for $X$, as well as dimensionality reduction which, if each $X$ is already a vector, tries to compress them into more compact but still informative representations.
 
-That being said, the separating lines between supervised and unsupervised learning are blurry. Especially with the emergence of semi-supervised approaches and "end2end" representation learning, modern ML methods often integrate parts of both.
+That being said, the lines separating supervised and unsupervised learning have become blurry. Especially with the emergence of semi-supervised approaches and "end2end" representation learning, modern ML methods often integrate parts of both.
 
 \section{Deep Learning}
 \label{sec:dl}
 Deep learning is a subfield of ML that makes use of a class of models called Deep Neural Networks (DNN). Typically, DNNs find application in the supervised learning scenario and are often used for classification tasks. In the following we explain the basic mechanisms of DNNs and common approaches to train them.
 
 \subsection{Deep Neural Networks}
-In essence, a Deep Neural Network (DNN) is a function approximator $f: \R^n \rightarrow \R^m$ that applies a series of non-linear transformations to its inputs in order to produce an output. In its simplest form, an input vector $x \in \R^n$ is multiplied by a single weight matrix, a bias vector is added, and the resulting vector is passed through a non-linear activation function $\sigma$.
+In essence, a Deep Neural Network (DNN) is a function approximator $f: \R^n \rightarrow \R^m$ that applies a series of non-linear transformations to its inputs in order to produce an output. In its simplest form, an input vector $x \in \R^n$ is multiplied by a single weight matrix, a bias vector is added, and the resulting vector is passed through a non-linear activation function $\sigma$:
 
 \begin{equation}
     f(x) = \sigma(W x + b)
 \end{equation}
-Where $W \in \R^{m \times n}$ and $b \in \R^{m}$ are learnable parameters.
+where $W \in \R^{m \times n}$ and $b \in \R^{m}$ are learnable parameters.
 This model is commonly referred to as single layer feed-forward neural network (FFN) or single layer perceptron.
 
-When used for classification, a single layer FFN is limited to problems that require linear separation. In order to learn more complex, non-linear decision boundaries, multiple layers can be applied in sequence.
+When used for classification, a single layer FFN is limited to problems that solely require linear separation in order to be solved. To learn more complex, non-linear decision boundaries, multiple layers can be applied in sequence.
 
 An $L$-layer DNN can be described as follows:
 
@@ -142,14 +140,14 @@ By repeating this procedure iteratively, we can gradually minimize $J(\theta)$. 
 \end{itemize}
 
 \subsubsection{Stochastic Gradient Descent}
-The aforementioned algorithm is also known as the batch gradient descent (BGD) variant. Stochastic Gradient Descent (SGD) differs from BGD in the number of training samples that are used for a gradient update. Where BGD uses the gradient of the full training set for updating $\theta$, SGD only considers a single, randomly picked sample for each update. Not only can this approach be more efficient, since less redundant computations are performed, due to its stochastic nature it is more likely to break out of local minima, allowing additional exploration for better solutions. \cite{ruder2016overview}
+The aforementioned algorithm is also known as the batch gradient descent (BGD) variant. Stochastic Gradient Descent (SGD) differs from BGD in the number of training samples that are used for a gradient update. Where BGD uses the gradient of the full training set for updating $\theta$, SGD only considers a single, randomly picked sample for each update. Not only can this approach be more efficient, since fewer redundant computations are performed, due to its stochastic nature it is also more likely to break out of local minima, allowing additional exploration for better solutions. \cite{ruder2016overview}
 
 \subsubsection{Mini-Batch Gradient Descent}
 While SGD's high variance during training makes it more likely to escape local minima, it can also come with the disadvantage of unstable training. In this scenario, convergence might be hindered by overshooting desirable minima.
 
 To mitigate this issue, we can simply use more than one sample in order to achieve a more accurate estimate of the full gradient. Now, at each step a small subset of the dataset is sampled to reduce variance and stabilize training while retaining a level of stochasticity. This variant of gradient descent is called mini-batch gradient descent.
 
-Building on mini-batch GD, many algorithms have been introduced in the context of DNNs, that employ further optimizations in order to improve convergence speed and quality. Notable examples include:
+Building on mini-batch GD, many algorithms have been introduced in the context of DNNs, which employ further optimizations in order to improve convergence speed and quality. Notable examples include:
 \begin{itemize}
     \item Adagrad \cite{duchi2011adaptive}
     \item RMSProp \cite{hinton2012neural}
@@ -170,9 +168,9 @@ Building on mini-batch GD, many algorithms have been introduced in the context o
 
 \subsubsection{Backpropagation}
 \label{sec:backprop}
-Because a neural network can consist of multiple layers and thus, is a composition of multiple non-linear functions, computing the gradient w.r.t. to each parameter of the network can become a non-trivial and even cumbersome task, if done by hand. One popular way of automatically computing the gradients of a DNN is the backpropagation algorithm \cite{rumelhart1988learning}.
+Because a neural network may consist of multiple layers and therefore, is a composition of multiple non-linear functions, computing the gradient w.r.t. each parameter of the network can become a non-trivial and even cumbersome task, if done by hand. One popular way of automatically computing the gradients of a DNN is the backpropagation algorithm \cite{rumelhart1988learning}.
 
-Backpropagation is a direct application of the chain rule for calculating the derivative of the composition of two functions. Given two differentiable functions $f(x)$ and $g(x)$, the chain rule states that the derivate of their composition $f(g(x))$ is equal to the partial derivative of $f$ w.r.t. $g$, times the partial derivate of $g$ w.r.t $x$.
+Backpropagation is a direct application of the chain rule for calculating the derivative of the composition of two functions. Given two differentiable functions $f(x)$ and $g(x)$, the chain rule states that the derivate of their composition $f(g(x))$ is equal to the partial derivative of $f$ w.r.t. $g$, times the partial derivate of $g$ w.r.t. $x$.
 
 \begin{equation}
     \frac{\partial f(g(x))}{\partial x} = \frac{\partial f(g(x))}{\partial g(x)} \frac{\partial g(x)}{\partial x}
@@ -187,9 +185,9 @@ If we now apply the chain rule a second time, we can produce a term for computin
 \begin{equation}
     \frac{\partial J}{\partial W^{(L)}} = \frac{\partial J}{\partial \sigma(a^{(L)})} \frac{\partial \sigma(a^{(L)})}{\partial a^{(L)}} \frac{\partial a^{(L)}}{W^{(L)}}
 \end{equation}
-Note that we now only need to know the derivatives of $J$, $\sigma$ and $a^{(L)}$ separately, in order to compute the derivative of their composition. By recursively applying this rule, we can compute partial derivatives of $J$ w.r.t to parameters of the DNN, up to an arbitrary depth, as long as all functions it is composed of are differentiable.
+Note that we now only need to know the derivatives of $J$, $\sigma$ and $a^{(L)}$ separately, in order to compute the derivative of their composition. By recursively applying this rule, we can compute partial derivatives of $J$ w.r.t. parameters of the DNN, up to an arbitrary depth, as long as all functions it is composed of are differentiable.
 
-By modeling the chain of operations in a DNN as a computation graph, deep learning frameworks like PyTorch \cite{NEURIPS2019_9015} or Tensorflow \cite{tensorflow2015-whitepaper} can automatically perform backpropagation, as long as each operation's derivative is known and pre-defined in the library.
+By modeling the chain of operations in a DNN as a computation graph, deep learning frameworks like PyTorch \cite{NEURIPS2019_9015} or Tensorflow \cite{tensorflow2015-whitepaper} are capable of automatically performing backpropagation, as long as each operation's derivative is known and pre-defined in the library.
 
 \subsection{Regularization}
 Regularization includes a number of techniques to improve the generalization capabilities of an ML model. If an ML model achieves a low error rate on training data but a high error rate on test data, it is said to be \ti{overfitting}. In this scenario, the model has essentially "memorized" the training data and can no longer adapt to unseen examples. Regularization techniques tackle this problem by limiting the hypothesis space of models through favoring simple solutions over complex ones.
@@ -208,7 +206,7 @@ Dropout is a DNN specific method that, during training time, randomly sets entri
 
 \section{Transformer Models}
 \label{sec:transformer}
-One of the most prominent deep learning architectures of the past years is the transformer \cite{vaswani2017attention}. The transformer and its variants have set multiple state-of-the-art records in a variety of NLP tasks \cite{devlin-etal-2019-bert, DBLP:journals/corr/abs-1907-11692, DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1909-08053, DBLP:journals/corr/abs-2005-14165}, and have since then also been adapted to other domains such as computer vision \cite{DBLP:journals/corr/abs-2010-11929} or audio generation \cite{https://doi.org/10.48550/arxiv.2005.00341}.
+One of the most prominent deep learning architectures of the past years is the transformer \cite{vaswani2017attention}. The transformer and its variants have set multiple state-of-the-art records in a variety of NLP tasks \cite{devlin-etal-2019-bert, DBLP:journals/corr/abs-1907-11692, DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1909-08053, DBLP:journals/corr/abs-2005-14165}, and have since been adapted to other domains such as computer vision \cite{DBLP:journals/corr/abs-2010-11929} or audio generation \cite{https://doi.org/10.48550/arxiv.2005.00341}.
 
 Unlike previous methods for embedding words in vector spaces, which relied on word co-occurrence to learn a single fixed vector for each token \cite{pennington2014glove, DBLP:journals/corr/abs-1301-3781}, transformers are able to produce \ti{contextualized} word embeddings. This means that the representation of each word in a sequence changes dynamically based on its context, i.e. all other words in the sequence.
 
@@ -236,7 +234,7 @@ One way for generating positional encodings is to introduce a new set of learned
 \begin{equation}
     \text{PE}_{(pos, 2i + 1)} = \cos\bigg(\frac{pos}{10000^{\frac{2i}{d}}}\bigg)
 \end{equation}
-Where $pos$ and $i$ denote position along sequence and hidden dimension respectively. They found this approach to perform nearly identical to learned embeddings in the case of machine translation.
+where $pos$ and $i$ denote position along sequence and hidden dimension respectively. In terms of machine translation, they've found this approach to perform nearly identical to learned embeddings.
 
 \subsection{Multi-Head Self-Attention}
 \subsubsection{The Attention Mechanism}
@@ -251,7 +249,7 @@ Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \R^{N \times d}
      & \alpha_{ij} = \frac{\exp(s_{ij})}{\sum_{k=1}^N \exp(s_{kj})} \\
      & h_j = \sum_{k=1}^N \alpha_{kj} x_k
 \end{align}
-Where $a: \R^d \times \R^d \rightarrow \R$ is a scoring function that assigns importance scores to input $x_i$ given context $c_j$. The attention weights $\alpha_{ij}$ are then used to produce a context-sensitive representation $h_j$ as weighted sum over $X$.
+where $a: \R^d \times \R^d \rightarrow \R$ is a scoring function that assigns importance scores to input $x_i$ given context $c_j$. The attention weights $\alpha_{ij}$ are then used to produce a context-sensitive representation $h_j$ as weighted sum over $X$.
 
 Common choices for $a$ include:
 \begin{itemize}
@@ -284,7 +282,7 @@ Self-Attention can further be extended to multi-head attention by running multip
 \begin{equation}
     \tx{MultiHeadAttention}(Q, K, V) = \bigg[ \bigparallel_{i=1}^h \tx{SelfAttention}_i(Q,K,V) \bigg] W\lay o
 \end{equation}
-Where $h$ is the number of attention-heads, $||$ denotes concatenation and $W\lay o \in \R^{d_v h \times d}$ is a learned matrix for projecting back to the model's original hidden dimension.
+where $h$ is the number of attention-heads, $||$ denotes concatenation and $W\lay o \in \R^{d_v h \times d}$ is a learned matrix for projecting back to the model's original hidden dimension.
 
 Note that in the default case, each attention layer has its own weight matrices. However,  we omit layer indices to keep the notation more simple.
 
@@ -295,12 +293,12 @@ The point-wise feed-forward component is a 2-layer MLP that is applied to each p
 \end{equation}
 
 \subsection{Residual Connection}
-After applying a layer or block of layers in a DNN, if we add the inputs back to its outputs, it is called a residual connection or skip connection:
+After applying a layer or block of layers in a DNN, if we add the inputs back to its outputs, we introduce a residual connection or skip connection:
 
 \begin{equation}
     \tx{Residual}(x) = f^{(k)}(x) + x
 \end{equation}
-Where $f^{(k)}(x)$ is the layer at depth $k$.
+where $f^{(k)}(x)$ is the layer at depth $k$.
 
 The most prominent motivation for residual connections is that they facilitate the training of deeper neural networks. A common issue with deep neural networks is the vanishing gradient problem. As computing gradients through backpropagation relies on a series of multiplications of potentially small values (Section~\ref{sec:backprop}), gradients tend to become smaller the further we propagate back. This makes training very deep networks harder, as early layers might receive little to no updates.
 
@@ -321,13 +319,13 @@ However, since DNNs pass features through multiple layers, there's no guarantee 
 \begin{equation}
     \sigma^{(k)} = \sqrt{\frac{1}{d} \sum_{i=1}^d (z_i^{(k)} - \mu^{(k)})^2}
 \end{equation}
-Here $z_i^{(k)}$ denotes the $i$-th output of layer $k$ with hidden dimension $d$, before applying an activation function.\\
+here $z_i^{(k)}$ denotes the $i$-th output of layer $k$ with hidden dimension $d$, before applying an activation function.\\
 These layer statistics are then used to normalize the hidden layer representation $z^{(k)}$:
 
 \begin{equation}
     \tx{LayerNorm}(z\lay k) = \gamma \lay k \circ \frac{z\lay k - \mu\lay k}{\sigma\lay k} + \beta\lay k
 \end{equation}
-Where $\gamma^{(k)}$ and $\beta^{(k)}$ are learned parameter vectors for layer $k$ and $\circ$ denotes the element-wise product. Further, $\gamma^{(k)}$ and $\beta^{(k)}$ are additional learnable parameters for adjusting scale and shift of the normalized distribution if required.
+where $\gamma^{(k)}$ and $\beta^{(k)}$ are learned parameter vectors for layer $k$ and $\circ$ denotes the element-wise product. Further, $\gamma^{(k)}$ and $\beta^{(k)}$ are additional learnable parameters for adjusting scale and shift of the normalized distribution if required.
 
 \subsection{The Full Transformer Block}
 
@@ -348,17 +346,17 @@ It consists of a multi-head attention layer and a point-wise fully connected lay
 
 
 \subsection{BERT Pre-Training}
-A key part in leading to the success of transformer models is their effectiveness in large-scale transfer learning. In the context of NLP, the transfer learning procedure typically consists of two stages: First, a model is pre-trained on large amounts of human generated text data (e.g. from the internet), using language modeling as an objective. Then, the model is fine-tuned on a downstream task for which only limited amounts of data are available. As the model already learned basic language concepts during pre-training, it can now leverage this knowledge for the new task instead of learning it from scratch.
+A key part leading to the success of transformer models is their effectiveness in large-scale transfer learning. In the context of NLP, the transfer learning procedure typically consists of two stages: First, a model is pre-trained on large amounts of human generated text data (e.g. from the Internet), using language modeling as an objective. Then, the model is fine-tuned on a downstream task for which only limited amounts of data are available. As the model has already learned basic language concepts during pre-training, it can now leverage this knowledge for the new task instead of learning it from scratch.
 
-One particular approach to transfer learning for transformers, which has pushed state-of-the-art on several NLP benchmarks, is BERT (Bidirectional Encoder Representations from Transformers) \cite{devlin-etal-2019-bert}. Unlike previous pre-training approaches that optimized for traditional \ti{left-to-right} language modeling \cite{DBLP:journals/corr/abs-1801-06146,Peters:2018,radford2018improving}, BERT employs a bidirectional objective.
+One particular approach to transfer learning for transformers, which has pushed the state-of-the-art on several NLP benchmarks, is BERT (Bidirectional Encoder Representations from Transformers) \cite{devlin-etal-2019-bert}. Unlike previous pre-training approaches that optimized for traditional \ti{left-to-right} language modeling \cite{DBLP:journals/corr/abs-1801-06146,Peters:2018,radford2018improving}, BERT employs a bidirectional objective.
 
 In left-to-right language modeling the goal is to predict the next word in a sequence of words, given the preceding words. BERT on the other hand employs a \ti{masked language model} (MLM) objective. Here, tokens from the input sequence are randomly masked out or replaced with random tokens. The model then has to predict what the actual token should be.
 
-This means that during pre-training, traditional language models only have access to the context left to their current prediction, while BERT has access to context in both directions.
+This means that, during pre-training, traditional language models only have access to the context left to their current prediction, while BERT has access to context in both directions.
 
 In addition to MLM, BERT introduces a \ti{next-sentence prediction} (NSP) task where, given two sentences, the model has to determine whether the second sentence follows the first, or was selected randomly. This is motivated by language tasks often requiring to model the relation between two sentences.
 
-While many improved training procedures have been proposed since BERT, which often replace NSP or introduce additional objectives \cite{DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1907-11692, 10.5555/3454287.3454804, Lan2020ALBERT}, MLM still remains an integral part of most of these approaches.
+While many improved training procedures have been proposed since BERT, which often replace NSP or introduce additional objectives \cite{DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1907-11692, 10.5555/3454287.3454804, Lan2020ALBERT}, MLM still remains as an integral part for most approaches.
 
 \section{Probing}
 Probing is a method for estimating the presence of certain properties in dense vector representations of neural network models. For this, a classifier (\ti{probe}) $P$ is trained on the fixed representations of a \ti{subject model} $\mathcal{M}$, to predict property $Y$. In NLP we typically probe for linguistic properties in word embeddings. For example, we could estimate the presence of part-of-speech (POS) information by predicting POS tags. Based on the probe's performance, e.g. when compared to embeddings from a random baseline, we can conclude whether the property can be decoded from the subject model's representations.
