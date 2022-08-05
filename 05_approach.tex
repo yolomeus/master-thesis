@@ -9,7 +9,7 @@ Following the probing experiments, we then attempt to develop an improved fine-t
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{gfx/probing/probing}
-    \caption{Schematic overview of the probing procedure. Each task is probed at every layer.}
+    \caption{Schematic overview of the probing procedure. For the sake of clarity, this example only shows one task per layer. However, in our experiments each property is probed at \ti{every} layer.}
     \label{fig:probing}
 \end{figure}
 
@@ -107,6 +107,7 @@ All probing experiments are conducted on a server with 128GB of system memory, u
 In the following, we explain the evaluation measures that we employ for probing and any subsequent experiment.
 
 \subsection{MDL}
+\label{sec:mdl}
 As mentioned in \Cref{sec:probe}, selecting a proper size for a probe can be difficult. With a large probing classifier it becomes unclear whether the property probed for is decoded, or the classifier simply learns the task at hand. One way to address this problem is to compare how well the classifier performs on randomly initialized baseline representations \citep{zhang-bowman-2018-language}. Further, \citep{DBLP:journals/corr/abs-1909-03368} propose the use of \ti{control tasks}, for which task labels are randomly assigned, and a probe is selected based on the difference in accuracy to the original task. Both approaches, however, often do not reflect a large difference in accuracy when compared to the original representations or task.
 
 As a solution, instead of accuracy, \citep{voita-titov-2020-information} propose an information theoretic approach for measuring probe performance. By recasting learning a probe model to transmitting label data with the least amount of bits, a new measure can be applied: The \ti{minimum description length} (MDL) required for transmitting the task labels, given the probed representations. Not only does MDL measure the probe's predictive performance, it also takes into account the amount of effort that is requierd for achieving said performance. The effort can manifest in model size or the amount of required training data.
