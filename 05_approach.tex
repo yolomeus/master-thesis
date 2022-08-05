@@ -20,7 +20,7 @@ We propose a set of classification tasks with ranking properties as target varia
 \subsubsection{BM25 Prediction}
 BM25 (\Cref{sec:bm25}) is a well-known text-retrieval method and still considered a first choice when it comes to computational efficiency. As a heuristic designed around exact term matching, BM25 compares query and document on a symbolic level, without the notion of higher level semantics. Being able to decode BM25 from BERT embeddings might give a hint on whether exact matching properties like term-frequency or even corpus level statistics like inverted document-frequency are encoded by the neural ranking models.
 
-To generate BM25 scores for each query-document pair we use the Elasticsearch BM25 implementation\footnote{\url{https://www.elastic.co/de/elasticsearch/}}.
+To generate BM25 scores for each query-document pair the Elasticsearch BM25 implementation\footnote{\url{https://www.elastic.co/de/elasticsearch/}} is used.
 
 \subsubsection{Semantic Similarity}
 To measure semantic similarity, we compute cosine distance between query and document vectors in the GloVe\cite{pennington2014glove} embedding space:
@@ -30,21 +30,21 @@ To measure semantic similarity, we compute cosine distance between query and doc
 \end{equation}
 While these dense word representations encode semantics, unlike BERT they are not contextualized, meaning they do not change based on surrounding words in a sentence. In that sense, using semantic similarity as ranking measure may be interpreted as a kind of soft term-matching: Words between query and document that are similar in meaning increase the estimated relevance.
 
-In order to be able to compute semantic similarity between query and document, we first embed all words in the GloVe \cite{pennington2014glove} vector space, then compute the average embedding for query and document over the sequence dimension and compare the resulting two vectors.
+In order to be able to compute semantic similarity between query and document, first all words are embedded in the GloVe \cite{pennington2014glove} vector space, then the average embedding for query and document over the sequence dimension is computed and the resulting two vectors are compared.
 
 \subsubsection{Coreference Resolution}
 Coreference resolution is the task of deciding whether two mentions in a text refer to the same entity. To model coreference we use binary classification over two spans of text in query and document, respectively.
 
 We argue that recognizing whether an entity is shared between query and document can be an important indicator on whether the document is relevant. For instance, knowing that "the US president" in a query refers to "Joe Biden" in a document is certainly helpful.
 
-To detect and score entity pairs, we use the neuralcoref pipeline extension for spaCy\footnote{\url{https://github.com/huggingface/neuralcoref}}. It consists of a rule-based mentions-detection module, followed by a feed-forward neural network which produces a binary coreference score for each detected pair.
+To detect and score entity pairs, the neuralcoref pipeline extension for spaCy\footnote{\url{https://github.com/huggingface/neuralcoref}} is used. It consists of a rule-based mentions-detection module, followed by a feed-forward neural network which produces a binary coreference score for each detected pair.
 
 \subsubsection{Named Entity Recognition}
 Similar to coreference resolution, recognizing entities can be used to match concepts between query and document when performing retrieval. However, in the case of named entity recognition this matching is less restricted, as only entity \ti{types} are considered instead of specific entities. For example, given the query: "How much HP does a jaguar have?", a document that contains car entities should be prioritized over one with animal entities.
 
 For our task, we solely test the general ability of the model to encode entities, meaning we treat document and query as a whole and predict entity types of separate text spans.
 
-To identify named entities we use spaCy's \cite{spacy2} named entity recognition module. It is capable of detecting and assigning one of $18$ different types of entities. Naturally, we only include pairs that contain at least one entity.
+To identify named entities we spaCy's \cite{spacy2} named entity recognition module is employed. It is capable of detecting and assigning one of $18$ different types of entities. Naturally, only pairs that contain at least one entity are being included.
 
 \subsubsection{Fact Checking}
 For fact checking, we leverage the existing FEVER \cite{thorne-etal-2018-fever} dataset. Here, instead of query and document, a claim and evidence text are provided. The goal is to classify whether the evidence supports or refutes the claim. This task requires high level semantic reasoning, making it relevant for more fine-grained ranking, i.e. providing documents that contain \ti{coherent} answers to a query and not only similar ones.
