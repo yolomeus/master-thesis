@@ -44,13 +44,13 @@ Because our objective is now re-ranking on TREC2019, we can no longer rely on th
 We exclude the fact-checking task, as we do not have a straightforward way to automatically generate samples and the dataset itself is too small when compared to the other datasets.
 
 \subsection{Training}
-During training, we assemble mini-batches of size $32$, by sampling from the TREC2019 train set and all generated task datasets with a probability proportional to their size. As loss function we use the objective proposed in \cite{aghajanyan-etal-2021-muppet}:
+During training, we assemble mini-batches of size $32$, by sampling from the TREC2019 train set and all generated task datasets with a probability proportional to their size. As loss function we use the objective proposed in \citep{aghajanyan-etal-2021-muppet}:
 
 \begin{equation}
     \mathcal{L}(y, \hat{y}) = \sum_{t \in \tx{tasks}} \frac{\textnormal{CE}(y_t, \hat{y}_t)}{\log c_t}
 \end{equation}
 where $c_t$ is the number of target classes and $y_t$, $\hat{y}_t$ are predictions and ground-truth labels with respect to task $t$, respectively. It scales each task loss, such that all losses would have equivalent values, if the class distribution were uniformly distributed, along with the predictions. Analogous to the probing experiments, regression tasks are cast to classification tasks by binning the targets into $k=10$ categories, so that $c_t$ is defined properly.
-We train each model for up to a maximum of $100$ epochs and perform early stopping after $3$ epochs of no improvement in MAP on the TREC2019 validation set. As optimizer, we use Adam \cite{kingma2014adam} with a learning rate of 2e-6 and linearly increase the learning rate over the first $10k$ steps. Each task specific classifier has a hidden size of $128$ and dropout with rate $0.2$ is applied before each layer.
+We train each model for up to a maximum of $100$ epochs and perform early stopping after $3$ epochs of no improvement in MAP on the TREC2019 validation set. As optimizer, we use Adam \citep{kingma2014adam} with a learning rate of 2e-6 and linearly increase the learning rate over the first $10k$ steps. Each task specific classifier has a hidden size of $128$ and dropout with rate $0.2$ is applied before each layer.
 
 In addition to binary cross-entropy loss, we further experiment with a pair-wise margin loss for the ranking task:
 \begin{equation}
@@ -97,7 +97,7 @@ In terms of MAP, we also find NER to yield the highest benefit while the highest
 \subsection{Full Multi-Task}
 The results for the full multitask runs are shown in \Cref{tab:multi_runs}. Surprisingly, all runs perform equal to or worse than the baseline, with a single exception being the layer combination $5,1,12$ on MRR. One hypothesis why this might be the case, is that the ranking task is simply overshadowed by the other tasks, since with this setup only $\frac{1}{4}$ of the dataset specifically addresses ranking. To test this hypothesis, we did perform another run where each additional task was limited to $200$k samples each. However, we could not observe any improvement from this approach.
 
-Another hypothesis suggests that too many tasks start to conflict with one another, leading to hidden representations that are no longer coherent with each other and as a consequence, less useful for learning the ranking task. Interestingly, \cite{aghajanyan-etal-2021-muppet} found their multitask learning setup to perform best when at least $10$ tasks were used, meaning it is also possible that $3$ additional tasks are simply not sufficient.
+Another hypothesis suggests that too many tasks start to conflict with one another, leading to hidden representations that are no longer coherent with each other and as a consequence, less useful for learning the ranking task. Interestingly, \citep{aghajanyan-etal-2021-muppet} found their multitask learning setup to perform best when at least $10$ tasks were used, meaning it is also possible that $3$ additional tasks are simply not sufficient.
 
 \begin{table}[ht]
     \centering

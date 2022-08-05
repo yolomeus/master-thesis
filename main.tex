@@ -4,6 +4,9 @@
 \usepackage{csquotes}
 \usepackage[english]{babel}
 
+\usepackage[round]{natbib}
+\bibliographystyle{abbrvnat}
+
 \usepackage{scrlayer-scrpage}
 \pagestyle{scrheadings}
 \automark[section]{section}
@@ -34,9 +37,6 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\MSubject}{\mathcal{M}}
 \newcommand{\lay}[1]{^{(#1)}}
-
-\usepackage[backend=biber, style=alphabetic, maxcitenames=2]{biblatex}
-\addbibresource{bibliography.bib}
 
 \begin{document}
 \input{00_cover.tex}
@@ -75,5 +75,5 @@ $\qquad$(Fabian Beringer)
 \clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{Bibliography}
-\printbibliography
+\bibliography{bibliography.bib}
 \end{document}

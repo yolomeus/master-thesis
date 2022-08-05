@@ -55,7 +55,7 @@ To compute TF-IDF we can simply sum over the product of TF and IDF for each term
 
 \subsection{BM25}
 \label{sec:bm25}
-BM25 builds on the TF-IDF scores  by introducing additional hyperparameters and accounting for document length through a normalization term \cite{robertson2009probabilistic}. That way, short documents are preferred over long documents, if both have the same term frequency.
+BM25 builds on the TF-IDF scores  by introducing additional hyperparameters and accounting for document length through a normalization term \citep{robertson2009probabilistic}. That way, short documents are preferred over long documents, if both have the same term frequency.
 
 \begin{equation}
     \text{bm25}_{t,d} = \tx{idf}_t \frac{w_{t,d}}{k_1 \big((1 - b) + b \frac{\tx{len}(d)}{\tx{avglen}}\big) + w_{t,d}}
@@ -106,7 +106,7 @@ Common choices for $\sigma$ include:
     \item $\sigma(x) = \frac{1}{1 + e^{-x}}$ (sigmoid)
     \item $\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$ (hyperbolic tangent)
     \item $\text{softmax}(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}$ (softmax)
-    \item $\text{ReLU}(x) = \max(0, x)$ (rectified linear unit \cite{nair2010rectified})
+    \item $\text{ReLU}(x) = \max(0, x)$ (rectified linear unit \citep{nair2010rectified})
 \end{itemize}
 
 \subsection{Optimization}
@@ -140,7 +140,7 @@ By repeating this procedure iteratively, we can gradually minimize $J(\theta)$. 
 \end{itemize}
 
 \subsubsection{Stochastic Gradient Descent}
-The aforementioned algorithm is also known as the batch gradient descent (BGD) variant. Stochastic Gradient Descent (SGD) differs from BGD in the number of training samples that are used for a gradient update. Where BGD uses the gradient of the full training set for updating $\theta$, SGD only considers a single, randomly picked sample for each update. Not only can this approach be more efficient, since fewer redundant computations are performed, due to its stochastic nature it is also more likely to break out of local minima, allowing additional exploration for better solutions \cite{ruder2016overview}.
+The aforementioned algorithm is also known as the batch gradient descent (BGD) variant. Stochastic Gradient Descent (SGD) differs from BGD in the number of training samples that are used for a gradient update. Where BGD uses the gradient of the full training set for updating $\theta$, SGD only considers a single, randomly picked sample for each update. Not only can this approach be more efficient, since fewer redundant computations are performed, due to its stochastic nature it is also more likely to break out of local minima, allowing additional exploration for better solutions \citep{ruder2016overview}.
 
 \subsubsection{Mini-Batch Gradient Descent}
 While SGD's high variance during training makes it more likely to escape local minima, it can also come with the disadvantage of unstable training. In this scenario, convergence might be hindered by overshooting desirable minima.
@@ -149,9 +149,9 @@ To mitigate this issue, we can simply use more than one sample in order to achie
 
 Building on mini-batch GD, many algorithms have been introduced in the context of DNNs, which employ further optimizations in order to improve convergence speed and quality. Notable examples include:
 \begin{itemize}
-    \item Adagrad \cite{duchi2011adaptive}
-    \item RMSProp \cite{hinton2012neural}
-    \item Adam \cite{kingma2014adam}
+    \item Adagrad \citep{duchi2011adaptive}
+    \item RMSProp \citep{hinton2012neural}
+    \item Adam \citep{kingma2014adam}
 \end{itemize}
 
 \begin{algorithm}
@@ -168,7 +168,7 @@ Building on mini-batch GD, many algorithms have been introduced in the context o
 
 \subsubsection{Backpropagation}
 \label{sec:backprop}
-Because a neural network may consist of multiple layers and therefore, is a composition of multiple non-linear functions, computing the gradient w.r.t. each parameter of the network can become a non-trivial and even cumbersome task, if done by hand. One popular way of automatically computing the gradients of a DNN is the backpropagation algorithm \cite{rumelhart1988learning}.
+Because a neural network may consist of multiple layers and therefore, is a composition of multiple non-linear functions, computing the gradient w.r.t. each parameter of the network can become a non-trivial and even cumbersome task, if done by hand. One popular way of automatically computing the gradients of a DNN is the backpropagation algorithm \citep{rumelhart1988learning}.
 
 Backpropagation is a direct application of the chain rule for calculating the derivative of the composition of two functions. Given two differentiable functions $f(x)$ and $g(x)$, the chain rule states that the derivate of their composition $f(g(x))$ is equal to the partial derivative of $f$ w.r.t. $g$, times the partial derivate of $g$ w.r.t. $x$.
 
@@ -187,7 +187,7 @@ If we now apply the chain rule a second time, we can produce a term for computin
 \end{equation}
 Note that we now only need to know the derivatives of $J$, $\sigma$ and $a^{(L)}$ separately, in order to compute the derivative of their composition. By recursively applying this rule, we can compute partial derivatives of $J$ w.r.t. parameters of the DNN, up to an arbitrary depth, as long as all functions it is composed of are differentiable.
 
-By modeling the chain of operations in a DNN as a computation graph, deep learning frameworks like PyTorch \cite{NEURIPS2019_9015} or Tensorflow \cite{tensorflow2015-whitepaper} are capable of automatically performing backpropagation, as long as each operation's derivative is known and pre-defined in the library.
+By modeling the chain of operations in a DNN as a computation graph, deep learning frameworks like PyTorch \citep{NEURIPS2019_9015} or Tensorflow \citep{tensorflow2015-whitepaper} are capable of automatically performing backpropagation, as long as each operation's derivative is known and pre-defined in the library.
 
 \subsection{Regularization}
 Regularization includes a number of techniques to improve the generalization capabilities of an ML model. If an ML model achieves a low error rate on training data but a high error rate on test data, it is said to be \ti{overfitting}. In this scenario, the model has essentially "memorized" the training data and can no longer adapt to unseen examples. Regularization techniques tackle this problem by limiting the hypothesis space of models through favoring simple solutions over complex ones.
@@ -201,16 +201,16 @@ Weight decay constraints the number of possible hypothesis by adding a penalty b
 As L2 is only a soft constraint, its effect can be regulated by hyperparameter $\lambda$.
 
 \subsubsection{Dropout}
-Dropout is a DNN specific method that, during training time, randomly sets entries in the input vector of a layer to $0$ with probability $p$ \cite{DBLP:journals/corr/abs-1207-0580}. The initial idea of this approach is to prevent groups of neurons from co-adapting, i.e. requiring the activation of one another in order to detect a certain feature. If dropout is employed, a neuron can no longer rely on the presence of another neuron. Dropout can also be interpreted as a way of training an ensemble of sub-networks of the original network which share the same parameters.
+Dropout is a DNN specific method that, during training time, randomly sets entries in the input vector of a layer to $0$ with probability $p$ \citep{DBLP:journals/corr/abs-1207-0580}. The initial idea of this approach is to prevent groups of neurons from co-adapting, i.e. requiring the activation of one another in order to detect a certain feature. If dropout is employed, a neuron can no longer rely on the presence of another neuron. Dropout can also be interpreted as a way of training an ensemble of sub-networks of the original network which share the same parameters.
 
 
 \section{Transformer Models}
 \label{sec:transformer}
-One of the most prominent deep learning architectures of the past years is the transformer \cite{vaswani2017attention}. The transformer and its variants have set multiple state-of-the-art records in a variety of NLP tasks \cite{devlin-etal-2019-bert, DBLP:journals/corr/abs-1907-11692, DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1909-08053, DBLP:journals/corr/abs-2005-14165}, and have since been adapted to other domains such as computer vision \cite{DBLP:journals/corr/abs-2010-11929} or audio generation \cite{https://doi.org/10.48550/arxiv.2005.00341}.
+One of the most prominent deep learning architectures of the past years is the transformer \citep{vaswani2017attention}. The transformer and its variants have set multiple state-of-the-art records in a variety of NLP tasks \citep{devlin-etal-2019-bert, DBLP:journals/corr/abs-1907-11692, DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1909-08053, DBLP:journals/corr/abs-2005-14165}, and have since been adapted to other domains such as computer vision \citep{DBLP:journals/corr/abs-2010-11929} or audio generation \citep{https://doi.org/10.48550/arxiv.2005.00341}.
 
-Unlike previous methods for embedding words in vector spaces, which relied on word co-occurrence to learn a single fixed vector for each token \cite{pennington2014glove, DBLP:journals/corr/abs-1301-3781}, transformers are able to produce \ti{contextualized} word embeddings. This means that the representation of each word in a sequence changes dynamically based on its context, i.e. all other words in the sequence.
+Unlike previous methods for embedding words in vector spaces, which relied on word co-occurrence to learn a single fixed vector for each token \citep{pennington2014glove, DBLP:journals/corr/abs-1301-3781}, transformers are able to produce \ti{contextualized} word embeddings. This means that the representation of each word in a sequence changes dynamically based on its context, i.e. all other words in the sequence.
 
-In this section we will discuss the architecture and ideas behind it and explain one of the most popular training approaches for NLP, named BERT \cite{devlin-etal-2019-bert}.
+In this section we will discuss the architecture and ideas behind it and explain one of the most popular training approaches for NLP, named BERT \citep{devlin-etal-2019-bert}.
 
 \subsection{Architecture}
 The transformer architecture is based on a single building block which, after an input layer, is repeatedly applied in order to form the full model. Throughout this thesis we will also refer to these building blocks as layers, e.g. a $12$-layer model consists of an input layer followed by $12$ blocks. A single transformer block consists of:
@@ -226,7 +226,7 @@ We will first explain the input layer, then go over each of these elements and e
 \subsection{Input Layer}
 The transformer's input layer takes in a sequence of tokens and produces continuous representations by selecting corresponding vectors from a learned embedding matrix $M \in \R^{d \times |V|}$. Here $|V|$ denotes the size of the vocabulary and $d$ the hidden dimension of the model. Because the transformer model itself does not encode the order of its inputs, \ti{positional encodings} are added to the initial embeddings for injecting positional information.
 
-One way for generating positional encodings is to introduce a new set of learned embeddings of dimension $d$, one for each input position. However, this approach requires a fixed maximum input length, as all embeddings have to be defined before training. Alternatively, \cite{vaswani2017attention} propose to use sine and cosine waves as a function of the position:
+One way for generating positional encodings is to introduce a new set of learned embeddings of dimension $d$, one for each input position. However, this approach requires a fixed maximum input length, as all embeddings have to be defined before training. Alternatively, \citep{vaswani2017attention} propose to use sine and cosine waves as a function of the position:
 
 \begin{equation}
     \text{PE}_{(pos, 2i)} = \sin\bigg(\frac{pos}{10000^{\frac{2i}{d}}}\bigg)
@@ -238,9 +238,9 @@ where $pos$ and $i$ denote position along sequence and hidden dimension respecti
 
 \subsection{Multi-Head Self-Attention}
 \subsubsection{The Attention Mechanism}
-Originally, attention mechanisms have been proposed in the context of neural machine translation (NMT) \cite{bahdanau2014neural,luong2015effective}. Particularly, they were used for aligning words from a source language with their corresponding translations, i.e. pointing out the source words that are relevant for predicting the next translation target. The alignment is important, as different languages usually do not share the same word order, making a sequential word-to-word translation infeasible.
+Originally, attention mechanisms have been proposed in the context of neural machine translation (NMT) \citep{bahdanau2014neural,luong2015effective}. Particularly, they were used for aligning words from a source language with their corresponding translations, i.e. pointing out the source words that are relevant for predicting the next translation target. The alignment is important, as different languages usually do not share the same word order, making a sequential word-to-word translation infeasible.
 
-Generally speaking, attention is a mechanism that allows a model to focus on parts of its inputs, usually while considering a certain context. This could for example be words in a text (inputs) that are regarded important for answering a question (context) \cite{xiong2016dynamic} or patches of pixels in an image (inputs) that are important for detecting a certain object type (context) \cite{xu2015show}.
+Generally speaking, attention is a mechanism that allows a model to focus on parts of its inputs, usually while considering a certain context. This could for example be words in a text (inputs) that are regarded important for answering a question (context) \citep{xiong2016dynamic} or patches of pixels in an image (inputs) that are important for detecting a certain object type (context) \citep{xu2015show}.
 
 Given a sequence of $N$ input vectors $X = (x_1, \dots, x_N) \in \R^{N \times d}$ and $M$ context vectors $C = (c_1, \dots, c_M) \in \R^{M \times d}$, we can describe the general attention mechanism as follows:
 
@@ -259,7 +259,7 @@ Common choices for $a$ include:
 \end{itemize}
 
 \subsubsection{Self-Attention}
-Self-Attention is a special case of attention where input vectors and context vectors stem from the same input sequence. It can be seen as the model attending to a sequence, given the sequence itself as context. In \cite{vaswani2017attention} a third set of \ti{value} vectors is introduced, resulting in three sequences termed \ti{query}, \ti{key} and \ti{value} vectors, in analogy to memory lookups.
+Self-Attention is a special case of attention where input vectors and context vectors stem from the same input sequence. It can be seen as the model attending to a sequence, given the sequence itself as context. In \citep{vaswani2017attention} a third set of \ti{value} vectors is introduced, resulting in three sequences termed \ti{query}, \ti{key} and \ti{value} vectors, in analogy to memory lookups.
 
 To produce these vectors, the initial input sequence is transformed by three different learned weight matrices, namely $W^{(q)}, W^{(k)} \in \R^{d \times d_k}$ and $W^{(v)} \in \R^{d \times d_v}$.
 
@@ -308,9 +308,9 @@ Since $\tx{residual}'(x) = f'(x) + 1$, the gradient of the residual connection w
 % identity function idk read up
 % improve gradient flow for deep models
 \subsection{Layer Normalization}
-Layer Normalization \cite{ba2016layer} is another technique for training deeper neural networks. When training machine learning models on numerical features, it is common practice to normalize inputs, e.g. such that their distribution is centered at $0$ and has a standard deviation of $1$. This way, there's less variance across features, resulting in more stable training and hence improving convergence.
+Layer Normalization \citep{ba2016layer} is another technique for training deeper neural networks. When training machine learning models on numerical features, it is common practice to normalize inputs, e.g. such that their distribution is centered at $0$ and has a standard deviation of $1$. This way, there's less variance across features, resulting in more stable training and hence improving convergence.
 
-However, since DNNs pass features through multiple layers, there's no guarantee that hidden representations will maintain a reasonable scale, meaning each layer might have to adapt to a new distribution \cite{DBLP:journals/corr/IoffeS15}. Layer Normalization tackles this problem by computing mean $\mu^{(k)}$ and standard deviation $\sigma^{(k)}$ over the feature dimension of each hidden layer $k$:
+However, since DNNs pass features through multiple layers, there's no guarantee that hidden representations will maintain a reasonable scale, meaning each layer might have to adapt to a new distribution \citep{DBLP:journals/corr/IoffeS15}. Layer Normalization tackles this problem by computing mean $\mu^{(k)}$ and standard deviation $\sigma^{(k)}$ over the feature dimension of each hidden layer $k$:
 
 \begin{equation}
     \mu\lay k = \frac{1}{d} \sum_{i=1}^d z_i\lay k
@@ -348,7 +348,7 @@ It consists of a multi-head attention layer and a point-wise fully connected lay
 \subsection{BERT Pre-Training}
 A key part leading to the success of transformer models is their effectiveness in large-scale transfer learning. In the context of NLP, the transfer learning procedure typically consists of two stages: First, a model is pre-trained on large amounts of human generated text data (e.g. from the Internet), using language modeling as an objective. Then, the model is fine-tuned on a downstream task for which only limited amounts of data are available. As the model has already learned basic language concepts during pre-training, it can now leverage this knowledge for the new task instead of learning it from scratch.
 
-One particular approach to transfer learning for transformers, which has pushed the state-of-the-art on several NLP benchmarks, is BERT (Bidirectional Encoder Representations from Transformers) \cite{devlin-etal-2019-bert}. Unlike previous pre-training approaches that optimized for traditional \ti{left-to-right} language modeling \cite{DBLP:journals/corr/abs-1801-06146,Peters:2018,radford2018improving}, BERT employs a bidirectional objective.
+One particular approach to transfer learning for transformers, which has pushed the state-of-the-art on several NLP benchmarks, is BERT (Bidirectional Encoder Representations from Transformers) \citep{devlin-etal-2019-bert}. Unlike previous pre-training approaches that optimized for traditional \ti{left-to-right} language modeling \citep{DBLP:journals/corr/abs-1801-06146,Peters:2018,radford2018improving}, BERT employs a bidirectional objective.
 
 In left-to-right language modeling the goal is to predict the next word in a sequence of words, given the preceding words. BERT on the other hand employs a \ti{masked language model} (MLM) objective. Here, tokens from the input sequence are randomly masked out or replaced with random tokens. The model then has to predict what the actual token should be.
 
@@ -356,7 +356,7 @@ This means that, during pre-training, traditional language models only have acce
 
 In addition to MLM, BERT introduces a \ti{next-sentence prediction} (NSP) task where, given two sentences, the model has to determine whether the second sentence follows the first, or was selected randomly. This is motivated by language tasks often requiring to model the relation between two sentences.
 
-While many improved training procedures have been proposed since BERT, which often replace NSP or introduce additional objectives \cite{DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1907-11692, 10.5555/3454287.3454804, Lan2020ALBERT}, MLM still remains as an integral part for most approaches.
+While many improved training procedures have been proposed since BERT, which often replace NSP or introduce additional objectives \citep{DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1907-11692, 10.5555/3454287.3454804, Lan2020ALBERT}, MLM still remains as an integral part for most approaches.
 
 \section{Probing}
 Probing is a method for estimating the presence of certain properties in dense vector representations of neural network models. For this, a classifier (\ti{probe}) $P$ is trained on the fixed representations of a \ti{subject model} $\mathcal{M}$, to predict property $Y$. In NLP we typically probe for linguistic properties in word embeddings. For example, we could estimate the presence of part-of-speech (POS) information by predicting POS tags. Based on the probe's performance, e.g. when compared to embeddings from a random baseline, we can conclude whether the property can be decoded from the subject model's representations.
