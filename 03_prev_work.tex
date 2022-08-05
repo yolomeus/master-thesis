@@ -1,4 +1,4 @@
-\chapter{Previous Work}
+\chapter{Related Work}
 \label{chap:prev}
 As this is a two part thesis, there are mainly two fields of work it builds upon. In this section we will first introduce related work in neural information retrieval that leverage pre-trained transformer models. We then provide a quick overview of previous work in probing for NLP, as well as Multi-task learning approaches.
 
@@ -14,7 +14,7 @@ Unlike the previously mentioned methods that leverage a single model to estimate
 Additional methods for transformer based ranking include knowledge distillation \cite{DBLP:journals/corr/abs-2009-07531, DBLP:journals/corr/abs-2010-02666}, cascading models for efficiency \cite{Nogueira2019MultiStageDR} and many more. For a more comprehensive survey on transformers in the context of IR, we refer the reader to \cite{10.1145/3437963.3441667}.
 
 \section{Probing Language Models}
-\cite{conneau-etal-2018-cram} employ $10$ linguistic probing tasks in order to evaluate the representations of different deep sentence encoders. They find that compared to simple baselines, these models are better at encoding complex linguistic properties.
+In \cite{conneau-etal-2018-cram}, $10$ linguistic probing tasks are employed in order to evaluate the representations of different deep sentence encoders. They find that compared to simple baselines, these models are better at encoding complex linguistic properties.
 
 On the other hand, \cite{Belinkov2017WhatDN} probe neural machine translation models for part-of-speech information and show evidence that morphological features are better captured at lower layers of these models. Likewise, contextualized embeddings of three different bidirectional language model architectures are probed in \cite{peters-etal-2018-dissecting}, with the findings suggesting that lower layers specialize in local syntactic relationships while higher layers model longer range semantic relationships. Supporting this, \cite{tenney-etal-2019-bert} deconstruct the language abilities of a BERT model and find that the distribution of linguistic properties across layers suggests hierarchical feature extraction, similar to classical NLP approaches.
 
