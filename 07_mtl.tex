@@ -20,7 +20,7 @@ The main idea of our approach is to aid fine-tuning by infusing task knowledge i
 To achieve this, for each task we first select a layer that we found to efficiently encode the corresponding  ranking property during probing. We then fine-tune the \ti{bert-base-uncased} model to perform ranking on the TREC2019 dataset. At the same time, we learn classifiers on top of BERT's intermediate layer representations of the pre-selected layers, to predict the respective ranking properties.
 
 \section{Model Architecture}
-Given the intermediate layer representations of the pre-trained \ti{bert-base-uncased} model $\{H\lay i\}_{i=0}^{12}$, with $H\lay i = (h_1, h_2, \dots, h_{N})$ being the sequence of token embeddings at layer~$i$, for each task (\autoref{sec:tasks}), we select a layer based on the probing results. We then apply average pooling across the sequence dimension to retrieve a fixed size embedding:
+Given the intermediate layer representations of the pre-trained \ti{bert-base-uncased} model $\{H\lay i\}_{i=0}^{12}$, with $H\lay i = (h_1, h_2, \dots, h_{N})$ being the sequence of token embeddings at layer~$i$, for each task (\Cref{sec:tasks}), we select a layer based on the probing results. We then apply average pooling across the sequence dimension to retrieve a fixed size embedding:
 
 \begin{equation}
     \tx{pool}(h_i, h_{i+1},\dots, h_j)= \frac{1}{j} \sum_{k=i}^j h_k
@@ -39,7 +39,7 @@ Following the pooling we apply a simple MLP classifier of the form:
 
 \section{Experimental Setup}
 \subsection{Datasets and Sampling}
-Because our objective is now re-ranking on TREC2019, we can no longer rely on the original probing datasets, as they were sampled from the test set and therefore would cause test set overlap. Instead, we sample new query-document pairs from the TREC2019 train set. Our sampling goes as follows: We uniformly sample $100$k train queries for each task. Then, for each query we retrieve $10$ documents from the corpus using BM25, resulting in a dataset size of $1$M samples which is approximately the size of the TREC2019 ranking dataset. Each task dataset is then constructed by applying the same procedure as in \autoref{sec:dataset_gen} and \autoref{sec:tasks}, to automatically generate labels.
+Because our objective is now re-ranking on TREC2019, we can no longer rely on the original probing datasets, as they were sampled from the test set and therefore would cause test set overlap. Instead, we sample new query-document pairs from the TREC2019 train set. Our sampling goes as follows: We uniformly sample $100$k train queries for each task. Then, for each query we retrieve $10$ documents from the corpus using BM25, resulting in a dataset size of $1$M samples which is approximately the size of the TREC2019 ranking dataset. Each task dataset is then constructed by applying the same procedure as in \Cref{sec:dataset_gen} and \Cref{sec:tasks}, to automatically generate labels.
 
 We exclude the fact-checking task, as we do not have a straightforward way to automatically generate samples and the dataset itself is too small when compared to the other datasets.
 
@@ -64,11 +64,11 @@ Each model is trained on a server with $256$GB of system memory, using either a 
 \section{Results}
 \label{sec:mtl_results}
 \subsection{Single Additional Task}
-For runs in which a single additional task is introduced (\autoref{tab:single_runs}), we can observe a general improvement across the board. It also becomes apparent that the selection of layer which the additional task is trained on actually plays a role: For BM25, SEM and COREF, layer $12$ shows worse or equal performance for most metrics, when compared to layers that were selected based on our probing results. For instance, BM25 consistently outperforms the baseline at layers $5$ and $6$, but performs significantly worse than the baseline at layer $12$.
+For runs in which a single additional task is introduced (\Cref{tab:single_runs}), we can observe a general improvement across the board. It also becomes apparent that the selection of layer which the additional task is trained on actually plays a role: For BM25, SEM and COREF, layer $12$ shows worse or equal performance for most metrics, when compared to layers that were selected based on our probing results. For instance, BM25 consistently outperforms the baseline at layers $5$ and $6$, but performs significantly worse than the baseline at layer $12$.
 
-Interestingly, this does not apply to NER which, except from MRR, instead performs best at the final layer. We hypothesize that, due to the NER property having a rather flat distribution across layers (\autoref{fig:heatmap_comp_base}), infusing additional NER information might work equally well at most layers.
+Interestingly, this does not apply to NER which, except from MRR, instead performs best at the final layer. We hypothesize that, due to the NER property having a rather flat distribution across layers (\Cref{fig:heatmap_comp_base}), infusing additional NER information might work equally well at most layers.
 
-In terms of MAP, we also find NER to yield the highest benefit while the highest increase in MRR, NDCG and precision stems from the additional COREF task. Considering that probing showed the most absolute increase in COREF information when fine-tuning for ranking (\autoref{fig:abs_heatmap_comp_base}, \autoref{fig:abs_heatmap_comp_passage}), this might be additional evidence for coreference being a useful ability for a neural ranker to learn. Moreover, the performance of NER which seems to be closely related to COREF, suggests that entities in general play an important role for learning to rank.
+In terms of MAP, we also find NER to yield the highest benefit while the highest increase in MRR, NDCG and precision stems from the additional COREF task. Considering that probing showed the most absolute increase in COREF information when fine-tuning for ranking (\Cref{fig:abs_heatmap_comp_base}, \Cref{fig:abs_heatmap_comp_passage}), this might be additional evidence for coreference being a useful ability for a neural ranker to learn. Moreover, the performance of NER which seems to be closely related to COREF, suggests that entities in general play an important role for learning to rank.
 
 \begin{table}[ht]
     \centering
@@ -95,7 +95,7 @@ In terms of MAP, we also find NER to yield the highest benefit while the highest
 \end{table}
 
 \subsection{Full Multi-Task}
-The results for the full multitask runs are shown in \autoref{tab:multi_runs}. Surprisingly, all runs perform equal to or worse than the baseline, with a single exception being the layer combination $5,1,12$ on MRR. One hypothesis why this might be the case, is that the ranking task is simply overshadowed by the other tasks, since with this setup only $\frac{1}{4}$ of the dataset specifically addresses ranking. To test this hypothesis, we did perform another run where each additional task was limited to $200$k samples each. However, we could not observe any improvement from this approach.
+The results for the full multitask runs are shown in \Cref{tab:multi_runs}. Surprisingly, all runs perform equal to or worse than the baseline, with a single exception being the layer combination $5,1,12$ on MRR. One hypothesis why this might be the case, is that the ranking task is simply overshadowed by the other tasks, since with this setup only $\frac{1}{4}$ of the dataset specifically addresses ranking. To test this hypothesis, we did perform another run where each additional task was limited to $200$k samples each. However, we could not observe any improvement from this approach.
 
 Another hypothesis suggests that too many tasks start to conflict with one another, leading to hidden representations that are no longer coherent with each other and as a consequence, less useful for learning the ranking task. Interestingly, \cite{aghajanyan-etal-2021-muppet} found their multitask learning setup to perform best when at least $10$ tasks were used, meaning it is also possible that $3$ additional tasks are simply not sufficient.
 
@@ -116,7 +116,7 @@ Another hypothesis suggests that too many tasks start to conflict with one anoth
 \end{table}
 
 \subsection{Pair-wise Objective}
-Again, we report the results for our pair-wise experiments in \autoref{tab:pairwise_runs}. This time we report both, runs with one and multiple additional tasks in a single table. Like in the point-wise experiments, with a single additional task we do observe a general improvement over the baseline. This time NER does not provide as much of an improvement as in the point-wise scenario. Solely the MAP score improves while the other metrics even degrade compared to the baseline. On the other hand, similar to the point-wise approach, COREF improves in NDCG and precision. However, it significantly drops in MRR, suggesting that, while the overall ordering of relevant documents improves, the most relevant document is less frequently ranked in top positions.
+Again, we report the results for our pair-wise experiments in \Cref{tab:pairwise_runs}. This time we report both, runs with one and multiple additional tasks in a single table. Like in the point-wise experiments, with a single additional task we do observe a general improvement over the baseline. This time NER does not provide as much of an improvement as in the point-wise scenario. Solely the MAP score improves while the other metrics even degrade compared to the baseline. On the other hand, similar to the point-wise approach, COREF improves in NDCG and precision. However, it significantly drops in MRR, suggesting that, while the overall ordering of relevant documents improves, the most relevant document is less frequently ranked in top positions.
 
 The decrease in MRR seems to be a general pattern for pair-wise training. When considering that the pair-wise loss focuses on ordering documents with respect to each other, instead of learning whether a single document is relevant or not, this appears makes sense: It becomes less likely for the model to predict strong positives which are then placed in the top positions.
 
@@ -145,11 +145,11 @@ The prior experiment has shown that explicitly infusing additional task informat
 For this, we conduct the following ablation study: Given a subset of TREC2019 query-document pairs, we resample multiple times from this subset and automatically create additional training samples for each of the tasks used in the MTL experiment. We then proceed to train using our proposed multitask method (point-wise) and repeat the experiment for different subset sizes and MTL configurations.
 
 \subsection{Results}
-In the following tables we present the results for different sample sizes and MTL setups. The first table (\autoref{tab:ablation1}) represents the baseline which did not use any MTL augmentation.
+In the following tables we present the results for different sample sizes and MTL setups. The first table (\Cref{tab:ablation1}) represents the baseline which did not use any MTL augmentation.
 
-At first, we tried limiting the augmentation to a single task (BM25), since this has been shown to work best in our previous experiments. However, when resampling from the same small set, we can only observe a consistent benefit at sample size $100,000$ (\autoref{tab:ablation2}).
+At first, we tried limiting the augmentation to a single task (BM25), since this has been shown to work best in our previous experiments. However, when resampling from the same small set, we can only observe a consistent benefit at sample size $100,000$ (\Cref{tab:ablation2}).
 
-We then continued to sample from all tasks which resulted in an overall drop in performance compared to the baseline (\autoref{tab:ablation3}). Suspecting that the other tasks overshadowed ranking, we further tried limiting the total sample size of additional tasks to $50\%$ of the ranking sample size (\autoref{tab:ablation4}). However, while this approach performed better than using the full sample size, it was still outperformed by the baseline.
+We then continued to sample from all tasks which resulted in an overall drop in performance compared to the baseline (\Cref{tab:ablation3}). Suspecting that the other tasks overshadowed ranking, we further tried limiting the total sample size of additional tasks to $50\%$ of the ranking sample size (\Cref{tab:ablation4}). However, while this approach performed better than using the full sample size, it was still outperformed by the baseline.
 
 \begin{table}
     \centering
