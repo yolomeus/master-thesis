@@ -52,7 +52,7 @@ During training, we assemble mini-batches of size $32$, by sampling from the TRE
 where $c_t$ is the number of target classes and $y_t$, $\hat{y}_t$ are predictions and ground-truth labels with respect to task $t$, respectively. It scales each task loss, such that all losses would have equivalent values, if the class distribution were uniformly distributed, along with the predictions. Analogous to the probing experiments, regression tasks are cast to classification tasks by binning the targets into $k=10$ categories, so that $c_t$ is defined properly.
 We train each model for up to a maximum of $100$ epochs and perform early stopping after $3$ epochs of no improvement in MAP on the TREC2019 validation set. As optimizer, we use Adam \cite{kingma2014adam} with a learning rate of 2e-6 and linearly increase the learning rate over the first $10k$ steps. Each task specific classifier has a hidden size of $128$ and dropout with rate $0.2$ is applied before each layer.
 
-In addition to binary cross-entropy loss, we further experiment with a pairwise margin loss for the ranking task:
+In addition to binary cross-entropy loss, we further experiment with a pair-wise margin loss for the ranking task:
 \begin{equation}
     \tx{MarginLoss}(y^+, y^-) = \max(\lambda - y^+ + y^-, 0)
 \end{equation}
@@ -115,12 +115,12 @@ Another hypothesis suggests that too many tasks start to conflict with one anoth
     \label{tab:multi_runs}
 \end{table}
 
-\subsection{Pairwise Objective}
-Again, we report the results for our pairwise experiments in \autoref{tab:pairwise_runs}. This time we report both, runs with one and multiple additional tasks in a single table. Like in the point-wise experiments, with a single additional task we do observe a general improvement over the baseline. This time NER does not provide as much of an improvement as in the point-wise scenario. Solely the MAP score improves while the other metrics even degrade compared to the baseline. On the other hand, similar to the point-wise approach, COREF improves in NDCG and precision. However, it significantly drops in MRR, suggesting that, while the overall ordering of relevant documents improves, the most relevant document is less frequently ranked in top positions.
+\subsection{Pair-wise Objective}
+Again, we report the results for our pair-wise experiments in \autoref{tab:pairwise_runs}. This time we report both, runs with one and multiple additional tasks in a single table. Like in the point-wise experiments, with a single additional task we do observe a general improvement over the baseline. This time NER does not provide as much of an improvement as in the point-wise scenario. Solely the MAP score improves while the other metrics even degrade compared to the baseline. On the other hand, similar to the point-wise approach, COREF improves in NDCG and precision. However, it significantly drops in MRR, suggesting that, while the overall ordering of relevant documents improves, the most relevant document is less frequently ranked in top positions.
 
-The decrease in MRR seems to be a general pattern for pairwise training. When considering that the pairwise loss focuses on ordering documents with respect to each other, instead of learning whether a single document is relevant or not, this appears makes sense: It becomes less likely for the model to predict strong positives which are then placed in the top positions.
+The decrease in MRR seems to be a general pattern for pair-wise training. When considering that the pair-wise loss focuses on ordering documents with respect to each other, instead of learning whether a single document is relevant or not, this appears makes sense: It becomes less likely for the model to predict strong positives which are then placed in the top positions.
 
-Most surprisingly, in the pairwise scenario the three task MTL setup still improves over the baseline and even results in the highest average across metrics. This might indicate that having a non-classification ranking loss does create less conflict with the other classification tasks than a binary classification loss.
+Most surprisingly, in the pair-wise scenario the three task MTL setup still improves over the baseline and even results in the highest average across metrics. This might indicate that having a non-classification ranking loss does create less conflict with the other classification tasks than a binary classification loss.
 
 \begin{table}[!ht]
     \centering
@@ -134,7 +134,7 @@ Most surprisingly, in the pairwise scenario the three task MTL setup still impro
         \tx{+COREF}   & 5           & 0.451          & 0.924          & \textbf{0.701} & \textbf{0.798} & 0.719          \\
         \tx{+FIRST 3} & 5,1,5       & 0.449          & 0.959          & \textbf{0.701} & 0.791          & \textbf{0.725} \\
     \end{tabular}
-    \caption{Test results for multitask training with the pairwise ranking objective. FIRST 3 refers to BM25, NER and SEM.}
+    \caption{Test results for multitask training with the pair-wise ranking objective. FIRST 3 refers to BM25, NER and SEM.}
     \label{tab:pairwise_runs}
 \end{table}
 
