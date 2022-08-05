@@ -226,7 +226,7 @@ We will first explain the input layer, then go over each of these elements and e
 \subsection{Input Layer}
 The transformer's input layer takes in a sequence of tokens and produces continuous representations by selecting corresponding vectors from a learned embedding matrix $M \in \R^{d \times |V|}$. Here $|V|$ denotes the size of the vocabulary and $d$ the hidden dimension of the model. Because the transformer model itself does not encode the order of its inputs, \ti{positional encodings} are added to the initial embeddings for injecting positional information.
 
-One way for generating positional encodings is to introduce a new set of learned embeddings of dimension $d$, one for each input position. However, this approach requires a fixed maximum input length, as all embeddings have to be defined before training. Alternatively, \citep{vaswani2017attention} propose to use sine and cosine waves as a function of the position:
+One way for generating positional encodings is to introduce a new set of learned embeddings of dimension $d$, one for each input position. However, this approach requires a fixed maximum input length, as all embeddings have to be defined before training. Alternatively, \citet{vaswani2017attention} propose to use sine and cosine waves as a function of the position:
 
 \begin{equation}
     \text{PE}_{(pos, 2i)} = \sin\bigg(\frac{pos}{10000^{\frac{2i}{d}}}\bigg)
