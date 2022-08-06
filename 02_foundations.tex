@@ -338,7 +338,7 @@ The full transformer block can be described with the following equations:
 \end{align}
 It consists of a multi-head attention layer and a point-wise fully connected layer, each followed by residual connection and layer normalization.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.6\textwidth]{gfx/transformer}
     \caption{Schematic overview of the transformer block and the transformer's input layer at the bottom. Based on \cite{vaswani2017attention}}
@@ -356,7 +356,7 @@ This means that, during pre-training, traditional language models only have acce
 
 In addition to MLM, BERT introduces a \ti{next-sentence prediction} (NSP) task where, given two sentences, the model has to determine whether the second sentence follows the first, or was selected randomly. This is motivated by language tasks often requiring to model the relation between two sentences.
 
-While many improved training procedures have been proposed since BERT, which often replace NSP or introduce additional objectives \citep{DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1907-11692, 10.5555/3454287.3454804, Lan2020ALBERT}, MLM still remains as an integral part for most approaches.
+While many improved training procedures have been proposed since BERT, which often replace NSP or introduce additional objectives \citep{DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1907-11692, DBLP:journals/corr/abs-1906-08237, Lan2020ALBERT}, MLM still remains as an integral part for most approaches.
 
 \section{Probing}
 Probing is a method for estimating the presence of certain properties in dense vector representations of neural network models. The motivation behind probing is to understand what kind of information a DNN stores in its hidden representations. Knowing this, we can get a better idea about what properties a DNN might require for learning a specific task.
