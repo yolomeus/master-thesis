@@ -96,7 +96,7 @@ We fine-tune a \ti{bert-base-uncased} model on both, TREC2019 passage- and docum
 \subsection{Probe Training}
 All three subject models (\Cref{sec:subjects}) are probed at their intermediate output representations, meaning a classifier is learned for each layer separately. This includes the initial sequence of non-contextualized embeddings from the input embedding-matrix, which we refer to as layer $0$. We repeat this procedure for all of our proposed tasks (\Cref{sec:tasks}).
 
-As objective function, all probing tasks use cross-entropy loss (\Cref{eq:ce_loss}) which is necessary to compute MDL. In order to achieve this, we cast regression tasks to classification tasks by binning them into $k=10$ categories. To reduce the influence of outliers, we truncate any values that are further than two standard deviations away from the mean. This means any value $< \mu - 2 \sigma$ will be assigned to class $1$ and $> \mu + 2 \sigma$ to class $10$.
+As objective function, all probing tasks use cross-entropy loss (\Cref{eq:ce_loss}) which is necessary to compute MDL (\Cref{sec:mdl}). In order to achieve this, we cast regression tasks to classification tasks by binning them into $k=10$ categories. To reduce the influence of outliers, we truncate any values that are further than two standard deviations away from the mean. This means any value $< \mu - 2 \sigma$ will be assigned to class $1$ and $> \mu + 2 \sigma$ to class $10$.
 
 We employ the Adam optimization algorithm \citep{kingma2014adam} with a learning rate of 1e-4 and a batch size of $32$ for updating the probe's parameters, while the subject model's parameters remain fixed. Learning rate is halved each epoch if the validation loss does not improve. The maximum number of epochs is set to $50$, and we stop early if validation loss has not improved in $10$ epochs. We set the probe classifier's hidden size to $d_{probe}=256$ and apply dropout with rate $0.3$ before the output layer.
 
@@ -150,7 +150,7 @@ Mean reciprocal rank measures the inverse position at which the first relevant d
 Here, $\tx{rank}(q, C)$ refers to the rank, i.e. the position of the first document in $C$ that is labeled as relevant.
 
 \subsubsection{Precision@k}
-Precision@k measures precision at a specific threshhold in $C$, i.e. only the top-$k$ results are considered when computing precision:
+Precision@k (P@k) measures precision at a specific threshhold in $C$, i.e. only the top-$k$ results are considered when computing precision:
 \begin{equation}
     \tx{Precision@}k = \bigg(\frac{\tx{\#true positives}}{\tx{\#true positives} + \tx{\#false positives}}\bigg)_k
 \end{equation}
@@ -178,4 +178,6 @@ Then, the ideal DCG is computed by sorting $C$ according to the ground truth lab
     \tx{NDCG} = \frac{\tx{DCG}}{\tx{IDCG}}
 \end{equation}
 This way, a perfect ordering (of which multiple may exist) will result in an NDCG of $1$ while any suboptimal ordering will lie in $[0, 1)$. Because of the logarithmic scaling, more importance is attributed to relevant documents early in the list.
+
+Again, like Precision@k, by limiting the result set to the first $k$ samples, we can also compute NDCG@k.
 

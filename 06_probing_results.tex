@@ -3,7 +3,7 @@
 In this section we will analyze and discuss the results from the probing experiments. Since the overall distribution of properties across layers follows a similar pattern across models, we will first focus on the distribution on \ti{bert-base-uncased}, then discuss the effects of fine-tuning in the following section.
 
 \section{Distribution of Ranking Properties}
-Firstly, a general trend we can observe across tasks is an increase in both compression and accuracy over the first couple of layers up to layer 4-6, suggesting that ranking concepts arise mostly in the mid-range of layers. Then, after a peak at some mid to upper level layer, we observe a constant decrease until the last layer. It is notable that accuracy appears to exhibit a less stable curve, with sudden peaks and drops in between adjacent layers, especially in the case of coreference resolution (COREF) and semantic similarity (SEM) \Cref{fig:sem_sim_coref}. This observation coincides with \citep{voita-titov-2020-information} findings, that MDL and as a consequence compression, are a more reliable measure for probing than accuracy.
+Line graphs for our results are visualized in \Cref{fig:sem_sim_coref} and \Cref{fig:ner_fac} respectively. Firstly, a general trend we can observe across tasks is an increase in both compression and accuracy over the first couple of layers up to layer 4-6, suggesting that ranking concepts arise mostly in the mid-range of layers. Then, after a peak at some mid to upper level layer, we observe a constant decrease until the last layer. It is notable that accuracy appears to exhibit a less stable curve, with sudden peaks and drops in between adjacent layers, especially in the case of coreference resolution (COREF) and semantic similarity (SEM) \Cref{fig:sem_sim_coref}. This observation coincides with \citep{voita-titov-2020-information} findings, that MDL and as a consequence compression, are a more reliable measure for probing than accuracy.
 
 For the most part, based on compression, ranking properties can be decoded more efficiently from our trained models than from the random baseline, meaning the probe model is not solely adapting to the task, but instead leveraging information present in the pre-trained representations.
 
@@ -41,8 +41,8 @@ We can further observe that the difference in compression between early layers a
         \centering
         \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{gfx/probing/fact_check}}
     \end{subfigure}
-
     \caption{Layer to probing score for NER and fact checking properties. We report accuracy on the test set.}
+    \label{fig:ner_fac}
 \end{figure}
 
 To better understand this behavior, we can have a look at the row-normalized heatmap in \Cref{fig:heatmap_comp_base} of the \ti{bert-base-uncased} model. We can see that COREF and fact checking strongly center around layers 4-7 and 6-9 respectively, with fact checking showing a slightly wider spread. While BM25 exhibits a similar pattern, it is less focused around a particular layer, but instead more evenly distributed from layer 4-6. SEM and named entity recognition (NER) on the other hand look almost identical, with a rather flat distribution that is more prominent in early layers 1-4.
