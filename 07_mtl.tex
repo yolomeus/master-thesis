@@ -15,7 +15,7 @@ Therefore, we want our experiment to satisfy the following criterions:
     \item Exploit the fact that ranking properties emerge in intermediate layers.
     \item Use the knowledge on which layers capture what property best.
 \end{itemize}
-The main idea of our approach is to aid fine-tuning by infusing task knowledge into specific layers through \ti{multitask learning}. We want to simultaneously learn ranking properties at the layers that we found to be best at capturing them, especially when being fine-tuned for ranking.
+The main idea of our approach is to aid fine-tuning by infusing task knowledge into specific layers through \ti{multi-task learning}. We want to simultaneously learn ranking properties at the layers that we found to be best at capturing them, especially when being fine-tuned for ranking.
 
 To achieve this, for each task we first select a layer that we found to efficiently encode the corresponding  ranking property during probing. We then fine-tune the \ti{bert-base-uncased} model to perform ranking on the TREC2019 dataset. At the same time, we learn classifiers on top of BERT's intermediate layer representations of the pre-selected layers, to predict the respective ranking properties.
 
@@ -90,14 +90,14 @@ In terms of MAP, we also find NER to yield the highest benefit while the highest
         ~           & 7          & 0.425      & 0.944      & 0.668        & 0.770      & 0.702      \\
         ~           & 12         & 0.442      & 0.948      & 0.681        & 0.788      & 0.715      \\
     \end{tabular}
-    \caption{Test results for single additional task runs. The first row corresponds to a baseline that was solely trained on TREC2019. +[TASK] indicates multitask training on TREC2019 and [TASK] simultaneously. The top 3 runs for each metric are highlighted in bold.}
+    \caption{Test results for single additional task runs. The first row corresponds to a baseline that was solely trained on TREC2019. +[TASK] indicates multi-task training on TREC2019 and [TASK] simultaneously. The top 3 runs for each metric are highlighted in bold.}
     \label{tab:single_runs}
 \end{table}
 
 \subsection{Full Multi-Task}
-The results for the full multitask runs are shown in \Cref{tab:multi_runs}. Surprisingly, all runs perform equal to or worse than the baseline, with a single exception being the layer combination $5,1,12$ on MRR. One hypothesis why this might be the case, is that the ranking task is simply overshadowed by the other tasks, since with this setup only $\frac{1}{4}$ of the dataset specifically addresses ranking. To test this hypothesis, we did perform another run where each additional task was limited to $200$k samples each. However, we could not observe any improvement from this approach.
+The results for the full multi-task runs are shown in \Cref{tab:multi_runs}. Surprisingly, all runs perform equal to or worse than the baseline, with a single exception being the layer combination $5,1,12$ on MRR. One hypothesis why this might be the case, is that the ranking task is simply overshadowed by the other tasks, since with this setup only $\frac{1}{4}$ of the dataset specifically addresses ranking. To test this hypothesis, we did perform another run where each additional task was limited to $200$k samples each. However, we could not observe any improvement from this approach.
 
-Another hypothesis suggests that too many tasks start to conflict with one another, leading to hidden representations that are no longer coherent with each other and as a consequence, less useful for learning the ranking task. Interestingly, \citep{aghajanyan-etal-2021-muppet} found their multitask learning setup to perform best when at least $10$ tasks were used, meaning it is also possible that $3$ additional tasks are simply not sufficient.
+Another hypothesis suggests that too many tasks start to conflict with one another, leading to hidden representations that are no longer coherent with each other and as a consequence, less useful for learning the ranking task. Interestingly, \citep{aghajanyan-etal-2021-muppet} found their multi-task learning setup to perform best when at least $10$ tasks were used, meaning it is also possible that $3$ additional tasks are simply not sufficient.
 
 \begin{table}[ht]
     \centering
@@ -134,7 +134,7 @@ Most surprisingly, in the pair-wise scenario the three task MTL setup still impr
         \tx{+COREF}   & 5           & 0.451          & 0.924          & \textbf{0.701} & \textbf{0.798} & 0.719          \\
         \tx{+FIRST 3} & 5,1,5       & 0.449          & 0.959          & \textbf{0.701} & 0.791          & \textbf{0.725} \\
     \end{tabular}
-    \caption{Test results for multitask training with the pair-wise ranking objective. FIRST 3 refers to BM25, NER and SEM.}
+    \caption{Test results for multi-task training with the pair-wise ranking objective. FIRST 3 refers to BM25, NER and SEM.}
     \label{tab:pairwise_runs}
 \end{table}
 
@@ -142,7 +142,7 @@ Most surprisingly, in the pair-wise scenario the three task MTL setup still impr
 \label{sec:ablation}
 The prior experiment has shown that explicitly infusing additional task information at specific layers, can result in increased ranking performance. Because of this, we further want to investigate whether this could be a valid augmentation technique in a limited data scenario.
 
-For this, we conduct the following ablation study: Given a subset of TREC2019 query-document pairs, we resample multiple times from this subset and automatically create additional training samples for each of the tasks used in the MTL experiment. We then proceed to train using our proposed multitask method (point-wise) and repeat the experiment for different subset sizes and MTL configurations.
+For this, we conduct the following ablation study: Given a subset of TREC2019 query-document pairs, we resample multiple times from this subset and automatically create additional training samples for each of the tasks used in the MTL experiment. We then proceed to train using our proposed multi-task method (point-wise) and repeat the experiment for different subset sizes and MTL configurations.
 
 \subsection{Results}
 In the following tables we present the results for different sample sizes and MTL setups. The first table (\Cref{tab:ablation1}) represents the baseline which did not use any MTL augmentation.
