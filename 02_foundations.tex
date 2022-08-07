@@ -355,4 +355,10 @@ While many improved training procedures have been proposed since BERT, which oft
 \section{Probing}
 Probing is a method for estimating the presence of certain properties in dense vector representations of neural network models. The motivation behind probing is to understand what kind of information a DNN stores in its hidden representations. Knowing this can produce insights on what properties a DNN might require for learning a specific task.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics{gfx/probing/probing-example}
+    \caption{Probing of a single sample for POS tags. A text is encoded by a subject model into dense vector representations (white cirlces). A probe model is then trained to predict POS tags from the fixed vector representations for each word.}
+\end{figure}
 To achieve this, a diagnostic classifier (\ti{probe}) $P$ is trained on the fixed representations of a \ti{subject model} $\mathcal{M}$, to predict property $Y$. In NLP, we typically probe for linguistic properties in word embeddings. For example, we could estimate the presence of part-of-speech (POS) information by predicting POS tags. Based on the probe's performance, e.g. when compared to embeddings from a random baseline, we can conclude how well the property can be decoded from the subject model's representations.
+
