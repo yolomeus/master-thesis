@@ -94,7 +94,7 @@ In terms of MAP, we also find NER to yield the highest benefit while the highest
     \label{tab:single_runs}
 \end{table}
 
-\subsection{Full Multi-Task}
+\subsection{Full Multi-task}
 The results for the full multi-task runs are shown in \Cref{tab:multi_runs}. Surprisingly, all runs perform equal to or worse than the baseline, with a single exception being the layer combination $5,1,12$ on MRR. One hypothesis why this might be the case, is that the ranking task is simply overshadowed by the other tasks, since with this setup only $\frac{1}{4}$ of the dataset specifically addresses ranking. To test this hypothesis, we did perform another run where each additional task was limited to $200$k samples each. However, we could not observe any improvement from this approach.
 
 Another hypothesis suggests that too many tasks start to conflict with one another, leading to hidden representations that are no longer coherent with each other and as a consequence, less useful for learning the ranking task. Interestingly, \citep{aghajanyan-etal-2021-muppet} found their multi-task learning setup to perform best when at least $10$ tasks were used, meaning it is also possible that $3$ additional tasks are simply not sufficient.
