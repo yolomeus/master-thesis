@@ -99,6 +99,8 @@ The results for the full multi-task runs are shown in \Cref{tab:multi_runs}. Sur
 
 Another hypothesis suggests that too many tasks start to conflict with one another, leading to hidden representations that are no longer coherent with each other and as a consequence, less useful for learning the ranking task. Interestingly, \citep{aghajanyan-etal-2021-muppet} found their multi-task learning setup to perform best when at least $10$ tasks were used, meaning it is also possible that $3$ additional tasks are simply not sufficient.
 
+Nonetheless, we can still observe that selecting intermediate layers based on probing metrics generally results in higher performance than simply employing the additional task at layer $12$.
+
 \begin{table}[ht]
     \centering
     \begin{tabular}{lc|cccc|c}
