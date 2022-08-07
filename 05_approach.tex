@@ -2,7 +2,7 @@
 \label{chap:approach}
 Our goal is to understand whether certain properties that we expect to be relevant for ranking can be decoded from the hidden representations of a pre-trained transformer model. Additionally, we want to know to which degree these properties are encoded at different layers within the model.
 
-To test this, we conduct the following experiment: First, we generate a set of datasets $D_{\tx{probing}}=\{D_1, D_2, \dots, D_n \}$, each aimed at predicting a property $Y_i$ that, based on traditional ranking methods, can be considered relevant for ranking. Then, for each dataset, we train a probing classifier $P_i: \R^d \rightarrow \R^c$ on top of the fixed hidden representations $H\lay k = \{h_i\}_{i=1}^N \in \R^{N \times d}$ of subject model $\MSubject$. This procedure is repeated at every layer $k$. Finally, we compare the classifier's performance (\Cref{sec:metrics}) across layers to get a relative measure of how task-specific information is distributed throughout $\MSubject$. To better put our measurements into perspective, we also employ a random baseline model $\mathcal{B}$ which is also probed for each task separately. The probing procedure for BERT is illustrated in \Cref{fig:probing}.
+To test this, we conduct the following experiment: First, we generate a set of datasets $D_{\tx{probing}}=\{D_1, D_2, \dots, D_n \}$, each aimed at predicting a property $Y_i$ ($i \in (1,\dots,n)$) that, based on traditional ranking methods, can be considered relevant for ranking. Then, for each dataset, we train a probing classifier $P_i: \R^d \rightarrow \R^c$ on top of the fixed hidden representations $H\lay k = \{h_i\}_{i=1}^N \in \R^{N \times d}$ of subject model $\MSubject$. This procedure is repeated at every layer $k$. Finally, we compare the classifier's performance (\Cref{sec:metrics}) across layers to get a relative measure of how task-specific information is distributed throughout $\MSubject$. To better put our measurements into perspective, we employ a random baseline model $\mathcal{B}$ which is also probed for each task separately. The probing procedure for BERT is illustrated in \Cref{fig:probing}.
 
 Following the probing experiments, we then attempt to develop an improved fine-tuning procedure, based on our findings.
 
@@ -18,24 +18,24 @@ Following the probing experiments, we then attempt to develop an improved fine-t
 We propose a set of classification tasks with ranking properties as target variable. \citep{tenney-etal-2019-bert} findings suggest that BERT stores language concepts in a hierarchical manner, with lower-level semantics being captured in early layers, while higher level concepts can be found closer to the output layer. To test whether this holds true for ranking, we choose tasks that require different levels of semantic abstraction in order to be solved. In this section we provide a list of the tasks we've chosen and explain the reasoning behind our selection, as well as how labels are generated automatically.
 
 \subsubsection{BM25 Prediction}
-BM25 (\Cref{sec:bm25}) is a well-known text-retrieval method and still considered a first choice when it comes to computational efficiency. As a heuristic designed around exact term matching, BM25 compares query and document on a symbolic level, without the notion of higher level semantics. Being able to decode BM25 from BERT embeddings might give a hint on whether exact matching properties like term-frequency or even corpus level statistics like inverted document-frequency are encoded by the neural ranking models.
+BM25 (\Cref{sec:bm25}) is a well-known text-retrieval method and still considered a first choice when it comes to computational efficiency. As a heuristic designed around exact term matching, BM25 compares query and document on a symbolic level, without the notion of higher level semantics. Being able to decode BM25 from BERT embeddings might give a hint on whether exact matching properties like term-frequency and corpus level statistics like inverted document-frequency are encoded by the neural ranking models.
 
-To generate BM25 scores for each query-document pair the Elasticsearch BM25 implementation\footnote{\url{https://www.elastic.co/de/elasticsearch/}} is used.
+To generate BM25 scores for each query-document pair, the Elasticsearch BM25 implementation\footnote{\url{https://www.elastic.co/de/elasticsearch/}} is used.
 
 \subsubsection{Semantic Similarity}
-To measure semantic similarity, we compute cosine distance between query and document vectors in the GloVe\citep{pennington2014glove} embedding space:
+To measure semantic similarity, we compute cosine distance between query and document vectors in the GloVe \citep{pennington2014glove} embedding space:
 \begin{equation}
     \label{eq:sem_sim}
     \tx{Sim}(q, d) = \frac{q^\top d}{||q|| \times ||d||}
 \end{equation}
 While these dense word representations encode semantics, unlike BERT they are not contextualized, meaning they do not change based on surrounding words in a sentence. In that sense, using semantic similarity as ranking measure may be interpreted as a kind of soft term-matching: Words between query and document that are similar in meaning increase the estimated relevance.
 
-In order to be able to compute semantic similarity between query and document, first all words are embedded in the GloVe \citep{pennington2014glove} vector space, then the average embedding for query and document over the sequence dimension is computed and the resulting two vectors are compared.
+In order to be able to compute semantic similarity between query and document, first all words are embedded in the GloVe vector space. Then the average embedding for query and document over the sequence dimension is computed and the resulting two vectors are compared.
 
 \subsubsection{Coreference Resolution}
 Coreference resolution is the task of deciding whether two mentions in a text refer to the same entity. To model coreference we use binary classification over two spans of text in query and document, respectively.
 
-We argue that recognizing whether an entity is shared between query and document can be an important indicator on whether the document is relevant. For instance, knowing that "the US president" in a query refers to "Joe Biden" in a document is certainly helpful.
+We argue that recognizing whether an entity is shared between query and document can be an important indicator on whether the document is relevant. For instance, knowing that "the US president" in a query refers to "Joe Biden" in a document is certainly helpful for determining relevance.
 
 To detect and score entity pairs, the neuralcoref pipeline extension for spaCy\footnote{\url{https://github.com/huggingface/neuralcoref}} is used. It consists of a rule-based mentions-detection module, followed by a feed-forward neural network which produces a binary coreference score for each detected pair.
 
@@ -44,7 +44,7 @@ Similar to coreference resolution, recognizing entities can be used to match con
 
 For our task, we solely test the general ability of the model to encode entities, meaning we treat document and query as a whole and predict entity types of separate text spans.
 
-To identify named entities we spaCy's \citep{spacy2} named entity recognition module is employed. It is capable of detecting and assigning one of $18$ different types of entities. Naturally, only pairs that contain at least one entity are being included.
+To identify named entities, spaCy's \citep{spacy2} named entity recognition module is employed. It is capable of detecting and assigning one of $18$ different types of entities. Naturally, only pairs that contain at least one entity are being included.
 
 \subsubsection{Fact Checking}
 For fact checking, we leverage the existing FEVER \citep{thorne-etal-2018-fever} dataset. Here, instead of query and document, a claim and evidence text are provided. The goal is to classify whether the evidence supports or refutes the claim. This task requires high level semantic reasoning, making it relevant for more fine-grained ranking, i.e. providing documents that contain \ti{coherent} answers to a query and not only similar ones.
@@ -91,14 +91,16 @@ where $w \in \R^{d}$, $W \in \R^{d \times d_{probe}}$, $b \in \R^{d_{probe}}$ ar
 \section{Probing Setup}
 \label{sec:probing_setup}
 \subsection{Fine-tuning Subject Models}
-We fine-tune a \ti{bert-base-uncased} model on both, TREC2019 passage- and document-level datasets (\Cref{sec:trec2019}), to obtain ranking subject models \ti{bert-msm-passage} and \ti{bert-msm-doc} (\Cref{sec:subjects}), respectively. Each model is trained with a binary cross-entropy objective, for a maximum of $20$ epochs. Early stopping is performed after $3$ epochs, if no increase in validation MAP is observed. For hyperparameters, we keep the default settings suggested by \citep{devlin-etal-2019-bert}, using the Adam optimizer\citep{kingma2014adam} with a learning rate of 1e-5, a mini-batch size of $16$ and linear increase in learning rate over the first $1000$ steps. As BERT uses a fixed set of learned positional embeddings, the input length is limited to $512$ tokens. Therefore, we truncate any passages and documents exceeding this maximum length, after applying BERT's word-piece tokenization \citep{Wu2016GooglesNM}.
+We fine-tune a \ti{bert-base-uncased} model on both, TREC2019 passage- and document-level datasets (\Cref{sec:trec2019}), to obtain ranking subject models \ti{bert-msm-passage} and \ti{bert-msm-doc} (\Cref{sec:subjects}), respectively. Each model is trained with a binary cross-entropy objective, for a maximum of $20$ epochs. Early stopping is performed after $3$ epochs, if no increase in validation MAP is observed. For hyperparameters, we keep the default settings suggested by \citep{devlin-etal-2019-bert}, using the Adam optimizer \citep{kingma2014adam} with a learning rate of 1e-5, a mini-batch size of $16$ and linear increase in learning rate over the first $1000$ steps. As BERT uses a fixed set of learned positional embeddings, the input length is limited to $512$ tokens. Therefore, we truncate any passages and documents exceeding this maximum length after applying BERT's word-piece tokenization \citep{Wu2016GooglesNM}.
+
+Fine-tuning is performed on a server with 256GB of memory, using a single Nvidia A100 GPU.
 
 \subsection{Probe Training}
 All three subject models (\Cref{sec:subjects}) are probed at their intermediate output representations, meaning a classifier is learned for each layer separately. This includes the initial sequence of non-contextualized embeddings from the input embedding-matrix, which we refer to as layer $0$. We repeat this procedure for all of our proposed tasks (\Cref{sec:tasks}).
 
 As objective function, all probing tasks use cross-entropy loss (\Cref{eq:ce_loss}) which is necessary to compute MDL (\Cref{sec:mdl}). In order to achieve this, we cast regression tasks to classification tasks by binning them into $k=10$ categories. To reduce the influence of outliers, we truncate any values that are further than two standard deviations away from the mean. This means any value $< \mu - 2 \sigma$ will be assigned to class $1$ and $> \mu + 2 \sigma$ to class $10$.
 
-We employ the Adam optimization algorithm \citep{kingma2014adam} with a learning rate of 1e-4 and a batch size of $32$ for updating the probe's parameters, while the subject model's parameters remain fixed. Learning rate is halved each epoch if the validation loss does not improve. The maximum number of epochs is set to $50$, and we stop early if validation loss has not improved in $10$ epochs. We set the probe classifier's hidden size to $d_{probe}=256$ and apply dropout with rate $0.3$ before the output layer.
+We employ the Adam optimization algorithm \citep{kingma2014adam} with a learning rate of 1e-4 and a batch size of $32$ for updating the probe's parameters, while the subject model's parameters remain fixed. Learning rate is halved each epoch if the validation loss does not improve. The maximum number of epochs is set to $50$, and we stop early if validation loss has not improved over the course of $10$ epochs. We set the probe classifier's hidden size to $d_{probe}=256$ and apply dropout with rate $0.3$ before the output layer.
 
 All probing experiments are conducted on a server with 128GB of system memory, using a single Nvidia GTX 1080ti GPU.
 
@@ -166,7 +168,7 @@ where $|C_{rel}|$ is the total number of documents marked as relevant w.r.t. the
 \begin{equation}
     \text{MAP}(Q, C) = \frac{1}{|Q|} \sum_{q \in Q} \text{AP}(q, C)
 \end{equation}
-While MRR indicates the quality of the top-ranked document, MAP provides a better picture of the full candidate set ranking.
+While MRR indicates the ranking quality given the top-ranked document, MAP provides a better picture of the full candidate set ranking.
 
 \subsubsection{NDCG}
 Normalized Discounted Cumulative Gain (NDCG) quantifies a ranked list relative to its ideal ranking. NDCG can also be applied to non-binary labels. At first, a gain is computed, that rewards early placement of relevant documents in $C$, by logarithmically scaling relevance label $y_i$ as a function of the position and summing over all labels:

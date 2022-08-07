@@ -2,27 +2,25 @@
 \label{foundations}
 \section{Information Retrieval - Ranking Text}
 \label{sec:ir}
-Ranking is an integral part of the Information Retrieval (IR) process. The general IR problem can be formulated as follows: A user with a need for information expresses this \ti{information need} through formulation of a query. Now given the query and a collection of documents, the IR system's task is to provide a list of documents that satisfy the user's information need. Furthermore, the retrieved documents should be sorted by relevance with respect to the user's query in descending order, i.e. the documents considered most relevant should be at the top of the list. \citep{manning2008irbook}
+Ranking is an integral part of the information retrieval (IR) process. The general IR problem can be formulated as follows: A user with a need for information expresses their \ti{information need} through formulation of a query. Now given the query and a collection of documents, the IR system's task is to provide a list of documents that satisfy the user's information need. Furthermore, the retrieved documents should be sorted by relevance with respect to the user's query in descending order, i.e. the documents considered most relevant should be at the top of the list. \citep{manning2008irbook}
 
 While given this formulation the task might appear simple at first, there are several caveats to look out for when it comes to ranking. For instance, there is no restriction on the structure of the query \cite{carpineto2012survey}. While we might expect a natural language question like "What color are giraffes?" a user might decide to enter a keyword query like "giraffes color". The same applies to documents: Depending on the corpus we are dealing with, the documents might be raw text, structured text like HTML or even another type of media e.g. image, audio or a combination thereof.
 
 Another possible issue is a mismatch between information need of the user and the corresponding query. Even if we find a perfect ordering of documents with respect to the query, we can not know for certain that the query actually reflects the user's information need. The user might not even know exactly what they're looking for until discovery through an iterative process, i.e. the information need is fuzzy and can not be defined by a single query from the start \citep{belkin1993interaction, manning2008irbook, DBLP:journals/corr/abs-2006-03185}.
 
-Furthermore, a query might require additional contextual information in order for an IR system to find relevant documents \citep{Keklinen2002EVALUATINGIR, 10.1145/1277741.1277747, 10.1145/3204940}. For example, depending on the time at which a query is prompted, the correct answer might change: "Who is the president?" should return a different set of documents as soon as a new president has been elected. Also, since not specified further, it is up to interpretation what country's president the user is interested in. This also shows that some queries might depend on the user's location, i.e. the user might be interested in the president in their respective country.
-
-In addition, the corpus might not be static either and change or grow over time. For example, web search has to deal with an ever-growing corpus: the Internet.
+Furthermore, a query might require additional contextual information in order for an IR system to find relevant documents \citep{Keklinen2002EVALUATINGIR, 10.1145/1277741.1277747, 10.1145/3204940}. For example, depending on the time at which a query is prompted, the correct answer might change: "Who is the president?" should return a different set of documents as soon as a new president has been elected. Also, since not specified further, it is up to interpretation what country's president the user is interested in. This also shows that some queries might depend on the user's location, i.e. the user might be interested in the president in their respective country. In addition, the corpus might not be static either and change or grow over time. For example, web search has to deal with an ever-growing corpus: the Internet.
 
 While this list of issues is not comprehensive, at this point the complexity of the ranking problem should have become apparent. Because this work focuses on the ranking of text in the context of web search, we will now give a formal definition with that scenario in mind:
 
-Given a set of $|Q|$ natural language queries $Q = \{q_i\}_{i=1}^{|Q|}$ and a collection of $|D|$ documents $D = \{d_i\}_{i=1}^{|D|}$, we want to find a scoring function $s: Q \times D \rightarrow \R$, such that for any query $q \in Q$ and documents $d, d' \in D$, it holds true that $s(q, d) > s(q, d')$ if $d$ is more relevant w.r.t. $q$ than $d'$.
+Given a set of $|Q|$ natural language queries $Q = \{q_i\}_{i=1}^{|Q|}$ and a collection of $|D|$ documents $D = \{d_i\}_{i=1}^{|D|}$, we want to find a scoring function $s: Q \times D \rightarrow \R$, such that for any query $q \in Q$ and documents $d, d' \in D$, it holds true that $s(q, d) > s(q, d')$ if $d$ is more relevant with respect to $q$ than $d'$.
 
-To give the reader a more concrete idea and as we are going to build upon it throughout this thesis, we will now discuss two traditional approaches to text retrieval which, unlike neural IR, are based on exact matching, meaning query and document terms are compared directly. Moreover, they're "bag of word" models, meaning queries and documents are treated as sets of terms without considering order.
+To give the reader a more concrete idea and as we are going to build upon it throughout this thesis, we will now discuss two traditional approaches to text retrieval which, unlike neural IR, are based on exact matching, meaning query and document terms are compared directly. Moreover, opposed to neural models, they're "bag of word" models, meaning queries and documents are treated as sets of terms without considering order.
 
 \subsection{TF-IDF}
-Term Frequency - Inverted Document Frequency weighting (TF-IDF), is a traditional ranking approach that, given a query, assigns a relevance score to each document based on two assumptions:
+Term Frequency - Inverted Document Frequency weighting (TF-IDF) is a traditional ranking approach that, given a query, assigns a relevance score to each document based on two assumptions:
 \begin{enumerate}
-    \item A document is relevant if terms from the query appear in it often.
-    \item A document is relevant if the terms shared with the query are also rare in the collection.
+    \item A document is relevant if terms from the query appear in it \ti{frequently}.
+    \item A document is relevant if the terms shared with the query are also \ti{rare} in the collection.
 \end{enumerate}
 
 From these assumptions, two metrics are derived:
@@ -44,10 +42,6 @@ From these assumptions, two metrics are derived:
           where $\tx{df}_t$ counts the number of documents that a term occurs in over the full corpus. This way, terms that occur less frequently relative to the corpus size will receive a higher IDF score and those that are more frequent will receive a lower score.
 
 \end{enumerate}
-
-\begin{table}
-
-\end{table}
 To compute TF-IDF we can simply sum over the product of TF and IDF for each term in the query to produce a relevance score:
 \begin{equation}
     \tx{score}(q, d) = \sum_{t \in q} w_{t,d} \times \tx{idf}_t
@@ -64,11 +58,11 @@ Here, the free parameters $k_1$ and $b$ determine the how quick the bm25 functio
 
 \section{Machine Learning}
 \label{sec:ml}
-Machine learning (ML) encompasses a set of statistical methods for automatically recognizing and extracting patterns from data. Typically, we can distinguish between two main types of machine learning: supervised learning and unsupervised learning. \citep{bishop2006pattern}
+Machine learning (ML) encompasses a set of statistical methods for automatically recognizing and extracting patterns from data. Typically, we can distinguish between two main types of machine learning: \ti{supervised learning} and \ti{unsupervised learning}. \citep{bishop2006pattern}
 
 In the case of supervised learning, we have a set of training instances $X = \{x_i\}_{i=1}^N$ and corresponding labels $Y = \{y_i\}_{i=1}^N$, assigning a certain characteristic to each data point. For example, this characteristic might be a probability distribution over a set of classes or a regression score. If each $y_i$ represents one or more categories from a fixed set of classes $C = \{c_i\}_{i=1}^{|C|}$, it is called a classification problem.
 
-Now given the training data and labels, the goal is to find a hypothesis that explains this data, such that for unseen data points $x' \notin X$, the labels $y' \notin Y$ can be inferred automatically. One way to estimate the generalization ability of a model or algorithm is to divide the dataset into a training and a test set, and only train on the training set while using the test set for evaluation. If the test set models the full distribution of data adequately, it may act as a proxy for estimating the error on unseen samples.
+Now given the training data and labels, the goal is to find a hypothesis $h: X \rightarrow Y$ that explains this data, such that for unseen data points $x' \notin X$, the labels $y' \notin Y$ can be inferred automatically. One way to estimate the generalization ability of a model or algorithm is to divide the dataset into a training and a test set, and only train on the training set while using the test set for evaluation. If the test set models the full distribution of data adequately, it may act as a proxy for estimating the error on unseen samples.
 
 In contrast, when performing unsupervised learning there is no access to any labels whatsoever. Characteristics of the data need to be learned solely from the data $X$ itself. Examples for this include clustering where $X$ is clustered into groups, representation learning which usually tries to find vector representations for $X$, as well as dimensionality reduction which, if each $X$ is already a vector, tries to compress them into more compact but still informative representations.
 
@@ -110,15 +104,15 @@ Common choices for $\sigma$ include:
 \end{itemize}
 
 \subsection{Optimization}
-Arguably, the most common way for optimizing a neural network are the gradient descent (GD) algorithm and its variants. For this, an objective function $J(\theta)$ is defined, based on the DNN's outputs and corresponding target labels over the training set.
+Arguably, the most common way for optimizing a neural network are the gradient descent algorithm and its variants. For this, an objective function $J(\theta)$ is defined, based on the DNN's outputs and corresponding target labels over the training set.
 
 \begin{equation}
     J(\theta) = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(f(x_i; \theta), y_i)
 \end{equation}
-Here, $\mathcal{L}$ is a differentiable loss function and $\theta$ represents the vector of all learnable parameters of the neural network $f(x)$.
+Here, $\mathcal{L}$ is a differentiable loss function and $\theta$ represents the vector of all learnable parameters of the neural network $f$.
 
 \subsubsection{Gradient Descent}
-For GD, the gradient of $J(\theta)$ with respect to $\theta$ is computed and scaled by a hyperparameter called learning rate $\eta$. If the objective is to minimize, the scaled gradient is subtracted from the original parameter vector.
+For gradient descent, the gradient of $J(\theta)$ with respect to $\theta$ is computed and scaled by a hyperparameter called learning rate $\eta$. If the objective is to minimize, the scaled gradient is subtracted from the original parameter vector.
 
 \begin{equation}
     \theta_{new} = \theta - \eta\nabla_\theta J(\theta)
@@ -142,12 +136,12 @@ By repeating this procedure iteratively, we can gradually minimize $J(\theta)$. 
 \subsubsection{Stochastic Gradient Descent}
 The aforementioned algorithm is also known as the batch gradient descent (BGD) variant. Stochastic Gradient Descent (SGD) differs from BGD in the number of training samples that are used for a gradient update. Where BGD uses the gradient of the full training set for updating $\theta$, SGD only considers a single, randomly picked sample for each update. Not only can this approach be more efficient, since fewer redundant computations are performed, due to its stochastic nature it is also more likely to break out of local minima, allowing additional exploration for better solutions \citep{ruder2016overview}.
 
-\subsubsection{Mini-Batch Gradient Descent}
+\subsubsection{Mini-batch Gradient Descent}
 While SGD's high variance during training makes it more likely to escape local minima, it can also come with the disadvantage of unstable training. In this scenario, convergence might be hindered by overshooting desirable minima.
 
 To mitigate this issue, we can simply use more than one sample in order to achieve a more accurate estimate of the full gradient. Now, at each step a small subset of the dataset is sampled to reduce variance and stabilize training while retaining a level of stochasticity. This variant of gradient descent is called mini-batch gradient descent.
 
-Building on mini-batch GD, many algorithms have been introduced in the context of DNNs, which employ further optimizations in order to improve convergence speed and quality. Notable examples include:
+Building on mini-batch gradient decent, many algorithms have been introduced in the context of DNNs, which employ further optimizations in order to improve convergence speed and quality. Notable examples include:
 \begin{itemize}
     \item Adagrad \citep{duchi2011adaptive}
     \item RMSProp \citep{hinton2012neural}
@@ -193,7 +187,7 @@ By modeling the chain of operations in a DNN as a computation graph, deep learni
 Regularization includes a number of techniques to improve the generalization capabilities of an ML model. If an ML model achieves a low error rate on training data but a high error rate on test data, it is said to be \ti{overfitting}. In this scenario, the model has essentially "memorized" the training data and can no longer adapt to unseen examples. Regularization techniques tackle this problem by limiting the hypothesis space of models through favoring simple solutions over complex ones.
 
 \subsubsection{Weight Decay}
-Weight decay constraints the number of possible hypothesis by adding a penalty based on model parameters. For example, L2-regularization encourages small weights that lie on a hypersphere by adding the sum of squares over all parameters to the loss function.
+Weight decay constraints the number of possible hypothesis by adding a penalty based on a model's parameters. For example, L2-regularization encourages small weights that lie on a hypersphere by adding the sum of squares over all parameters to the loss function.
 
 \begin{equation}
     J(\theta) = \mathcal{L}(\theta) + \lambda ||\theta||_2^2
@@ -259,7 +253,7 @@ Common choices for $a$ include:
 \end{itemize}
 
 \subsubsection{Self-Attention}
-Self-Attention is a special case of attention where input vectors and context vectors stem from the same input sequence. It can be seen as the model attending to a sequence, given the sequence itself as context. In \citep{vaswani2017attention} a third set of \ti{value} vectors is introduced, resulting in three sequences termed \ti{query}, \ti{key} and \ti{value} vectors, in analogy to memory lookups.
+Self-Attention is a special case of attention where input vectors and context vectors stem from the same input sequence. It can be seen as the model attending over a sequence, given the sequence itself as context. In \citep{vaswani2017attention} a third set of \ti{value} vectors is introduced, resulting in three sequences termed \ti{query}, \ti{key} and \ti{value} vectors, in analogy to memory lookups.
 
 To produce these vectors, the initial input sequence is transformed by three different learned weight matrices, namely $W^{(q)}, W^{(k)} \in \R^{d \times d_k}$ and $W^{(v)} \in \R^{d \times d_v}$.
 
@@ -275,7 +269,7 @@ Then, using the obtained query and key vectors $Q$ and $K$, a matrix of attentio
 \end{equation}
 As a consequence, each vector in the resulting sequence becomes an attention weighted sum over the vectors in $V$. Note the scaling by $\sqrt{d_k}$, which is supposed to prevent oversaturation of the softmax function due to large dot-products.
 
-From the memory lookup perspective: Query vectors $Q$ are matched with key vectors $K$, in order to produce compatibility scores. These scores are then used to retrieve value vectors from $V$ via soft-lookup.
+If we look at this from the memory lookup perspective: Query vectors $Q$ are matched with key vectors $K$, in order to produce compatibility scores. These scores are then used to retrieve value vectors from $V$ via soft-lookup.
 
 \subsubsection{Multi-Head Attention}
 Self-Attention can further be extended to multi-head attention by running multiple self-attention layers in parallel, then concatenating and projecting their outputs:
@@ -359,6 +353,6 @@ In addition to MLM, BERT introduces a \ti{next-sentence prediction} (NSP) task w
 While many improved training procedures have been proposed since BERT, which often replace NSP or introduce additional objectives \citep{DBLP:journals/corr/abs-2003-10555, DBLP:journals/corr/abs-1907-11692, DBLP:journals/corr/abs-1906-08237, Lan2020ALBERT}, MLM still remains as an integral part for most approaches.
 
 \section{Probing}
-Probing is a method for estimating the presence of certain properties in dense vector representations of neural network models. The motivation behind probing is to understand what kind of information a DNN stores in its hidden representations. Knowing this, we can get a better idea about what properties a DNN might require for learning a specific task.
+Probing is a method for estimating the presence of certain properties in dense vector representations of neural network models. The motivation behind probing is to understand what kind of information a DNN stores in its hidden representations. Knowing this can produce insights on what properties a DNN might require for learning a specific task.
 
-For this, a diagnostic classifier (\ti{probe}) $P$ is trained on the fixed representations of a \ti{subject model} $\mathcal{M}$, to predict property $Y$. In NLP, we typically probe for linguistic properties in word embeddings. For example, we could estimate the presence of part-of-speech (POS) information by predicting POS tags. Based on the probe's performance, e.g. when compared to embeddings from a random baseline, we can conclude how well the property can be decoded from the subject model's representations.
+To achieve this, a diagnostic classifier (\ti{probe}) $P$ is trained on the fixed representations of a \ti{subject model} $\mathcal{M}$, to predict property $Y$. In NLP, we typically probe for linguistic properties in word embeddings. For example, we could estimate the presence of part-of-speech (POS) information by predicting POS tags. Based on the probe's performance, e.g. when compared to embeddings from a random baseline, we can conclude how well the property can be decoded from the subject model's representations.

@@ -5,7 +5,7 @@
 \label{sec:trec2019}
 The TREC 2019 deep learning track focuses on studying text retrieval on large-scale data \citep{DBLP:journals/corr/abs-2003-07820}. It provides two datasets, one for passage retrieval and one for document retrieval. The datasets are based on MS MARCO \citep{DBLP:journals/corr/NguyenRSGTMD16} which consists of $\sim 1$M real world user queries from the Bing search engine and a corpus of $\sim 8.8$M passages. The passages in the passage dataset are extracted from the document dataset, resulting in multiple passages for each document. Because of this, the document dataset contains less than half the number of all samples.
 
-Since the models we study in this thesis are limited in input length, we will focus on the passage retrieval dataset (TREC2019), unless stated otherwise. Further, we will refer to passages from this dataset as documents, to be consistent with the common Information Retrieval terminology.
+Since the models we study in this thesis are limited in input length, we will focus on the passage retrieval dataset (TREC2019), unless stated otherwise. Further, we will refer to passages from this dataset as documents, to be consistent with the common information retrieval terminology.
 \begin{table}[h]
     \centering
     \begin{tabular}{c|ccc}
@@ -33,7 +33,7 @@ Conversely, documents in the document dataset are automatically marked as releva
 
 \section{Probing Dataset Generation}
 \label{sec:dataset_gen}
-For all of our probing tasks (\Cref{sec:tasks}), we leverage automatically generated datasets from the TREC2019 passage-level test set. To achieve this, $60$k query-document pairs are sampled from the test set of which $40$k are used as training set and $10$k as validation and test set, respectively. Then, existing tools are used to extract the properties that we are interested in and used to label the data. Details on label generation for each task are described in \Cref{sec:tasks}. Examples for each task are shown in \Cref{tab:data_examples}. Throughout this thesis, we will abbreviate each task name as follows: Semantic similarity (SEM), named entity recognition (NER), coreference (COREF), fact checking (FACT).
+For all of our probing tasks (\Cref{sec:tasks}), we leverage automatically generated datasets\footnote{The code for generation was provided from: \url{https://github.com/Heyjuke58/tinse_probing_datasets}} from the TREC2019 passage-level test set. To achieve this, $60$k query-document pairs are sampled from the test set of which $40$k are used as training set and $10$k as validation and test set, respectively. Then, existing tools are used to extract the properties that we are interested in and used to label the data. Details on label generation for each task are described in \Cref{sec:tasks}. Examples for each task are shown in \Cref{tab:data_examples}. Throughout this thesis, we will abbreviate each task name as follows: Semantic similarity (SEM), named entity recognition (NER), coreference (COREF), fact checking (FACT).
 
 \begin{table}
     \centering

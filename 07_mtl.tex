@@ -17,13 +17,13 @@ Therefore, we want our experiment to satisfy the following criterions:
 \end{itemize}
 The main idea of our approach is to aid fine-tuning by infusing task knowledge into specific layers through \ti{multi-task learning}. We want to simultaneously learn ranking properties at the layers that we found to be best at capturing them, especially when being fine-tuned for ranking.
 
-To achieve this, for each task we first select a layer that we found to efficiently encode the corresponding  ranking property during probing. We then fine-tune the \ti{bert-base-uncased} model to perform ranking on the TREC2019 dataset. At the same time, we learn classifiers on top of BERT's intermediate layer representations of the pre-selected layers, to predict the respective ranking properties.
+To achieve this, for each task, we first select a layer that we found to efficiently encode the corresponding  ranking property during probing. We then fine-tune the \ti{bert-base-uncased} model to perform ranking on the TREC2019 dataset. At the same time, we jointly learn classifiers on top of BERT's intermediate layer representations of the pre-selected layers, to predict the respective ranking properties.
 
 \section{Model Architecture}
 Given the intermediate layer representations of the pre-trained \ti{bert-base-uncased} model $\{H\lay i\}_{i=0}^{12}$, with $H\lay i = (h_1, h_2, \dots, h_{N})$ being the sequence of token embeddings at layer~$i$, for each task (\Cref{sec:tasks}), we select a layer based on the probing results. We then apply average pooling across the sequence dimension to retrieve a fixed size embedding:
 
 \begin{equation}
-    \tx{pool}(h_i, h_{i+1},\dots, h_j)= \frac{1}{j} \sum_{k=i}^j h_k
+    \tx{pool}(h_i, h_{i+1},\dots, h_j)= \frac{1}{j-i} \sum_{k=i}^j h_k
 \end{equation}
 In the case of tasks that require multiple spans, we first average along each span $(i,j) \in S$ and then concatenate the resulting vectors:
 
@@ -33,7 +33,7 @@ In the case of tasks that require multiple spans, we first average along each sp
 Following the pooling we apply a simple MLP classifier of the form:
 
 \begin{equation}
-    \tx{FFN}(x) = \tx{ReLU}(x W^{(0)} + b^{(0)}) W^{(1)} + b^{(1)}
+    \tx{MLP}(x) = \tx{ReLU}(x W^{(0)} + b^{(0)}) W^{(1)} + b^{(1)}
 \end{equation}
 
 
@@ -147,7 +147,7 @@ The prior experiment has shown that explicitly infusing additional task informat
 For this, we conduct the following ablation study: Given a subset of TREC2019 query-document pairs, we resample multiple times from this subset and automatically create additional training samples for each of the tasks used in the MTL experiment. We then proceed to train using our proposed multi-task method (point-wise) and repeat the experiment for different subset sizes and MTL configurations.
 
 \subsection{Results}
-In the following tables we present the results for different sample sizes and MTL setups. The first table (\Cref{tab:ablation1}) represents the baseline which did not use any MTL augmentation.
+In the following tables we present the results of our ablation study for different sample sizes and MTL setups. The first table (\Cref{tab:ablation1}) represents the baseline which did not use any MTL augmentation.
 
 At first, we tried limiting the augmentation to a single task (BM25), since this has been shown to work best in our previous experiments. However, when resampling from the same small set, we can only observe a consistent benefit at sample size $100,000$ (\Cref{tab:ablation2}).
 
