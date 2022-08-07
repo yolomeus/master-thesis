@@ -157,12 +157,12 @@ We then continued to sample from all tasks which resulted in an overall drop in 
     \centering
     \begin{tabular}{r|cccc}
         \hline
-        \tf{\#samples} & \tf{MAP} & \tf{MRR} & \tf{NDCG@10} & \tf{P@10} \\ \hline\hline
-        1000           & 0.379    & 0.844    & 0.545        & 0.653     \\
-        10,000         & 0.401    & 0.917    & 0.623        & 0.730     \\
-        100,000        & 0.423    & 0.917    & 0.651        & 0.760     \\
-        500,000        & 0.424    & 0.922    & 0.673        & 0.784     \\
-        1,000,000      & 0.465    & 0.915    & 0.691        & 0.805     \\
+        \tf{\#samples} & \tf{MAP}   & \tf{MRR}   & \tf{NDCG@10} & \tf{P@10}  \\ \hline\hline
+        1000           & 0.379      & 0.844      & 0.545        & 0.653      \\
+        10,000         & 0.401      & 0.917      & 0.623        & 0.730      \\
+        100,000        & 0.423      & 0.917      & 0.651        & 0.760      \\
+        500,000        & 0.424      & \tf{0.922} & 0.673        & 0.784      \\
+        1,000,000      & \tf{0.465} & 0.915      & \tf{0.691}   & \tf{0.805} \\
     \end{tabular}
     \caption{Test results for model trained on limited sample sizes of TREC2019.}
     \label{tab:ablation1}
@@ -172,12 +172,12 @@ We then continued to sample from all tasks which resulted in an overall drop in 
     \centering
     \begin{tabular}{r|cccc}
         \hline
-        \tf{\#samples} & \tf{MAP} & \tf{MRR} & \tf{NDCG@10} & \tf{P@10} \\ \hline\hline
-        1000           & 0.355    & 0.864    & 0.548        & 0.633     \\
-        10,000         & 0.389    & 0.867    & 0.595        & 0.686     \\
-        100,000        & 0.431    & 0.940    & 0.674        & 0.765     \\
-        500,000        & 0.421    & 0.947    & 0.676        & 0.765     \\
-        1,000,000      & 0.430    & 0.919    & 0.683        & 0.770     \\
+        \tf{\#samples} & \tf{MAP}   & \tf{MRR}   & \tf{NDCG@10} & \tf{P@10}  \\ \hline\hline
+        1000           & 0.355      & 0.864      & 0.548        & 0.633      \\
+        10,000         & 0.389      & 0.867      & 0.595        & 0.686      \\
+        100,000        & \tf{0.431} & 0.940      & 0.674        & 0.765      \\
+        500,000        & 0.421      & \tf{0.947} & 0.676        & 0.765      \\
+        1,000,000      & 0.430      & 0.919      & \tf{0.683}   & \tf{0.770} \\
     \end{tabular}
     \caption{Test results for model trained jointly on limited TREC2019 sample and generated BM25 dataset of equal size.}
     \label{tab:ablation2}
@@ -187,12 +187,12 @@ We then continued to sample from all tasks which resulted in an overall drop in 
     \centering
     \begin{tabular}{r|cccc}
         \hline
-        \tf{\#samples} & \tf{MAP} & \tf{MRR} & \tf{NDCG@10} & \tf{P@10} \\ \hline\hline
-        1000           & 0.344    & 0.850    & 0.527        & 0.628     \\
-        10,000         & 0.395    & 0.884    & 0.600        & 0.693     \\
-        100,000        & 0.425    & 0.940    & 0.657        & 0.758     \\
-        500,000        & 0.424    & 0.912    & 0.658        & 0.753     \\
-        1,000,000      & 0.454    & 0.953    & 0.676        & 0.770     \\
+        \tf{\#samples} & \tf{MAP}   & \tf{MRR}   & \tf{NDCG@10} & \tf{P@10}   \\ \hline\hline
+        1000           & 0.344      & 0.850      & 0.527        & 0.628       \\
+        10,000         & 0.395      & 0.884      & 0.600        & 0.693       \\
+        100,000        & 0.425      & 0.940      & 0.657        & 0.758       \\
+        500,000        & 0.424      & 0.912      & 0.658        & 0.753       \\
+        1,000,000      & \tf{0.454} & \tf{0.953} & \tf{0.676}   & \tf{ 0.770} \\
     \end{tabular}
     \caption{Test results for model trained jointly on limited TREC2019 sample and generated BM25, SEM and NER datasets of equal size.}
     \label{tab:ablation3}
@@ -202,12 +202,12 @@ We then continued to sample from all tasks which resulted in an overall drop in 
     \centering
     \begin{tabular}{r|cccc}
         \hline
-        \tf{\#samples} & \tf{MAP} & \tf{MRR} & \tf{NDCG@10} & \tf{P@10} \\ \hline\hline
-        1000           & 0.346    & 0.828    & 0.532        & 0.644     \\
-        10,000         & 0.390    & 0.921    & 0.626        & 0.721     \\
-        100,000        & 0.408    & 0.922    & 0.647        & 0.747     \\
-        500,000        & 0.431    & 0.922    & 0.665        & 0.765     \\
-        1,000,000      & 0.432    & 0.961    & 0.662        & 0.751     \\
+        \tf{\#samples} & \tf{MAP}   & \tf{MRR}   & \tf{NDCG@10} & \tf{P@10}  \\ \hline\hline
+        1000           & 0.346      & 0.828      & 0.532        & 0.644      \\
+        10,000         & 0.390      & 0.921      & 0.626        & 0.721      \\
+        100,000        & 0.408      & 0.922      & 0.647        & 0.747      \\
+        500,000        & 0.431      & 0.922      & \tf{0.665}   & \tf{0.765} \\
+        1,000,000      & \tf{0.432} & \tf{0.961} & 0.662        & 0.751      \\
     \end{tabular}
     \caption{Test results for model trained jointly on limited TREC2019 sample and generated BM25, SEM and NER datasets with each dataset being 50\% of the sample size.}
     \label{tab:ablation4}
