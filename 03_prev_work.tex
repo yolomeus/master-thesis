@@ -49,4 +49,6 @@ More recently, in the context of transformer models, \citet{DBLP:journals/corr/a
 
 In \citep{DBLP:journals/corr/abs-1910-10683}, a framework is proposed that enables casting of multiple language tasks into a single text-to-text format, allowing training those tasks with the same objective. They were not able to find sampling proportions that are capable of producing results comparable to a pre-train then fine-tune approach. However, when applying MTL as an intermediate step they've observed improved performance similar to \citet{DBLP:journals/corr/abs-1901-11504}.
 
+\citet{aghajanyan-etal-2021-muppet} expand on that idea and perform large scale pre-finetuning using over $50$ tasks. They propose a simple, yet effective loss scaling approach and find that the intermediate training stage is also more effective the more tasks are supplied. Furthermore, they found the use of mixed-batches, i.e. mini-batches that contain samples from multiple tasks, sampled proportionally to dataset size, to be the most effective.
+
 In the context of neural ranking, \citet{maillard-etal-2021-multi} present a method for multi-task learning that improves generalization across different domains. Likewise, \citet{Fun2021EfficientRO} present a retrieval-optimized multi-task learning approach, but make use of a sequential training schedule.
