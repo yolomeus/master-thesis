@@ -2,7 +2,7 @@
 \label{chap:mtl}
 Based on our findings from the probing experiments, we now want to address the question on whether the knowledge obtained from probing can be leveraged to improve the BERT ranking model.
 
-Thus, our new objective becomes re-ranking: Given a query $q$ and a set of candidate documents $C=\{c_i\}_{i=1}^{|C|} \subseteq D$, we want to learn a ranker $s: Q \times D \rightarrow \R$, such that for any two candidate documents $c, c' \in C$, it holds true that $s(q, c) > s(q, c')$ if $c$ is more relevant than than $c'$, regarding $q$.\\
+Thus, our new objective becomes re-ranking: Given a query $q$ and a set of candidate documents $C=\{c_i\}_{i=1}^{|C|} \subseteq D$, we want to learn a ranker $s: Q \times D \rightarrow \R$, such that for any two candidate documents $c, c' \in C$, it holds true that $s(q, c) > s(q, c')$ if $c$ is more relevant than $c'$, regarding $q$.\\
 From our probing experiments we found that different properties are best captured around specific layers. Therefore, we want our experiment to satisfy the following criteria:
 \begin{itemize}
     \item Exploit the fact that ranking properties emerge in intermediate layers.
