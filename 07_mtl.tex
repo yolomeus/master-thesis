@@ -33,7 +33,7 @@ Unlike the auxiliary tasks, ranking is performed by applying the same MLP to the
 \begin{figure}[!hb]
     \centering
     \includegraphics[width=.9\textwidth]{gfx/mtl/mtl-example}
-    \caption{Exemplary instantiation of our MTL architecture with 3 additional tasks. The main objective \ti{ranking} is learned at the last layer, following the standard BERT fine-tuning approach. For each auxiliary task, a different MLP is applied at an intermediate layer. Note that, unlike during our probing, the parameters of BERT are no longer fixed and jointly optimized with all MLPs.}
+    \caption{Exemplary instantiation of our MTL architecture with 3 additional tasks. The main objective \ti{ranking} is learned at the last layer, following the standard BERT fine-tuning approach. For each auxiliary task, a different MLP is applied at an intermediate layer. Note that, unlike during probing, the parameters of BERT are no longer fixed and jointly optimized with all MLPs.}
     \label{fig:mtl}
 \end{figure}
 
