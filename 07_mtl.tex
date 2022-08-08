@@ -28,7 +28,14 @@ Following the pooling we apply a simple MLP classifier of the form:
 \begin{equation}
     \tx{MLP}(x) = \tx{ReLU}(x W^{(0)} + b^{(0)}) W^{(1)} + b^{(1)}
 \end{equation}
+Unlike the auxiliary tasks, ranking is performed by applying the same MLP to the first output embedding at the last layer of BERT which corresponds to the [CLS] token (See \citep{devlin-etal-2019-bert}).
 
+\begin{figure}[!hb]
+    \centering
+    \includegraphics[width=.9\textwidth]{gfx/mtl/mtl-example}
+    \caption{Exemplary instantiation of our MTL architecture with 3 additional tasks. The main objective \ti{ranking} is learned at the last layer, following the standard BERT fine-tuning approach. For each auxiliary task, a different MLP is applied at an intermediate layer. Note that, unlike during our probing, the parameters of BERT are no longer fixed and jointly optimized with all MLPs.}
+    \label{fig:mtl}
+\end{figure}
 
 \section{Experimental Setup}
 \subsection{Datasets and Sampling}
