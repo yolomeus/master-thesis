@@ -35,9 +35,9 @@ Due to the constraints of random baselines and control tasks, \citep{voita-titov
 \section{Multi-task Learning for NLP}
 Multi-task learning (MTL) encompasses methods that learn a single model from multiple tasks or datasets. One motivation for this is to learn a model that is better at generalizing across different tasks. In this setting, each task is treated equally important.
 
-Another motivation is to improve a model's performance on a particular task by providing additional information from auxiliary tasks. In this case, performance on the main task is most important.
+Another motivation is to improve a model's performance on a particular task by providing additional information from auxiliary tasks. In this case, performance on the main task is most important. This is also the approach we take in this thesis. It has been shown that providing domain-specific information through additional tasks may help a model to gain both shared and task specific knowledge at the same time \citep{ma2018modeling, tang2020progressive, xi2021modeling, zhao2019multiple}.
 
-Due to the increased complexity of having to account for multiple tasks, MTL comes with a variety of possible design choices, regarding both architecture and training setup. For instance, \citet{DBLP:journals/corr/abs-2109-09138} name three general MTL architecture categories:
+Due to the increased complexity of having to account for multiple tasks, MTL comes with a variety of possible design choices, regarding both architecture and training setup. For instance, \citet{DBLP:journals/corr/abs-2109-09138} name three categories of general MTL architectures:
 \begin{itemize}
     \item Tree-like architectures: a single encoder model is followed by task-specific decoders.
     \item Parallel feature fusion: each task has a single model, however these models fuse features on one or multiple levels.
