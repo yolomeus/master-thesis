@@ -1,16 +1,9 @@
 \chapter{Informed Multi-Task Learning}
 \label{chap:mtl}
-Based on our findings from the probing experiments, we now want to address the question on whether the knowledge obtained from probing can be leveraged to improve the BERT model for ranking.
+Based on our findings from the probing experiments, we now want to address the question on whether the knowledge obtained from probing can be leveraged to improve the BERT ranking model.
 
 Thus, our new objective becomes re-ranking: Given a query $q$ and a set of candidate documents $C=\{c_i\}_{i=1}^{|C|} \subseteq D$, we want to learn a ranker $s: Q \times D \rightarrow \R$, such that for any two candidate documents $c, c' \in C$, it holds true that $s(q, c) > s(q, c')$ if $c$ is more relevant than than $c'$, regarding $q$.\\
-During probing we made these key observations:
-
-\begin{itemize}
-    \item Different properties are best captured around specific layers.
-    \item Fine-tuning for ranking may amplify the presence of a property in specific layers.
-\end{itemize}
-Therefore, we want our experiment to satisfy the following criterions:
-
+From our probing experiments we found that different properties are best captured around specific layers. Therefore, we want our experiment to satisfy the following criteria:
 \begin{itemize}
     \item Exploit the fact that ranking properties emerge in intermediate layers.
     \item Use the knowledge on which layers capture what property best.
@@ -47,6 +40,7 @@ We exclude the fact-checking task, as we do not have a straightforward way to au
 During training, we assemble mini-batches of size $32$, by sampling from the TREC2019 train set and all generated task datasets with a probability proportional to their size. As loss function we use the objective proposed in \citep{aghajanyan-etal-2021-muppet}:
 
 \begin{equation}
+    \label{eq:muppet}
     \mathcal{L}(y, \hat{y}) = \sum_{t \in \tx{tasks}} \frac{\textnormal{CE}(y_t, \hat{y}_t)}{\log c_t}
 \end{equation}
 where $c_t$ is the number of target classes and $y_t$, $\hat{y}_t$ are predictions and ground-truth labels with respect to task $t$, respectively. It scales each task loss, such that all losses would have equivalent values, if the class distribution were uniformly distributed, along with the predictions. Analogous to the probing experiments, regression tasks are cast to classification tasks by binning the targets into $k=10$ categories, so that $c_t$ is defined properly.
@@ -64,7 +58,7 @@ Each model is trained on a server with $256$GB of system memory, using either a 
 \section{Results}
 \label{sec:mtl_results}
 \subsection{Single Additional Task}
-For runs in which a single additional task is introduced (\Cref{tab:single_runs}), we can observe a general improvement across the board. It also becomes apparent that the selection of layer which the additional task is trained on actually plays a role: For BM25, SEM and COREF, layer $12$ shows worse or equal performance for most metrics, when compared to layers that were selected based on our probing results. For instance, BM25 consistently outperforms the baseline at layers $5$ and $6$, but performs significantly worse than the baseline at layer $12$.
+For runs in which a single additional task is introduced (\Cref{tab:single_runs}), we can observe a general improvement across the board. It also becomes apparent that the selection of layer which the additional task is trained on actually plays a role: For BM25, SEM and COREF, layer $12$ shows worse or equal performance for most metrics, when compared to layers that were selected based on our probing results. For instance, BM25 consistently outperforms the baseline at layers $5$ and $6$. However, at layer $12$ it performs significantly worse than the baseline. This coincides with our findings from probing where the final layer appears to be overspecialized and therefore less receptive for additional task information.
 
 Interestingly, this does not apply to NER which, except from MRR, instead performs best at the final layer. We hypothesize that, due to the NER property having a rather flat distribution across layers (\Cref{fig:heatmap_comp_base}), infusing additional NER information might work equally well at most layers.
 
@@ -147,7 +141,7 @@ The prior experiment has shown that explicitly infusing additional task informat
 For this, we conduct the following ablation study: Given a subset of TREC2019 query-document pairs, we resample multiple times from this subset and automatically create additional training samples for each of the tasks used in the MTL experiment. We then proceed to train using our proposed multi-task method (point-wise) and repeat the experiment for different subset sizes and MTL configurations.
 
 \subsection{Results}
-In the following tables we present the results of our ablation study for different sample sizes and MTL setups. The first table (\Cref{tab:ablation1}) represents the baseline which did not use any MTL augmentation.
+In the following tables we present the results of our ablation study for different sample sizes and MTL setups using the point-wise ranking objective in combination with the loss scaling from \Cref{eq:muppet}. The first table (\Cref{tab:ablation1}) represents the baseline which did not use any MTL augmentation.
 
 At first, we tried limiting the augmentation to a single task (BM25), since this has been shown to work best in our previous experiments. However, when resampling from the same small set, we can only observe a consistent benefit at sample size $100,000$ (\Cref{tab:ablation2}).
 
