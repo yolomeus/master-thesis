@@ -1,10 +1,10 @@
 # Deconstructing Ranking Abilities of Language Models 
 This is the repository containing latex source code for my master's thesis. The thesis consists of two main contribution:
 
-#### 1. Probing LM's for Ranking [[Code](https://github.com/yolomeus/probing-search)]:
+### 1. Probing LM's for Ranking [[Code](https://github.com/yolomeus/probing-search)]:
 A classifier is trained to predict ranking properties on the intermediate layers of a large neural ranking model (BERT), in order to find out which layers are important for ranking.
 
-#### 2. Multi-task Learning for Ranking [[Code](https://github.com/yolomeus/mtl-ranking)]:
+### 2. Multi-task Learning for Ranking [[Code](https://github.com/yolomeus/mtl-ranking)]:
 For each property found to be benificial for ranking, artificial datasets are generated and used at the relevant layers when fine-tuning the model.
 
 
